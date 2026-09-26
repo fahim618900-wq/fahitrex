@@ -1,96 +1,1157 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>My Website</title>
+<title>My Website</title>
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<style>
+/* =====================================================
+   RESET
+===================================================== */
 
-        html,
-        body {
-            width: 100%;
-            height: 100%;
-        }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        body {
-            font-family: Arial, "Noto Sans Bengali", sans-serif;
-            overflow: hidden;
+html {
+    scroll-behavior: smooth;
+}
 
-            /* Default: PC Light */
-            background-image: url("path/logol.p.png");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
+body {
+    min-height: 100vh;
+    font-family:
+        "Noto Sans Bengali",
+        "Segoe UI",
+        Arial,
+        sans-serif;
 
-            transition: background-image 0.3s ease;
-        }
+    color: #111;
+    overflow-x: hidden;
 
-        /* ================================
-           MOBILE
-           ================================ */
+    /* PC LIGHT */
+    background-image: url("path/logol.p.png");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
 
-        @media (max-width: 767px) {
+    transition:
+        background-image .4s ease,
+        color .3s ease;
+}
 
-            body {
-                /* Mobile Light */
-                background-image: url("path/logol.m.png");
-            }
 
-        }
+/* =====================================================
+   DARK MODE BACKGROUND
+===================================================== */
 
-        /* ================================
-           DARK MODE
-           ================================ */
+body.dark {
+    background-image: url("path/logod.p.png");
+    color: #fff;
+}
 
-        @media (prefers-color-scheme: dark) {
 
-            body {
-                /* PC Dark */
-                background-image: url("path/logod.p.png");
-            }
+/* =====================================================
+   MOBILE BACKGROUND
+===================================================== */
 
-            @media (max-width: 767px) {
+@media (max-width: 767px) {
 
-                body {
-                    /* Mobile Dark */
-                    background-image: url("path/logod.m.png");
-                }
+    body {
+        background-image: url("path/logol.m.png");
+    }
 
-            }
-        }
+    body.dark {
+        background-image: url("path/logod.m.png");
+    }
+}
 
-        /* ================================
-           CONTENT
-           ================================ */
 
-        .content {
-            width: 100%;
-            height: 100vh;
+/* =====================================================
+   BACKGROUND OVERLAY
+===================================================== */
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+.background-overlay {
+    position: fixed;
+    inset: 0;
 
-            position: relative;
-            z-index: 2;
-        }
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,.08),
+            rgba(255,255,255,.02)
+        );
 
-    </style>
+    pointer-events: none;
+    z-index: 0;
+}
+
+body.dark .background-overlay {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0,0,0,.18),
+            rgba(0,0,0,.35)
+        );
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header {
+    position: fixed;
+
+    top: 18px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: min(1150px, calc(100% - 32px));
+
+    height: 70px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 14px;
+
+    border: 1px solid rgba(255,255,255,.35);
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.32),
+            rgba(255,255,255,.12)
+        );
+
+    backdrop-filter: blur(22px) saturate(160%);
+    -webkit-backdrop-filter: blur(22px) saturate(160%);
+
+    box-shadow:
+        0 12px 35px rgba(0,0,0,.12),
+        inset 0 1px 0 rgba(255,255,255,.45);
+
+    z-index: 1000;
+
+    transition: .3s ease;
+}
+
+body.dark .header {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(30,30,35,.55),
+            rgba(15,15,20,.35)
+        );
+
+    border-color: rgba(255,255,255,.16);
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.35),
+        inset 0 1px 0 rgba(255,255,255,.12);
+}
+
+
+/* =====================================================
+   LOGO
+===================================================== */
+
+.logo {
+    min-width: 150px;
+
+    padding: 0 15px;
+
+    font-size: 20px;
+    font-weight: 750;
+
+    letter-spacing: .3px;
+
+    color: inherit;
+}
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+.nav {
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+
+    margin-left: auto;
+}
+
+.nav-button {
+    position: relative;
+
+    border: 0;
+    outline: none;
+
+    background: transparent;
+
+    color: inherit;
+
+    padding: 11px 16px;
+
+    border-radius: 14px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background .25s ease,
+        transform .2s ease;
+}
+
+.nav-button:hover {
+    background: rgba(255,255,255,.25);
+}
+
+.nav-button:active {
+    transform: scale(.95);
+}
+
+
+/* =====================================================
+   ACTIVE BUTTON
+===================================================== */
+
+.nav-button.active {
+    background: rgba(255,255,255,.30);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.35);
+}
+
+
+/* =====================================================
+   THEME BUTTON
+===================================================== */
+
+.theme-button {
+
+    width: 48px;
+    height: 48px;
+
+    margin-left: 8px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(255,255,255,.30);
+
+    border-radius: 15px;
+
+    background: rgba(255,255,255,.18);
+
+    color: inherit;
+
+    cursor: pointer;
+
+    transition:
+        background .25s ease,
+        transform .25s ease;
+}
+
+.theme-button:hover {
+    background: rgba(255,255,255,.35);
+}
+
+.theme-button:active {
+    transform: scale(.90);
+}
+
+
+/* =====================================================
+   ICON
+===================================================== */
+
+.theme-icon {
+    width: 22px;
+    height: 22px;
+
+    display: block;
+
+    transition:
+        transform .35s ease;
+}
+
+.theme-button:hover .theme-icon {
+    transform: rotate(20deg);
+}
+
+
+/* =====================================================
+   MOBILE MENU
+===================================================== */
+
+.menu-button {
+    display: none;
+
+    width: 46px;
+    height: 46px;
+
+    border: 0;
+
+    border-radius: 14px;
+
+    background: rgba(255,255,255,.20);
+
+    color: inherit;
+
+    cursor: pointer;
+
+    font-size: 22px;
+}
+
+
+/* =====================================================
+   MOBILE MENU PANEL
+===================================================== */
+
+.mobile-menu {
+
+    position: fixed;
+
+    top: 98px;
+    left: 16px;
+    right: 16px;
+
+    padding: 10px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(255,255,255,.22);
+
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+
+    border: 1px solid rgba(255,255,255,.30);
+
+    box-shadow: 0 15px 40px rgba(0,0,0,.15);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateY(-10px);
+
+    transition: .25s ease;
+
+    z-index: 999;
+}
+
+.mobile-menu.show {
+
+    opacity: 1;
+    visibility: visible;
+
+    transform: translateY(0);
+}
+
+.mobile-menu button {
+
+    width: 100%;
+
+    padding: 14px;
+
+    border: 0;
+
+    background: transparent;
+
+    color: inherit;
+
+    border-radius: 14px;
+
+    text-align: left;
+
+    font-size: 15px;
+
+    cursor: pointer;
+}
+
+.mobile-menu button:hover {
+    background: rgba(255,255,255,.25);
+}
+
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.hero {
+
+    min-height: 100vh;
+
+    padding:
+        150px 25px
+        80px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    z-index: 1;
+}
+
+.hero-card {
+
+    width: min(900px, 100%);
+
+    padding: 60px 45px;
+
+    text-align: center;
+
+    border-radius: 32px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.20),
+            rgba(255,255,255,.08)
+        );
+
+    border: 1px solid rgba(255,255,255,.28);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.12);
+
+    animation: appear .8s ease;
+}
+
+body.dark .hero-card {
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(20,20,25,.45),
+            rgba(10,10,15,.25)
+        );
+
+    border-color: rgba(255,255,255,.12);
+}
+
+.hero h1 {
+
+    font-size:
+        clamp(32px, 6vw, 64px);
+
+    line-height: 1.1;
+
+    margin-bottom: 20px;
+}
+
+.hero p {
+
+    max-width: 650px;
+
+    margin: auto;
+
+    font-size:
+        clamp(15px, 2vw, 19px);
+
+    line-height: 1.8;
+
+    opacity: .82;
+}
+
+
+/* =====================================================
+   HERO BUTTONS
+===================================================== */
+
+.hero-buttons {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    margin-top: 32px;
+
+    flex-wrap: wrap;
+}
+
+.hero-button {
+
+    padding: 13px 22px;
+
+    border-radius: 15px;
+
+    border: 1px solid rgba(255,255,255,.3);
+
+    background:
+        rgba(255,255,255,.25);
+
+    color: inherit;
+
+    font-size: 15px;
+    font-weight: 650;
+
+    cursor: pointer;
+
+    text-decoration: none;
+
+    transition: .25s ease;
+}
+
+.hero-button:hover {
+
+    transform: translateY(-3px);
+
+    background:
+        rgba(255,255,255,.38);
+}
+
+
+/* =====================================================
+   CARDS
+===================================================== */
+
+.section {
+
+    position: relative;
+
+    z-index: 1;
+
+    padding: 70px 25px;
+
+}
+
+.cards {
+
+    width: min(1100px, 100%);
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 20px;
+}
+
+.card {
+
+    padding: 30px;
+
+    border-radius: 24px;
+
+    background:
+        rgba(255,255,255,.16);
+
+    border:
+        1px solid rgba(255,255,255,.25);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.10);
+
+    transition:
+        transform .3s ease,
+        background .3s ease;
+}
+
+.card:hover {
+
+    transform: translateY(-7px);
+
+    background:
+        rgba(255,255,255,.24);
+}
+
+.card h3 {
+
+    margin-bottom: 10px;
+
+    font-size: 20px;
+}
+
+.card p {
+
+    line-height: 1.7;
+
+    opacity: .75;
+}
+
+
+/* =====================================================
+   ANIMATION
+===================================================== */
+
+@keyframes appear {
+
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 800px) {
+
+    .logo {
+        min-width: auto;
+        padding-left: 8px;
+    }
+
+    .nav {
+        display: none;
+    }
+
+    .menu-button {
+        display: block;
+
+        margin-left: auto;
+    }
+
+    .theme-button {
+        margin-left: 7px;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-card {
+        padding: 45px 25px;
+    }
+}
+
+
+@media (max-width: 420px) {
+
+    .header {
+
+        top: 10px;
+
+        width:
+            calc(100% - 20px);
+
+        height: 62px;
+
+        border-radius: 18px;
+    }
+
+    .theme-button,
+    .menu-button {
+
+        width: 42px;
+        height: 42px;
+    }
+
+    .hero {
+
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .hero-card {
+
+        border-radius: 25px;
+
+        padding:
+            40px 20px;
+    }
+}
+
+</style>
 </head>
+
 
 <body>
 
-    <main class="content">
-        <!-- আপনার ওয়েবসাইটের মূল কনটেন্ট এখানে থাকবে -->
-    </main>
+<div class="background-overlay"></div>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="header">
+
+    <div class="logo">
+        My Website
+    </div>
+
+
+    <nav class="nav">
+
+        <button
+            class="nav-button active"
+            onclick="scrollToSection('home')">
+            Home
+        </button>
+
+        <button
+            class="nav-button"
+            onclick="scrollToSection('about')">
+            About
+        </button>
+
+        <button
+            class="nav-button"
+            onclick="scrollToSection('services')">
+            Services
+        </button>
+
+        <button
+            class="nav-button"
+            onclick="scrollToSection('contact')">
+            Contact
+        </button>
+
+    </nav>
+
+
+    <!-- MOBILE MENU -->
+
+    <button
+        class="menu-button"
+        onclick="toggleMenu()"
+        aria-label="Menu">
+
+        ☰
+
+    </button>
+
+
+    <!-- THEME -->
+
+    <button
+        class="theme-button"
+        onclick="toggleTheme()"
+        aria-label="Change theme">
+
+        <svg
+            class="theme-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2">
+
+            <circle
+                cx="12"
+                cy="12"
+                r="4"/>
+
+            <path
+                d="
+                M12 2v2
+                M12 20v2
+                M4.93 4.93l1.41 1.41
+                M17.66 17.66l1.41 1.41
+                M2 12h2
+                M20 12h2
+                M4.93 19.07l1.41-1.41
+                M17.66 6.34l1.41-1.41
+                "/>
+
+        </svg>
+
+    </button>
+
+</header>
+
+
+<!-- =====================================================
+     MOBILE MENU
+===================================================== -->
+
+<div class="mobile-menu" id="mobileMenu">
+
+    <button onclick="mobileNavigate('home')">
+        Home
+    </button>
+
+    <button onclick="mobileNavigate('about')">
+        About
+    </button>
+
+    <button onclick="mobileNavigate('services')">
+        Services
+    </button>
+
+    <button onclick="mobileNavigate('contact')">
+        Contact
+    </button>
+
+</div>
+
+
+<!-- =====================================================
+     HOME
+===================================================== -->
+
+<section
+    class="hero"
+    id="home">
+
+    <div class="hero-card">
+
+        <h1>
+            Welcome
+        </h1>
+
+        <p>
+            আপনার ওয়েবসাইটে স্বাগতম।
+            সুন্দর Glass UI, responsive design
+            এবং Light/Dark Mode সহ একটি আধুনিক interface।
+        </p>
+
+
+        <div class="hero-buttons">
+
+            <a
+                href="#about"
+                class="hero-button">
+
+                শুরু করুন
+
+            </a>
+
+            <a
+                href="#services"
+                class="hero-button">
+
+                আরও দেখুন
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ABOUT
+===================================================== -->
+
+<section
+    class="section"
+    id="about">
+
+    <div class="cards">
+
+        <div class="card">
+
+            <h3>
+                সুন্দর Design
+            </h3>
+
+            <p>
+                স্বচ্ছ কাঁচের মতো Glassmorphism
+                interface এবং আপনার দেওয়া
+                background image।
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                Responsive
+            </h3>
+
+            <p>
+                মোবাইল, ট্যাবলেট ও কম্পিউটার—
+                সব ধরনের screen-এর জন্য
+                স্বয়ংক্রিয়ভাবে মানিয়ে যাবে।
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                Light / Dark
+            </h3>
+
+            <p>
+                উপরের Theme button চাপলেই
+                Light এবং Dark mode পরিবর্তন
+                হবে।
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     SERVICES
+===================================================== -->
+
+<section
+    class="section"
+    id="services">
+
+    <div class="cards">
+
+        <div class="card">
+
+            <h3>
+                Fast
+            </h3>
+
+            <p>
+                কোনো framework ছাড়াই
+                HTML, CSS এবং JavaScript দিয়ে
+                তৈরি।
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                Modern UI
+            </h3>
+
+            <p>
+                Blur, transparency,
+                smooth animation এবং
+                modern spacing ব্যবহার করা হয়েছে।
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                সহজে পরিবর্তনযোগ্য
+            </h3>
+
+            <p>
+                Menu, লেখা, button এবং
+                অন্যান্য অংশ সহজেই
+                পরিবর্তন করতে পারবেন।
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     CONTACT
+===================================================== -->
+
+<section
+    class="section"
+    id="contact">
+
+    <div class="hero-card">
+
+        <h2>
+            Contact
+        </h2>
+
+        <p>
+            আপনার প্রয়োজন অনুযায়ী
+            এই অংশে যোগাযোগের তথ্য
+            যোগ করতে পারবেন।
+        </p>
+
+    </div>
+
+</section>
+
+
+<script>
+
+/* =====================================================
+   THEME
+===================================================== */
+
+function toggleTheme() {
+
+    document.body.classList.toggle("dark");
+
+    const isDark =
+        document.body.classList.contains("dark");
+
+    localStorage.setItem(
+        "theme",
+        isDark ? "dark" : "light"
+    );
+}
+
+
+/* =====================================================
+   LOAD SAVED THEME
+===================================================== */
+
+(function () {
+
+    const savedTheme =
+        localStorage.getItem("theme");
+
+    if (savedTheme === "dark") {
+
+        document.body.classList.add("dark");
+
+    }
+
+})();
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+function scrollToSection(id) {
+
+    const element =
+        document.getElementById(id);
+
+    if (element) {
+
+        element.scrollIntoView({
+            behavior: "smooth"
+        });
+
+    }
+}
+
+
+/* =====================================================
+   MOBILE MENU
+===================================================== */
+
+function toggleMenu() {
+
+    const menu =
+        document.getElementById("mobileMenu");
+
+    menu.classList.toggle("show");
+}
+
+
+/* =====================================================
+   MOBILE NAVIGATION
+===================================================== */
+
+function mobileNavigate(id) {
+
+    scrollToSection(id);
+
+    document
+        .getElementById("mobileMenu")
+        .classList.remove("show");
+}
+
+
+/* =====================================================
+   ACTIVE NAVIGATION
+===================================================== */
+
+const sections =
+    document.querySelectorAll("section");
+
+const navButtons =
+    document.querySelectorAll(".nav-button");
+
+window.addEventListener(
+    "scroll",
+    () => {
+
+        let current = "home";
+
+        sections.forEach(section => {
+
+            const top =
+                section.offsetTop - 200;
+
+            if (window.scrollY >= top) {
+
+                current =
+                    section.getAttribute("id");
+
+            }
+
+        });
+
+
+        navButtons.forEach(button => {
+
+            button.classList.remove("active");
+
+            if (
+                button.textContent
+                    .toLowerCase()
+                    .includes(current)
+            ) {
+
+                button.classList.add("active");
+
+            }
+
+        });
+
+    }
+);
+
+</script>
 
 </body>
 </html>
+
+আপনার ছবির Path
+
+শুধু নিশ্চিত করবেন ফোল্ডারটি এমন:
+
+YourWebsite/
+│
+├── index.html
+│
+└── path/
+    ├── logol.m.png
+    ├── logod.m.png
+    ├── logol.p.png
+    └── logod.p.png
+
+এখানে Theme button চাপলে Light ↔ Dark হবে এবং "localStorage"-এর কারণে পেজ রিফ্রেশ করলেও নির্বাচিত Theme থাকবে।
+
+মোবাইলে আবার PC-এর navigation না দেখিয়ে ☰ Menu দেখাবে, আর PC-তে সরাসরি Home / About / Services / Contact দেখা যাবে।
