@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: sans-serif;
+      color: #ffffff;
+      background: transparent; /* ব্যাকগ্রাউন্ড ট্রান্সপারেন্ট নিশ্চিত করা */
+      overflow-y: auto; /* কন্টেন্ট স্ক্রল করার অনুমতি দেয় */
+      -webkit-overflow-scrolling: touch; /* মোবাইলে স্মুথ স্ক্রলিং */
+    }
+
+    .card {
+      background: rgba(0, 0, 0, 0.65);
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      backdrop-filter: blur(5px);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>হোম পেজ</h2>
+    <p>হাত দিয়ে স্ক্রল করলেও ব্যাকগ্রাউন্ড ছবি একটুও নড়বে না।</p>
+  </div>
+
+  <!-- স্ক্রলিং টেস্ট করার জন্য দীর্ঘ কন্টেন্ট -->
+  <div style="height: 1000px;"></div>
+
+  <div class="card">
+    <h2>নিচের অংশ</h2>
+    <p>আপনি যত নিচে যান না কেন, ব্যাকগ্রাউন্ড ১০০% ফিক্সড থাকবে।</p>
+  </div>
+
+</body>
+</html>
