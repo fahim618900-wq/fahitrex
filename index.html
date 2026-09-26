@@ -3,112 +3,133 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fixed Background & Touch Scroll</title>
+  <title>১০০% স্থির ব্যাকগ্রাউন্ড নেভিগেশন</title>
   <style>
-    /* ১. মূল পেজ সেটআপ (টাচ স্ক্রল সচল রাখার জন্য) */
+    /* ১. ব্রাউজারের মার্জিন এবং স্ক্রলিং সেটআপ */
     html, body {
       margin: 0;
       padding: 0;
       width: 100%;
-      min-height: 100%;
+      height: 100%;
       overflow-x: hidden;
-      overflow-y: auto; /* হাত দিয়ে স্ক্রল নিশ্চিত করে */
-      -webkit-overflow-scrolling: touch; /* মোবাইল ব্রাউজারে স্মুথ টাচ স্ক্রল */
-      touch-action: auto; /* টাচ জেসচার অন রাখে */
-    }
-
-    /* ২. ফিক্সড ব্যাকগ্রাউন্ড (সব ডিভাইসে ছবি স্থির থাকবে) */
-    .background-fixed {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
-      background-image: url('YOUR_IMAGE_URL.jpg'); /* এখানে আপনার ছবির লিংক দিন */
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      z-index: -1; /* কন্টেন্টের পেছনে রাখার জন্য */
-      pointer-events: none; /* ব্যাকগ্রাউন্ড যেন টাচ ইভেন্টে বাধা না দেয় */
-    }
-
-    /* ৩. প্রধান কন্টেন্ট এরিয়া */
-    .main-content {
-      position: relative;
-      z-index: 1;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 40px 20px;
-      color: #ffffff;
       font-family: Arial, sans-serif;
     }
 
-    .card {
-      background: rgba(0, 0, 0, 0.6); /* লেখার সুবিধার্থে হালকা কালো শেড */
-      padding: 20px;
-      margin-bottom: 20px;
-      border-radius: 10px;
-      backdrop-filter: blur(5px);
-    }
-
-    /* ৪. স্ক্রল বাটন স্টাইল */
-    .scroll-btn {
+    /* ২. ব্যাকগ্রাউন্ড ছবি - যা কখনো জায়গা থেকে নড়বে না */
+    .static-background {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
-      padding: 14px 24px;
-      background-color: #007bff;
-      color: #ffffff;
-      border: none;
-      border-radius: 50px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      z-index: 100;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-image: url('YOUR_IMAGE_URL.jpg'); /* এখানে ছবির সঠিক লিংক দিন */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      z-index: -1; /* কন্টেন্টের একদম পেছনে থাকবে */
+      pointer-events: none; /* টাচ বা ক্লিকে বাধা দেবে না */
     }
 
-    .scroll-btn:active {
-      transform: scale(0.95);
+    /* ৩. নেভিগেশন বার */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 15px 0;
+      text-align: center;
+      z-index: 10;
+    }
+
+    nav button {
+      background: transparent;
+      color: #fff;
+      border: 1px solid #fff;
+      padding: 8px 16px;
+      margin: 0 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    nav button:hover {
+      background: #ffffff;
+      color: #000000;
+    }
+
+    /* ৪. পেজ কন্টেন্ট এরিয়া */
+    .page-container {
+      position: relative;
+      margin-top: 80px; /* নেভিগেশন বারের জন্য জায়গা */
+      padding: 20px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      color: #ffffff;
+    }
+
+    .page {
+      display: none; /* ডিফল্টভাবে সব পেজ হাইড থাকবে */
+      background: rgba(0, 0, 0, 0.6);
+      padding: 30px;
+      border-radius: 10px;
+      backdrop-filter: blur(4px);
+    }
+
+    .page.active {
+      display: block; /* শুধু অ্যাক্টিভ পেজটি দেখাবে */
     }
   </style>
 </head>
 <body>
 
-  <!-- স্থির ব্যাকগ্রাউন্ড লেয়ার -->
-  <div class="background-fixed"></div>
+  <!-- ১00% ফিক্সড ব্যাকগ্রাউন্ড (এটি কখনো রিলোড বা রেন্ডার হবে না) -->
+  <div class="static-background"></div>
 
-  <!-- স্ক্রলেবল কন্টেন্ট -->
-  <div class="main-content" id="contentArea">
-    <div class="card">
-      <h1>শিরোনাম ১</h1>
-      <p>এখানে আপনার কন্টেন্ট থাকবে। হাত দিয়ে স্ক্রল করলে ছবি নড়বে না, শুধু লেখাগুলো উপরে-নিচে নামবে।</p>
-    </div>
+  <!-- নেভিগেশন মেনু (অন্য পেজে যাওয়ার জন্য) -->
+  <nav>
+    <button onclick="switchPage('home')">হোম পেজ</button>
+    <button onclick="switchPage('about')">আমাদের সম্পর্কে</button>
+    <button onclick="switchPage('contact')">যোগাযোগ</button>
+  </nav>
+
+  <!-- কন্টেন্ট হোল্ডার -->
+  <div class="page-container">
     
-    <div class="card">
-      <h2>শিরোনাম ২</h2>
-      <p>কোডে `touch-action: auto` এবং `overflow-y: auto` ব্যবহার করার ফলে মোবাইলে টাচ স্ক্রলিং স্বাভাবিকভাবে কাজ করবে।</p>
+    <!-- ১ম পেজ -->
+    <div id="home" class="page active">
+      <h1>হোম পেজ</h1>
+      <p>এটি হোম পেজের কন্টেন্ট। আপনি অন্য পেজে ক্লিক করলেও পেছনের ছবি তার জায়গা থেকে একটুও সরবে না।</p>
+      <div style="height: 800px;"></div> <!-- টেস্ট স্ক্রলিং এরিয়া -->
+      <p>স্ক্রল করার পরও ছবি একদম ফিক্সড আছে।</p>
     </div>
 
-    <!-- স্ক্রল পরীক্ষার জন্য অতিরিক্ত জায়গা -->
-    <div style="height: 1000px;"></div>
-
-    <div class="card" id="bottomSection">
-      <h2>নিচের অংশ</h2>
-      <p>আপনি বাটনে চাপ দিলে বা হাত দিয়ে স্ক্রল করে এখানে পৌঁছাতে পারবেন।</p>
+    <!-- ২য় পেজ -->
+    <div id="about" class="page">
+      <h1>আমাদের সম্পর্কে</h1>
+      <p>এটি 'আমাদের সম্পর্কে' পেজ। কন্টেন্ট সম্পূর্ণ বদলে গেছে কিন্তু ব্যাকগ্রাউন্ড ইমেজ স্থির আছে।</p>
     </div>
+
+    <!-- ৩য় পেজ -->
+    <div id="contact" class="page">
+      <h1>যোগাযোগ পেজ</h1>
+      <p>ইমেইল: example@mail.com<br>ফোন: ০১৭০০০০০০০</p>
+    </div>
+
   </div>
 
-  <!-- নিচে যাওয়ার বাটন -->
-  <button class="scroll-btn" onclick="scrollToBottom()">নিচে যান 👇</button>
-
   <script>
-    function scrollToBottom() {
-      // বাটন চাপলে স্মুথভাবে নিচে স্ক্রল হবে
-      window.scrollTo({
-        top: document.body.scrollHeight,
-        behavior: 'smooth'
-      });
+    // পেজ পরিবর্তন করার ফাংশন
+    function switchPage(pageId) {
+      // সব পেজ হাইড করা
+      const pages = document.querySelectorAll('.page');
+      pages.forEach(page => page.classList.remove('active'));
+
+      // সিলেক্ট করা পেজ শো করা
+      document.getElementById(pageId).classList.add('active');
+
+      // স্ক্রল অবস্থান একদম উপরে নিয়ে যাওয়া
+      window.scrollTo({ top: 0, behavior: 'instant' });
     }
   </script>
 
