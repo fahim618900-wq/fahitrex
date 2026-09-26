@@ -1,1157 +1,910 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <title>My Website</title>
+  
+  <style>
+    /* =========================================================
+       RESET & BASE STYLES
+       ========================================================= */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-<title>My Website</title>
-
-<style>
-/* =====================================================
-   RESET
-===================================================== */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    min-height: 100vh;
-    font-family:
-        "Noto Sans Bengali",
-        "Segoe UI",
-        Arial,
-        sans-serif;
-
-    color: #111;
-    overflow-x: hidden;
-
-    /* PC LIGHT */
-    background-image: url("path/logol.p.png");
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-
-    transition:
-        background-image .4s ease,
-        color .3s ease;
-}
-
-
-/* =====================================================
-   DARK MODE BACKGROUND
-===================================================== */
-
-body.dark {
-    background-image: url("path/logod.p.png");
-    color: #fff;
-}
-
-
-/* =====================================================
-   MOBILE BACKGROUND
-===================================================== */
-
-@media (max-width: 767px) {
+    html {
+      width: 100%;
+      min-height: 100%;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -webkit-touch-callout: none;
+    }
 
     body {
-        background-image: url("path/logol.m.png");
+      width: 100%;
+      min-height: 100vh;
+      font-family: "Noto Sans Bengali", "Segoe UI", Arial, sans-serif;
+      color: #0f172a;
+      overflow-x: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -webkit-touch-callout: none;
+      overscroll-behavior: none;
+      -webkit-tap-highlight-color: transparent;
+
+      /* PC LIGHT BACKGROUND */
+      background-image: url("path/logol.p.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      transition: background-image 0.35s ease, color 0.3s ease;
     }
 
+    /* =========================================================
+       DARK MODE BACKGROUND
+       ========================================================= */
     body.dark {
+      color: #f8fafc;
+      background-image: url("path/logod.p.png");
+    }
+
+    /* =========================================================
+       MOBILE BACKGROUND
+       ========================================================= */
+    @media (max-width: 767px) {
+      body {
+        background-image: url("path/logol.m.png");
+        background-attachment: scroll;
+      }
+      body.dark {
         background-image: url("path/logod.m.png");
-    }
-}
-
-
-/* =====================================================
-   BACKGROUND OVERLAY
-===================================================== */
-
-.background-overlay {
-    position: fixed;
-    inset: 0;
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(255,255,255,.08),
-            rgba(255,255,255,.02)
-        );
-
-    pointer-events: none;
-    z-index: 0;
-}
-
-body.dark .background-overlay {
-    background:
-        linear-gradient(
-            180deg,
-            rgba(0,0,0,.18),
-            rgba(0,0,0,.35)
-        );
-}
-
-
-/* =====================================================
-   HEADER
-===================================================== */
-
-.header {
-    position: fixed;
-
-    top: 18px;
-    left: 50%;
-
-    transform: translateX(-50%);
-
-    width: min(1150px, calc(100% - 32px));
-
-    height: 70px;
-
-    display: flex;
-    align-items: center;
-
-    padding: 0 14px;
-
-    border: 1px solid rgba(255,255,255,.35);
-
-    border-radius: 22px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,255,255,.32),
-            rgba(255,255,255,.12)
-        );
-
-    backdrop-filter: blur(22px) saturate(160%);
-    -webkit-backdrop-filter: blur(22px) saturate(160%);
-
-    box-shadow:
-        0 12px 35px rgba(0,0,0,.12),
-        inset 0 1px 0 rgba(255,255,255,.45);
-
-    z-index: 1000;
-
-    transition: .3s ease;
-}
-
-body.dark .header {
-    background:
-        linear-gradient(
-            135deg,
-            rgba(30,30,35,.55),
-            rgba(15,15,20,.35)
-        );
-
-    border-color: rgba(255,255,255,.16);
-
-    box-shadow:
-        0 15px 40px rgba(0,0,0,.35),
-        inset 0 1px 0 rgba(255,255,255,.12);
-}
-
-
-/* =====================================================
-   LOGO
-===================================================== */
-
-.logo {
-    min-width: 150px;
-
-    padding: 0 15px;
-
-    font-size: 20px;
-    font-weight: 750;
-
-    letter-spacing: .3px;
-
-    color: inherit;
-}
-
-
-/* =====================================================
-   NAVIGATION
-===================================================== */
-
-.nav {
-    display: flex;
-    align-items: center;
-
-    gap: 5px;
-
-    margin-left: auto;
-}
-
-.nav-button {
-    position: relative;
-
-    border: 0;
-    outline: none;
-
-    background: transparent;
-
-    color: inherit;
-
-    padding: 11px 16px;
-
-    border-radius: 14px;
-
-    font-size: 14px;
-    font-weight: 600;
-
-    cursor: pointer;
-
-    transition:
-        background .25s ease,
-        transform .2s ease;
-}
-
-.nav-button:hover {
-    background: rgba(255,255,255,.25);
-}
-
-.nav-button:active {
-    transform: scale(.95);
-}
-
-
-/* =====================================================
-   ACTIVE BUTTON
-===================================================== */
-
-.nav-button.active {
-    background: rgba(255,255,255,.30);
-
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.35);
-}
-
-
-/* =====================================================
-   THEME BUTTON
-===================================================== */
-
-.theme-button {
-
-    width: 48px;
-    height: 48px;
-
-    margin-left: 8px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border: 1px solid rgba(255,255,255,.30);
-
-    border-radius: 15px;
-
-    background: rgba(255,255,255,.18);
-
-    color: inherit;
-
-    cursor: pointer;
-
-    transition:
-        background .25s ease,
-        transform .25s ease;
-}
-
-.theme-button:hover {
-    background: rgba(255,255,255,.35);
-}
-
-.theme-button:active {
-    transform: scale(.90);
-}
-
-
-/* =====================================================
-   ICON
-===================================================== */
-
-.theme-icon {
-    width: 22px;
-    height: 22px;
-
-    display: block;
-
-    transition:
-        transform .35s ease;
-}
-
-.theme-button:hover .theme-icon {
-    transform: rotate(20deg);
-}
-
-
-/* =====================================================
-   MOBILE MENU
-===================================================== */
-
-.menu-button {
-    display: none;
-
-    width: 46px;
-    height: 46px;
-
-    border: 0;
-
-    border-radius: 14px;
-
-    background: rgba(255,255,255,.20);
-
-    color: inherit;
-
-    cursor: pointer;
-
-    font-size: 22px;
-}
-
-
-/* =====================================================
-   MOBILE MENU PANEL
-===================================================== */
-
-.mobile-menu {
-
-    position: fixed;
-
-    top: 98px;
-    left: 16px;
-    right: 16px;
-
-    padding: 10px;
-
-    border-radius: 20px;
-
-    background:
-        rgba(255,255,255,.22);
-
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-
-    border: 1px solid rgba(255,255,255,.30);
-
-    box-shadow: 0 15px 40px rgba(0,0,0,.15);
-
-    opacity: 0;
-    visibility: hidden;
-
-    transform: translateY(-10px);
-
-    transition: .25s ease;
-
-    z-index: 999;
-}
-
-.mobile-menu.show {
-
-    opacity: 1;
-    visibility: visible;
-
-    transform: translateY(0);
-}
-
-.mobile-menu button {
-
-    width: 100%;
-
-    padding: 14px;
-
-    border: 0;
-
-    background: transparent;
-
-    color: inherit;
-
-    border-radius: 14px;
-
-    text-align: left;
-
-    font-size: 15px;
-
-    cursor: pointer;
-}
-
-.mobile-menu button:hover {
-    background: rgba(255,255,255,.25);
-}
-
-
-/* =====================================================
-   HERO
-===================================================== */
-
-.hero {
-
-    min-height: 100vh;
-
-    padding:
-        150px 25px
-        80px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    position: relative;
-
-    z-index: 1;
-}
-
-.hero-card {
-
-    width: min(900px, 100%);
-
-    padding: 60px 45px;
-
-    text-align: center;
-
-    border-radius: 32px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,255,255,.20),
-            rgba(255,255,255,.08)
-        );
-
-    border: 1px solid rgba(255,255,255,.28);
-
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-
-    box-shadow:
-        0 25px 70px rgba(0,0,0,.12);
-
-    animation: appear .8s ease;
-}
-
-body.dark .hero-card {
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(20,20,25,.45),
-            rgba(10,10,15,.25)
-        );
-
-    border-color: rgba(255,255,255,.12);
-}
-
-.hero h1 {
-
-    font-size:
-        clamp(32px, 6vw, 64px);
-
-    line-height: 1.1;
-
-    margin-bottom: 20px;
-}
-
-.hero p {
-
-    max-width: 650px;
-
-    margin: auto;
-
-    font-size:
-        clamp(15px, 2vw, 19px);
-
-    line-height: 1.8;
-
-    opacity: .82;
-}
-
-
-/* =====================================================
-   HERO BUTTONS
-===================================================== */
-
-.hero-buttons {
-
-    display: flex;
-
-    justify-content: center;
-
-    gap: 12px;
-
-    margin-top: 32px;
-
-    flex-wrap: wrap;
-}
-
-.hero-button {
-
-    padding: 13px 22px;
-
-    border-radius: 15px;
-
-    border: 1px solid rgba(255,255,255,.3);
-
-    background:
-        rgba(255,255,255,.25);
-
-    color: inherit;
-
-    font-size: 15px;
-    font-weight: 650;
-
-    cursor: pointer;
-
-    text-decoration: none;
-
-    transition: .25s ease;
-}
-
-.hero-button:hover {
-
-    transform: translateY(-3px);
-
-    background:
-        rgba(255,255,255,.38);
-}
-
-
-/* =====================================================
-   CARDS
-===================================================== */
-
-.section {
-
-    position: relative;
-
-    z-index: 1;
-
-    padding: 70px 25px;
-
-}
-
-.cards {
-
-    width: min(1100px, 100%);
-
-    margin: auto;
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
-    gap: 20px;
-}
-
-.card {
-
-    padding: 30px;
-
-    border-radius: 24px;
-
-    background:
-        rgba(255,255,255,.16);
-
-    border:
-        1px solid rgba(255,255,255,.25);
-
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-
-    box-shadow:
-        0 15px 40px rgba(0,0,0,.10);
-
-    transition:
-        transform .3s ease,
-        background .3s ease;
-}
-
-.card:hover {
-
-    transform: translateY(-7px);
-
-    background:
-        rgba(255,255,255,.24);
-}
-
-.card h3 {
-
-    margin-bottom: 10px;
-
-    font-size: 20px;
-}
-
-.card p {
-
-    line-height: 1.7;
-
-    opacity: .75;
-}
-
-
-/* =====================================================
-   ANIMATION
-===================================================== */
-
-@keyframes appear {
-
-    from {
-        opacity: 0;
-        transform: translateY(25px);
+      }
     }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    /* =========================================================
+       SELECTION DISABLE
+       ========================================================= */
+    ::selection {
+      background: transparent;
+      color: inherit;
     }
-}
+    ::-moz-selection {
+      background: transparent;
+      color: inherit;
+    }
 
+    /* =========================================================
+       BACKGROUND OVERLAY (SOFT ATMOSPHERIC GLOW)
+       ========================================================= */
+    .background-overlay {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      background: radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.25), transparent 70%),
+                  linear-gradient(180deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
+      transition: background 0.3s ease;
+    }
 
-/* =====================================================
-   RESPONSIVE
-===================================================== */
+    body.dark .background-overlay {
+      background: radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.05), transparent 70%),
+                  linear-gradient(180deg, rgba(10, 10, 15, 0.3), rgba(0, 0, 0, 0.5));
+    }
 
-@media (max-width: 800px) {
+    /* =========================================================
+       GLASSMORPHISM HEADER DESIGN
+       ========================================================= */
+    .header {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(1120px, calc(100% - 32px));
+      height: 72px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 1000;
 
+      /* ULTRA GLASS */
+      background: rgba(255, 255, 255, 0.22);
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      border-radius: 28px;
+      backdrop-filter: blur(28px) saturate(190%);
+      -webkit-backdrop-filter: blur(28px) saturate(190%);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08), 
+                  inset 0 1px 1px rgba(255, 255, 255, 0.6),
+                  inset 0 -1px 1px rgba(255, 255, 255, 0.1);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    body.dark .header {
+      background: rgba(18, 18, 26, 0.45);
+      border-color: rgba(255, 255, 255, 0.14);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 
+                  inset 0 1px 1px rgba(255, 255, 255, 0.18),
+                  inset 0 -1px 1px rgba(0, 0, 0, 0.2);
+    }
+
+    /* =========================================================
+       LOGO DESIGN
+       ========================================================= */
     .logo {
-        min-width: auto;
-        padding-left: 8px;
+      min-width: 160px;
+      padding: 0 12px;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      white-space: nowrap;
+      background: linear-gradient(135deg, #0f172a 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transition: opacity 0.3s ease;
     }
 
+    body.dark .logo {
+      background: linear-gradient(135deg, #ffffff 0%, #60a5fa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* =========================================================
+       DESKTOP NAVIGATION
+       ========================================================= */
     .nav {
-        display: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: auto;
     }
 
-    .menu-button {
-        display: block;
-
-        margin-left: auto;
+    .nav-button {
+      border: none;
+      outline: none;
+      padding: 10px 18px;
+      border-radius: 16px;
+      background: transparent;
+      color: inherit;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 650;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.25s ease;
     }
 
+    .nav-button:hover {
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    body.dark .nav-button:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .nav-button:active {
+      transform: scale(0.95);
+    }
+
+    .nav-button.active {
+      background: rgba(255, 255, 255, 0.5);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+      font-weight: 700;
+    }
+
+    body.dark .nav-button.active {
+      background: rgba(255, 255, 255, 0.18);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    /* =========================================================
+       THEME BUTTON
+       ========================================================= */
     .theme-button {
-        margin-left: 7px;
+      width: 46px;
+      height: 46px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.25);
+      color: inherit;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all 0.25s ease;
+    }
+
+    body.dark .theme-button {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .theme-button:hover {
+      background: rgba(255, 255, 255, 0.45);
+      transform: translateY(-1px);
+    }
+
+    body.dark .theme-button:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .theme-button:active {
+      transform: scale(0.92);
+    }
+
+    .theme-icon {
+      width: 20px;
+      height: 20px;
+      display: block;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .theme-button:hover .theme-icon {
+      transform: rotate(30deg) scale(1.1);
+    }
+
+    /* =========================================================
+       MOBILE MENU BUTTON
+       ========================================================= */
+    .menu-button {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      outline: none;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.25);
+      color: inherit;
+      font-size: 20px;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+    }
+
+    body.dark .menu-button {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    /* =========================================================
+       MOBILE MENU DESIGN
+       ========================================================= */
+    .mobile-menu {
+      position: fixed;
+      top: 102px;
+      left: 16px;
+      right: 16px;
+      padding: 12px;
+      z-index: 999;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.35);
+      backdrop-filter: blur(30px) saturate(180%);
+      -webkit-backdrop-filter: blur(30px) saturate(180%);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-16px) scale(0.98);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    body.dark .mobile-menu {
+      background: rgba(20, 20, 28, 0.65);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .mobile-menu.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+
+    .mobile-menu button {
+      width: 100%;
+      padding: 14px 18px;
+      border: none;
+      border-radius: 16px;
+      background: transparent;
+      color: inherit;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 650;
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .mobile-menu button:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    body.dark .mobile-menu button:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* =========================================================
+       HERO SECTION DESIGN
+       ========================================================= */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      padding: 160px 25px 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-card {
+      width: min(920px, 100%);
+      padding: 65px 45px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      border-radius: 36px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.12) 100%);
+      backdrop-filter: blur(24px) saturate(160%);
+      -webkit-backdrop-filter: blur(24px) saturate(160%);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.12),
+                  inset 0 1px 1px rgba(255, 255, 255, 0.6);
+      animation: heroAppear 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    body.dark .hero-card {
+      background: linear-gradient(135deg, rgba(25, 25, 35, 0.55) 0%, rgba(12, 12, 18, 0.3) 100%);
+      border-color: rgba(255, 255, 255, 0.14);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45),
+                  inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    }
+
+    .hero-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      margin-bottom: 20px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      color: inherit;
+    }
+
+    body.dark .hero-badge {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .hero h1 {
+      font-size: clamp(38px, 6.5vw, 68px);
+      line-height: 1.12;
+      margin-bottom: 22px;
+      font-weight: 850;
+      letter-spacing: -1px;
+    }
+
+    .hero p {
+      max-width: 680px;
+      margin: auto;
+      font-size: clamp(16px, 2.2vw, 20px);
+      line-height: 1.8;
+      opacity: 0.88;
+      font-weight: 450;
+    }
+
+    /* =========================================================
+       HERO BUTTONS DESIGN
+       ========================================================= */
+    .hero-buttons {
+      margin-top: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .hero-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 140px;
+      padding: 14px 28px;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.3);
+      color: inherit;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    body.dark .hero-button {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+
+    .hero-button:hover {
+      transform: translateY(-4px);
+      background: rgba(255, 255, 255, 0.55);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+    }
+
+    body.dark .hero-button:hover {
+      background: rgba(255, 255, 255, 0.22);
+    }
+
+    .hero-button:active {
+      transform: translateY(-1px);
+    }
+
+    /* =========================================================
+       CONTENT SECTIONS & CARDS DESIGN
+       ========================================================= */
+    .section {
+      position: relative;
+      z-index: 1;
+      padding: 80px 25px;
     }
 
     .cards {
+      width: min(1120px, 100%);
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .card {
+      padding: 36px 30px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.22);
+      backdrop-filter: blur(20px) saturate(150%);
+      -webkit-backdrop-filter: blur(20px) saturate(150%);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.06);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    body.dark .card {
+      background: rgba(20, 20, 28, 0.4);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      background: rgba(255, 255, 255, 0.35);
+      box-shadow: 0 25px 55px rgba(0, 0, 0, 0.12);
+      border-color: rgba(255, 255, 255, 0.6);
+    }
+
+    body.dark .card:hover {
+      background: rgba(30, 30, 42, 0.55);
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+
+    .card h3 {
+      margin-bottom: 12px;
+      font-size: 22px;
+      font-weight: 750;
+    }
+
+    .card p {
+      line-height: 1.75;
+      opacity: 0.82;
+      font-size: 15px;
+    }
+
+    /* =========================================================
+       CONTACT BOX DESIGN
+       ========================================================= */
+    .contact-box {
+      width: min(920px, 100%);
+      margin: auto;
+      padding: 60px 40px;
+      text-align: center;
+      border-radius: 32px;
+      background: rgba(255, 255, 255, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(22px) saturate(160%);
+      -webkit-backdrop-filter: blur(22px) saturate(160%);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+    }
+
+    body.dark .contact-box {
+      background: rgba(20, 20, 28, 0.45);
+      border-color: rgba(255, 255, 255, 0.14);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    }
+
+    .contact-box h2 {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 800;
+    }
+
+    /* =========================================================
+       ANIMATIONS
+       ========================================================= */
+    @keyframes heroAppear {
+      from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* =========================================================
+       RESPONSIVE BREAKPOINTS
+       ========================================================= */
+    @media (max-width: 800px) {
+      .header {
+        width: calc(100% - 24px);
+        top: 14px;
+        height: 66px;
+      }
+      .nav {
+        display: none;
+      }
+      .menu-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+      }
+      .theme-button {
+        margin-left: 4px;
+      }
+      .cards {
         grid-template-columns: 1fr;
+        gap: 18px;
+      }
+      .hero-card {
+        padding: 48px 24px;
+        border-radius: 28px;
+      }
     }
 
-    .hero-card {
-        padding: 45px 25px;
-    }
-}
-
-
-@media (max-width: 420px) {
-
-    .header {
-
+    @media (max-width: 420px) {
+      .header {
         top: 10px;
-
-        width:
-            calc(100% - 20px);
-
-        height: 62px;
-
-        border-radius: 18px;
+        width: calc(100% - 18px);
+        height: 60px;
+        border-radius: 20px;
+        padding: 0 10px;
+      }
+      .logo {
+        padding: 0 4px;
+        font-size: 18px;
+      }
+      .menu-button, .theme-button {
+        width: 40px;
+        height: 40px;
+        border-radius: 14px;
+      }
+      .hero {
+        padding: 125px 15px 60px;
+      }
+      .hero-card {
+        padding: 38px 18px;
+        border-radius: 24px;
+      }
+      .section {
+        padding: 50px 15px;
+      }
     }
 
-    .theme-button,
-    .menu-button {
-
-        width: 42px;
-        height: 42px;
+    /* =========================================================
+       REDUCE MOTION
+       ========================================================= */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        scroll-behavior: auto !important;
+        animation: none !important;
+        transition: none !important;
+      }
     }
-
-    .hero {
-
-        padding-left: 15px;
-        padding-right: 15px;
-    }
-
-    .hero-card {
-
-        border-radius: 25px;
-
-        padding:
-            40px 20px;
-    }
-}
-
-</style>
+  </style>
 </head>
-
-
 <body>
 
-<div class="background-overlay"></div>
+  <!-- BACKGROUND OVERLAY -->
+  <div class="background-overlay" aria-hidden="true"></div>
 
-
-<!-- =====================================================
-     HEADER
-===================================================== -->
-
-<header class="header">
-
+  <!-- HEADER -->
+  <header class="header">
     <div class="logo">
-        My Website
+      My Website
     </div>
 
-
+    <!-- DESKTOP NAV -->
     <nav class="nav">
-
-        <button
-            class="nav-button active"
-            onclick="scrollToSection('home')">
-            Home
-        </button>
-
-        <button
-            class="nav-button"
-            onclick="scrollToSection('about')">
-            About
-        </button>
-
-        <button
-            class="nav-button"
-            onclick="scrollToSection('services')">
-            Services
-        </button>
-
-        <button
-            class="nav-button"
-            onclick="scrollToSection('contact')">
-            Contact
-        </button>
-
+      <button class="nav-button active" data-section="home" onclick="goTo('home')">Home</button>
+      <button class="nav-button" data-section="about" onclick="goTo('about')">About</button>
+      <button class="nav-button" data-section="services" onclick="goTo('services')">Services</button>
+      <button class="nav-button" data-section="contact" onclick="goTo('contact')">Contact</button>
     </nav>
 
-
-    <!-- MOBILE MENU -->
-
-    <button
-        class="menu-button"
-        onclick="toggleMenu()"
-        aria-label="Menu">
-
-        ☰
-
+    <!-- MOBILE MENU BUTTON -->
+    <button class="menu-button" id="menuButton" aria-label="Open menu" aria-expanded="false" onclick="toggleMenu()">
+      <span id="menuIcon">☰</span>
     </button>
 
-
-    <!-- THEME -->
-
-    <button
-        class="theme-button"
-        onclick="toggleTheme()"
-        aria-label="Change theme">
-
-        <svg
-            class="theme-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2">
-
-            <circle
-                cx="12"
-                cy="12"
-                r="4"/>
-
-            <path
-                d="
-                M12 2v2
-                M12 20v2
-                M4.93 4.93l1.41 1.41
-                M17.66 17.66l1.41 1.41
-                M2 12h2
-                M20 12h2
-                M4.93 19.07l1.41-1.41
-                M17.66 6.34l1.41-1.41
-                "/>
-
-        </svg>
-
+    <!-- THEME BUTTON -->
+    <button class="theme-button" id="themeButton" aria-label="Change theme" onclick="toggleTheme()">
+      <svg id="themeIcon" class="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="4"></circle>
+        <path d="M12 2v2 M12 20v2 M4.93 4.93l1.41 1.41 M17.66 17.66l1.41 1.41 M2 12h2 M20 12h2 M4.93 19.07l1.41-1.41 M17.66 6.34l1.41-1.41"></path>
+      </svg>
     </button>
+  </header>
 
-</header>
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button onclick="mobileGoTo('home')">Home</button>
+    <button onclick="mobileGoTo('about')">About</button>
+    <button onclick="mobileGoTo('services')">Services</button>
+    <button onclick="mobileGoTo('contact')">Contact</button>
+  </div>
 
-
-<!-- =====================================================
-     MOBILE MENU
-===================================================== -->
-
-<div class="mobile-menu" id="mobileMenu">
-
-    <button onclick="mobileNavigate('home')">
-        Home
-    </button>
-
-    <button onclick="mobileNavigate('about')">
-        About
-    </button>
-
-    <button onclick="mobileNavigate('services')">
-        Services
-    </button>
-
-    <button onclick="mobileNavigate('contact')">
-        Contact
-    </button>
-
-</div>
-
-
-<!-- =====================================================
-     HOME
-===================================================== -->
-
-<section
-    class="hero"
-    id="home">
-
-    <div class="hero-card">
-
-        <h1>
-            Welcome
-        </h1>
-
-        <p>
-            আপনার ওয়েবসাইটে স্বাগতম।
-            সুন্দর Glass UI, responsive design
-            এবং Light/Dark Mode সহ একটি আধুনিক interface।
-        </p>
-
-
+  <!-- MAIN CONTENT -->
+  <main>
+    <!-- HOME -->
+    <section class="hero" id="home">
+      <div class="hero-card">
+        <div class="hero-badge">✨ Modern Glass UI</div>
+        <h1>Welcome</h1>
+        <p>আপনার ওয়েবসাইটে স্বাগতম। আধুনিক Glass UI, Responsive Design এবং Light/Dark Mode সহ একটি সুন্দর interface।</p>
         <div class="hero-buttons">
-
-            <a
-                href="#about"
-                class="hero-button">
-
-                শুরু করুন
-
-            </a>
-
-            <a
-                href="#services"
-                class="hero-button">
-
-                আরও দেখুন
-
-            </a>
-
+          <a href="#about" class="hero-button">শুরু করুন</a>
+          <a href="#services" class="hero-button">আরও দেখুন</a>
         </div>
+      </div>
+    </section>
 
-    </div>
+    <!-- ABOUT -->
+    <section class="section" id="about">
+      <div class="cards">
+        <article class="card">
+          <h3>সুন্দর Design</h3>
+          <p>স্বচ্ছ কাঁচের মতো Glassmorphism interface এবং আপনার দেওয়া background image।</p>
+        </article>
+        <article class="card">
+          <h3>Responsive</h3>
+          <p>মোবাইল, ট্যাবলেট এবং কম্পিউটার—সব screen-এ সুন্দরভাবে মানিয়ে যাবে।</p>
+        </article>
+        <article class="card">
+          <h3>Light / Dark</h3>
+          <p>Header-এর Theme button ব্যবহার করে Light এবং Dark mode পরিবর্তন করুন।</p>
+        </article>
+      </div>
+    </section>
 
-</section>
+    <!-- SERVICES -->
+    <section class="section" id="services">
+      <div class="cards">
+        <article class="card">
+          <h3>Fast</h3>
+          <p>কোনো framework ছাড়াই HTML, CSS এবং JavaScript দিয়ে তৈরি।</p>
+        </article>
+        <article class="card">
+          <h3>Modern UI</h3>
+          <p>Blur, transparency, smooth animation এবং modern spacing ব্যবহার করা হয়েছে।</p>
+        </article>
+        <article class="card">
+          <h3>সহজে পরিবর্তনযোগ্য</h3>
+          <p>Menu, লেখা, button এবং অন্যান্য অংশ সহজেই পরিবর্তন করা যাবে।</p>
+        </article>
+      </div>
+    </section>
 
-
-<!-- =====================================================
-     ABOUT
-===================================================== -->
-
-<section
-    class="section"
-    id="about">
-
-    <div class="cards">
-
-        <div class="card">
-
-            <h3>
-                সুন্দর Design
-            </h3>
-
-            <p>
-                স্বচ্ছ কাঁচের মতো Glassmorphism
-                interface এবং আপনার দেওয়া
-                background image।
-            </p>
-
-        </div>
-
-
-        <div class="card">
-
-            <h3>
-                Responsive
-            </h3>
-
-            <p>
-                মোবাইল, ট্যাবলেট ও কম্পিউটার—
-                সব ধরনের screen-এর জন্য
-                স্বয়ংক্রিয়ভাবে মানিয়ে যাবে।
-            </p>
-
-        </div>
-
-
-        <div class="card">
-
-            <h3>
-                Light / Dark
-            </h3>
-
-            <p>
-                উপরের Theme button চাপলেই
-                Light এবং Dark mode পরিবর্তন
-                হবে।
-            </p>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     SERVICES
-===================================================== -->
-
-<section
-    class="section"
-    id="services">
-
-    <div class="cards">
-
-        <div class="card">
-
-            <h3>
-                Fast
-            </h3>
-
-            <p>
-                কোনো framework ছাড়াই
-                HTML, CSS এবং JavaScript দিয়ে
-                তৈরি।
-            </p>
-
-        </div>
-
-
-        <div class="card">
-
-            <h3>
-                Modern UI
-            </h3>
-
-            <p>
-                Blur, transparency,
-                smooth animation এবং
-                modern spacing ব্যবহার করা হয়েছে।
-            </p>
-
-        </div>
-
-
-        <div class="card">
-
-            <h3>
-                সহজে পরিবর্তনযোগ্য
-            </h3>
-
-            <p>
-                Menu, লেখা, button এবং
-                অন্যান্য অংশ সহজেই
-                পরিবর্তন করতে পারবেন।
-            </p>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     CONTACT
-===================================================== -->
-
-<section
-    class="section"
-    id="contact">
-
-    <div class="hero-card">
-
-        <h2>
-            Contact
-        </h2>
-
-        <p>
-            আপনার প্রয়োজন অনুযায়ী
-            এই অংশে যোগাযোগের তথ্য
-            যোগ করতে পারবেন।
+    <!-- CONTACT -->
+    <section class="section" id="contact">
+      <div class="contact-box">
+        <h2>Contact</h2>
+        <p style="margin-top:15px; opacity:.85; line-height:1.8;">
+          আপনার যোগাযোগের তথ্য এখানে যোগ করতে পারবেন।
         </p>
+      </div>
+    </section>
+  </main>
 
-    </div>
+  <!-- JAVASCRIPT (অপরিবর্তিত ও সুরক্ষিত) -->
+  <script>
+    /* =====================================================
+       THEME MANAGEMENT
+       ===================================================== */
+    const body = document.body;
+    const themeButton = document.getElementById("themeButton");
+    const themeIcon = document.getElementById("themeIcon");
 
-</section>
-
-
-<script>
-
-/* =====================================================
-   THEME
-===================================================== */
-
-function toggleTheme() {
-
-    document.body.classList.toggle("dark");
-
-    const isDark =
-        document.body.classList.contains("dark");
-
-    localStorage.setItem(
-        "theme",
-        isDark ? "dark" : "light"
-    );
-}
-
-
-/* =====================================================
-   LOAD SAVED THEME
-===================================================== */
-
-(function () {
-
-    const savedTheme =
-        localStorage.getItem("theme");
-
-    if (savedTheme === "dark") {
-
-        document.body.classList.add("dark");
-
+    function setTheme(theme) {
+      if (theme === "dark") {
+        body.classList.add("dark");
+        themeButton.setAttribute("aria-label", "Switch to light mode");
+      } else {
+        body.classList.remove("dark");
+        themeButton.setAttribute("aria-label", "Switch to dark mode");
+      }
+      localStorage.setItem("website-theme", theme);
     }
 
-})();
-
-
-/* =====================================================
-   NAVIGATION
-===================================================== */
-
-function scrollToSection(id) {
-
-    const element =
-        document.getElementById(id);
-
-    if (element) {
-
-        element.scrollIntoView({
-            behavior: "smooth"
-        });
-
+    function toggleTheme() {
+      const isDark = body.classList.contains("dark");
+      setTheme(isDark ? "light" : "dark");
     }
-}
 
+    /* =====================================================
+       LOAD SAVED THEME
+       ===================================================== */
+    (function loadTheme() {
+      const saved = localStorage.getItem("website-theme");
+      if (saved === "dark") {
+        setTheme("dark");
+      } else if (saved === "light") {
+        setTheme("light");
+      } else {
+        const systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        setTheme(systemDark ? "dark" : "light");
+      }
+    })();
 
-/* =====================================================
-   MOBILE MENU
-===================================================== */
-
-function toggleMenu() {
-
-    const menu =
-        document.getElementById("mobileMenu");
-
-    menu.classList.toggle("show");
-}
-
-
-/* =====================================================
-   MOBILE NAVIGATION
-===================================================== */
-
-function mobileNavigate(id) {
-
-    scrollToSection(id);
-
-    document
-        .getElementById("mobileMenu")
-        .classList.remove("show");
-}
-
-
-/* =====================================================
-   ACTIVE NAVIGATION
-===================================================== */
-
-const sections =
-    document.querySelectorAll("section");
-
-const navButtons =
-    document.querySelectorAll(".nav-button");
-
-window.addEventListener(
-    "scroll",
-    () => {
-
-        let current = "home";
-
-        sections.forEach(section => {
-
-            const top =
-                section.offsetTop - 200;
-
-            if (window.scrollY >= top) {
-
-                current =
-                    section.getAttribute("id");
-
-            }
-
-        });
-
-
-        navButtons.forEach(button => {
-
-            button.classList.remove("active");
-
-            if (
-                button.textContent
-                    .toLowerCase()
-                    .includes(current)
-            ) {
-
-                button.classList.add("active");
-
-            }
-
-        });
-
+    /* =====================================================
+       NAVIGATION
+       ===================================================== */
+    function goTo(id) {
+      const section = document.getElementById(id);
+      if (!section) return;
+      section.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
     }
-);
 
-</script>
+    /* =====================================================
+       MOBILE MENU
+       ===================================================== */
+    const mobileMenu = document.getElementById("mobileMenu");
+    const menuButton = document.getElementById("menuButton");
+    const menuIcon = document.getElementById("menuIcon");
 
+    function toggleMenu() {
+      const opened = mobileMenu.classList.toggle("show");
+      menuButton.setAttribute("aria-expanded", opened ? "true" : "false");
+      menuIcon.textContent = opened ? "×" : "☰";
+    }
+
+    function mobileGoTo(id) {
+      goTo(id);
+      mobileMenu.classList.remove("show");
+      menuButton.setAttribute("aria-expanded", "false");
+      menuIcon.textContent = "☰";
+    }
+
+    /* =====================================================
+       ACTIVE NAVIGATION (INTERSECTION OBSERVER)
+       ===================================================== */
+    const sections = document.querySelectorAll("main section");
+    const navButtons = document.querySelectorAll(".nav-button");
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          navButtons.forEach(button => {
+            button.classList.toggle("active", button.dataset.section === id);
+          });
+        }
+      });
+    }, {
+      threshold: 0.45
+    });
+
+    sections.forEach(section => {
+      observer.observe(section);
+    });
+
+    /* =====================================================
+       CLOSE MOBILE MENU ON OUTSIDE CLICK
+       ===================================================== */
+    document.addEventListener("click", function(event) {
+      if (!mobileMenu.contains(event.target) && !menuButton.contains(event.target)) {
+        mobileMenu.classList.remove("show");
+        menuButton.setAttribute("aria-expanded", "false");
+        menuIcon.textContent = "☰";
+      }
+    });
+
+    /* =====================================================
+       SECURITY & DISABLE PROTECTION HANDLERS
+       ===================================================== */
+    /* DISABLE RIGHT CLICK */
+    document.addEventListener("contextmenu", function(event) {
+      event.preventDefault();
+    }, { passive: false });
+
+    /* DISABLE DRAG */
+    document.addEventListener("dragstart", function(event) {
+      event.preventDefault();
+    }, { passive: false });
+
+    /* DISABLE SELECTION */
+    document.addEventListener("selectstart", function(event) {
+      event.preventDefault();
+    }, { passive: false });
+
+    /* DISABLE COMMON SHORTCUTS */
+    document.addEventListener("keydown", function(event) {
+      const key = event.key.toLowerCase();
+      /* Ctrl + S */
+      if (event.ctrlKey && key === "s") event.preventDefault();
+      /* Ctrl + U */
+      if (event.ctrlKey && key === "u") event.preventDefault();
+      /* Ctrl + C */
+      if (event.ctrlKey && key === "c") event.preventDefault();
+      /* Ctrl + A */
+      if (event.ctrlKey && key === "a") event.preventDefault();
+      /* Ctrl + P */
+      if (event.ctrlKey && key === "p") event.preventDefault();
+      /* F12 */
+      if (event.key === "F12") event.preventDefault();
+      /* Ctrl + Shift + I */
+      if (event.ctrlKey && event.shiftKey && key === "i") event.preventDefault();
+      /* Ctrl + Shift + J */
+      if (event.ctrlKey && event.shiftKey && key === "j") event.preventDefault();
+      /* Ctrl + Shift + C */
+      if (event.ctrlKey && event.shiftKey && key === "c") event.preventDefault();
+    }, { passive: false });
+
+    /* BLOCK CTRL + MOUSE WHEEL ZOOM */
+    document.addEventListener("wheel", function(event) {
+      if (event.ctrlKey) event.preventDefault();
+    }, { passive: false });
+
+    /* BLOCK GESTURE ZOOM */
+    document.addEventListener("gesturestart", function(event) {
+      event.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener("gesturechange", function(event) {
+      event.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener("gestureend", function(event) {
+      event.preventDefault();
+    }, { passive: false });
+
+    /* BLOCK DOUBLE TAP ZOOM */
+    let lastTouchEnd = 0;
+    document.addEventListener("touchend", function(event) {
+      const now = Date.now();
+      if (now - lastTouchEnd <= 300) {
+        event.preventDefault();
+      }
+      lastTouchEnd = now;
+    }, { passive: false });
+  </script>
 </body>
 </html>
-
-আপনার ছবির Path
-
-শুধু নিশ্চিত করবেন ফোল্ডারটি এমন:
-
-YourWebsite/
-│
-├── index.html
-│
-└── path/
-    ├── logol.m.png
-    ├── logod.m.png
-    ├── logol.p.png
-    └── logod.p.png
-
-এখানে Theme button চাপলে Light ↔ Dark হবে এবং "localStorage"-এর কারণে পেজ রিফ্রেশ করলেও নির্বাচিত Theme থাকবে।
-
-মোবাইলে আবার PC-এর navigation না দেখিয়ে ☰ Menu দেখাবে, আর PC-তে সরাসরি Home / About / Services / Contact দেখা যাবে।
