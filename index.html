@@ -2,1484 +2,249 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content=" width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover ">
-<meta name="theme-color" content="#ffffff">
-<title>My Website</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MONOLITH — Digital Brutalism Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-/* =========================================================
-   RESET
-========================================================= */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html {
-    width: 100%;
-    min-height: 100%;
-    scroll-behavior: smooth;
-    overflow-x: hidden;
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -webkit-touch-callout: none;
-}
-
-body {
-    width: 100%;
-    min-height: 100vh;
-    font-family: "Noto Sans Bengali", "Segoe UI", Arial, sans-serif;
-    color: #111827;
-    overflow-x: hidden;
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -webkit-touch-callout: none;
-    -webkit-tap-highlight-color: transparent;
-
-    /* স্ক্রল ঠিক রাখার জন্য */
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-
-    transition: color 0.3s ease;
-}
-
-/* =========================================================
-   FIXED BACKGROUND LAYER
-   ---------------------------------------------------------
-   ব্যাকগ্রাউন্ডকে একটি fixed layer এ রেখে দেওয়া হয়েছে
-   যাতে স্ক্রল করলেও ছবি না নড়ে।
-========================================================= */
-.background-layer {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -2;
-
-    background-image: url("path/logol.p.png");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-
-    transition: background-image 0.35s ease;
-}
-
-body.dark .background-layer {
-    background-image: url("path/logod.p.png");
-}
-
-@media (max-width: 767px) {
-    .background-layer {
-        background-image: url("path/logol.m.png");
-    }
-
-    body.dark .background-layer {
-        background-image: url("path/logod.m.png");
-    }
-}
-
-/* =========================================================
-   SELECTION DISABLE
-========================================================= */
-::selection {
-    background: transparent;
-    color: inherit;
-}
-
-::-moz-selection {
-    background: transparent;
-    color: inherit;
-}
-
-/* =========================================================
-   BACKGROUND OVERLAY
-========================================================= */
-.background-overlay {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: -1;
-
-    background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.05),
-        rgba(255, 255, 255, 0.02)
-    );
-
-    transition: background 0.3s ease;
-}
-
-body.dark .background-overlay {
-    background: linear-gradient(
-        180deg,
-        rgba(0, 0, 0, 0.12),
-        rgba(0, 0, 0, 0.28)
-    );
-}
-
-/* =========================================================
-   DARK MODE TEXT
-========================================================= */
-body.dark {
-    color: #ffffff;
-}
-
-/* =========================================================
-   HEADER  —  PREMIUM GLASS
-========================================================= */
-.header {
-    position: fixed;
-    top: 18px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: min(1150px, calc(100% - 32px));
-    height: 72px;
-    padding: 0 14px 0 22px;
-
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    z-index: 1000;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.42) 0%,
-            rgba(255, 255, 255, 0.18) 50%,
-            rgba(255, 255, 255, 0.10) 100%
-        );
-
-    border: 1px solid rgba(255, 255, 255, 0.55);
-    border-radius: 24px;
-
-    backdrop-filter: blur(28px) saturate(180%);
-    -webkit-backdrop-filter: blur(28px) saturate(180%);
-
-    box-shadow:
-        0 14px 45px rgba(0, 0, 0, 0.14),
-        0 2px 8px rgba(0, 0, 0, 0.06),
-        inset 0 1px 0 rgba(255, 255, 255, 0.85),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.15);
-
-    transition: background 0.3s ease, border 0.3s ease, box-shadow 0.3s ease;
-}
-
-.header::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 12%;
-    right: 12%;
-    height: 1px;
-    border-radius: 50%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.95),
-        transparent
-    );
-    pointer-events: none;
-}
-
-body.dark .header {
-    background:
-        linear-gradient(
-            135deg,
-            rgba(30, 30, 40, 0.68) 0%,
-            rgba(15, 15, 22, 0.48) 50%,
-            rgba(8, 8, 12, 0.35) 100%
-        );
-    border-color: rgba(255, 255, 255, 0.18);
-    box-shadow:
-        0 18px 55px rgba(0, 0, 0, 0.45),
-        0 2px 10px rgba(0, 0, 0, 0.25),
-        inset 0 1px 0 rgba(255, 255, 255, 0.14),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.04);
-}
-
-body.dark .header::before {
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.35),
-        transparent
-    );
-}
-
-/* =========================================================
-   LOGO
-========================================================= */
-.logo {
-    min-width: 160px;
-    padding: 0 6px;
-    font-size: 21px;
-    font-weight: 800;
-    letter-spacing: 0.3px;
-    white-space: nowrap;
-
-    background: linear-gradient(
-        135deg,
-        #1e3a8a 0%,
-        #3b82f6 45%,
-        #6366f1 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-}
-
-body.dark .logo {
-    background: linear-gradient(
-        135deg,
-        #93c5fd 0%,
-        #a5b4fc 50%,
-        #c4b5fd 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-}
-
-/* =========================================================
-   DESKTOP NAVIGATION
-========================================================= */
-.nav {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    margin-left: auto;
-}
-
-.nav-button {
-    position: relative;
-    border: none;
-    outline: none;
-    padding: 11px 18px;
-    border-radius: 14px;
-    background: transparent;
-    color: inherit;
-    font-family: inherit;
-    font-size: 14px;
-    font-weight: 650;
-    letter-spacing: 0.2px;
-    cursor: pointer;
-
-    transition:
-        background 0.28s ease,
-        transform 0.2s ease,
-        box-shadow 0.28s ease;
-}
-
-.nav-button:hover {
-    background: rgba(255, 255, 255, 0.28);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
-}
-
-.nav-button:active {
-    transform: scale(0.94);
-}
-
-.nav-button.active {
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.42),
-            rgba(255, 255, 255, 0.22)
-        );
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.65),
-        0 2px 8px rgba(0, 0, 0, 0.06);
-}
-
-body.dark .nav-button:hover {
-    background: rgba(255, 255, 255, 0.12);
-}
-
-body.dark .nav-button.active {
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.20),
-            rgba(255, 255, 255, 0.08)
-        );
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.22),
-        0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* =========================================================
-   THEME BUTTON
-========================================================= */
-.theme-button {
-    width: 48px;
-    height: 48px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 5px;
-
-    border: 1px solid rgba(255, 255, 255, 0.45);
-    border-radius: 16px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.38),
-            rgba(255, 255, 255, 0.14)
-        );
-
-    color: inherit;
-    cursor: pointer;
-
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.65),
-        0 2px 8px rgba(0, 0, 0, 0.06);
-
-    transition:
-        background 0.28s ease,
-        transform 0.28s ease,
-        box-shadow 0.28s ease;
-}
-
-.theme-button:hover {
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.55),
-            rgba(255, 255, 255, 0.25)
-        );
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.8),
-        0 4px 14px rgba(0, 0, 0, 0.10);
-}
-
-.theme-button:active {
-    transform: scale(0.90);
-}
-
-body.dark .theme-button {
-    border-color: rgba(255, 255, 255, 0.20);
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.16),
-            rgba(255, 255, 255, 0.06)
-        );
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.20),
-        0 2px 8px rgba(0, 0, 0, 0.25);
-}
-
-body.dark .theme-button:hover {
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.26),
-            rgba(255, 255, 255, 0.12)
-        );
-}
-
-.theme-icon {
-    width: 22px;
-    height: 22px;
-    display: block;
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.theme-button:hover .theme-icon {
-    transform: rotate(35deg) scale(1.1);
-}
-
-/* =========================================================
-   MOBILE MENU BUTTON
-========================================================= */
-.menu-button {
-    display: none;
-    width: 46px;
-    height: 46px;
-    border-radius: 15px;
-    outline: none;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.32),
-            rgba(255, 255, 255, 0.14)
-        );
-
-    border: 1px solid rgba(255, 255, 255, 0.40);
-    color: inherit;
-    font-size: 22px;
-    cursor: pointer;
-
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
-
-    transition: background 0.28s ease, transform 0.2s ease;
-}
-
-.menu-button:active {
-    transform: scale(0.92);
-}
-
-body.dark .menu-button {
-    border-color: rgba(255, 255, 255, 0.18);
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.14),
-            rgba(255, 255, 255, 0.05)
-        );
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
-}
-
-/* =========================================================
-   MOBILE MENU
-========================================================= */
-.mobile-menu {
-    position: fixed;
-    top: 100px;
-    left: 16px;
-    right: 16px;
-    padding: 12px;
-    z-index: 999;
-
-    border: 1px solid rgba(255, 255, 255, 0.42);
-    border-radius: 22px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.38),
-            rgba(255, 255, 255, 0.18)
-        );
-
-    backdrop-filter: blur(28px) saturate(170%);
-    -webkit-backdrop-filter: blur(28px) saturate(170%);
-
-    box-shadow:
-        0 20px 50px rgba(0, 0, 0, 0.18),
-        inset 0 1px 0 rgba(255, 255, 255, 0.65);
-
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-14px);
-
-    transition:
-        opacity 0.28s ease,
-        transform 0.28s ease,
-        visibility 0.28s ease;
-}
-
-body.dark .mobile-menu {
-    background:
-        linear-gradient(
-            135deg,
-            rgba(25, 25, 35, 0.72),
-            rgba(12, 12, 18, 0.55)
-        );
-    border-color: rgba(255, 255, 255, 0.16);
-    box-shadow:
-        0 20px 50px rgba(0, 0, 0, 0.45),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12);
-}
-
-.mobile-menu.show {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-
-.mobile-menu button {
-    width: 100%;
-    padding: 14px 18px;
-    border: none;
-    border-radius: 14px;
-    background: transparent;
-    color: inherit;
-    font-family: inherit;
-    font-size: 15px;
-    font-weight: 600;
-    text-align: left;
-    cursor: pointer;
-    transition: background 0.25s ease;
-}
-
-.mobile-menu button:hover {
-    background: rgba(255, 255, 255, 0.25);
-}
-
-body.dark .mobile-menu button:hover {
-    background: rgba(255, 255, 255, 0.10);
-}
-
-/* =========================================================
-   HERO
-========================================================= */
-.hero {
-    position: relative;
-    z-index: 1;
-    min-height: 100vh;
-    padding: 150px 25px 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.hero-card {
-    position: relative;
-    width: min(920px, 100%);
-    padding: 70px 50px 65px;
-    text-align: center;
-
-    border: 1px solid rgba(255, 255, 255, 0.48);
-    border-radius: 36px;
-
-    background:
-        linear-gradient(
-            150deg,
-            rgba(255, 255, 255, 0.38) 0%,
-            rgba(255, 255, 255, 0.18) 50%,
-            rgba(255, 255, 255, 0.10) 100%
-        );
-
-    backdrop-filter: blur(26px) saturate(170%);
-    -webkit-backdrop-filter: blur(26px) saturate(170%);
-
-    box-shadow:
-        0 30px 80px rgba(0, 0, 0, 0.15),
-        0 4px 15px rgba(0, 0, 0, 0.06),
-        inset 0 1px 0 rgba(255, 255, 255, 0.85),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.12);
-
-    overflow: hidden;
-    animation: heroAppear 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.hero-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 15%;
-    right: 15%;
-    height: 1.5px;
-    border-radius: 50%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.98),
-        transparent
-    );
-    pointer-events: none;
-}
-
-.hero-card::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: radial-gradient(
-        circle at 50% 0%,
-        rgba(255, 255, 255, 0.25),
-        transparent 60%
-    );
-    pointer-events: none;
-    opacity: 0.8;
-}
-
-body.dark .hero-card {
-    background:
-        linear-gradient(
-            150deg,
-            rgba(25, 25, 38, 0.62) 0%,
-            rgba(15, 15, 24, 0.42) 50%,
-            rgba(8, 8, 14, 0.30) 100%
-        );
-    border-color: rgba(255, 255, 255, 0.16);
-    box-shadow:
-        0 30px 80px rgba(0, 0, 0, 0.50),
-        0 4px 15px rgba(0, 0, 0, 0.25),
-        inset 0 1px 0 rgba(255, 255, 255, 0.14),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.04);
-}
-
-body.dark .hero-card::before {
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.45),
-        transparent
-    );
-}
-
-body.dark .hero-card::after {
-    background: radial-gradient(
-        circle at 50% 0%,
-        rgba(120, 140, 255, 0.12),
-        transparent 60%
-    );
-}
-
-/* =========================================================
-   HERO TITLE
-========================================================= */
-.hero h1 {
-    position: relative;
-    z-index: 1;
-
-    font-size: clamp(38px, 7vw, 72px);
-    line-height: 1.08;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    margin-bottom: 22px;
-
-    background: linear-gradient(
-        135deg,
-        #1e3a8a 0%,
-        #3b82f6 40%,
-        #6366f1 70%,
-        #8b5cf6 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-
-    filter: drop-shadow(0 2px 6px rgba(59, 130, 246, 0.18));
-}
-
-body.dark .hero h1 {
-    background: linear-gradient(
-        135deg,
-        #bfdbfe 0%,
-        #a5b4fc 40%,
-        #c4b5fd 70%,
-        #e9d5ff 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-    filter: drop-shadow(0 2px 10px rgba(139, 92, 246, 0.35));
-}
-
-/* =========================================================
-   HERO PARAGRAPH
-========================================================= */
-.hero p {
-    position: relative;
-    z-index: 1;
-
-    max-width: 660px;
-    margin: 0 auto;
-
-    font-size: clamp(15px, 2vw, 18.5px);
-    line-height: 1.9;
-    font-weight: 450;
-    letter-spacing: 0.15px;
-
-    color: #1f2937;
-    opacity: 0.82;
-}
-
-body.dark .hero p {
-    color: #e5e7eb;
-    opacity: 0.85;
-}
-
-/* =========================================================
-   HERO BUTTONS
-========================================================= */
-.hero-buttons {
-    position: relative;
-    z-index: 1;
-
-    margin-top: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 14px;
-    flex-wrap: wrap;
-}
-
-.hero-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 130px;
-    padding: 14px 26px;
-
-    border: 1px solid rgba(255, 255, 255, 0.55);
-    border-radius: 16px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.42),
-            rgba(255, 255, 255, 0.18)
-        );
-
-    color: inherit;
-    font-family: inherit;
-    font-size: 15px;
-    font-weight: 650;
-    letter-spacing: 0.2px;
-    text-decoration: none;
-    cursor: pointer;
-
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.75),
-        0 4px 12px rgba(0, 0, 0, 0.06);
-
-    transition:
-        transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
-        background 0.28s ease,
-        box-shadow 0.28s ease;
-}
-
-.hero-button:hover {
-    transform: translateY(-4px);
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.62),
-            rgba(255, 255, 255, 0.32)
-        );
-
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.9),
-        0 10px 25px rgba(0, 0, 0, 0.12);
-}
-
-body.dark .hero-button {
-    border-color: rgba(255, 255, 255, 0.20);
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.16),
-            rgba(255, 255, 255, 0.06)
-        );
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.18),
-        0 4px 12px rgba(0, 0, 0, 0.25);
-}
-
-body.dark .hero-button:hover {
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.28),
-            rgba(255, 255, 255, 0.14)
-        );
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.30),
-        0 10px 25px rgba(0, 0, 0, 0.35);
-}
-
-/* =========================================================
-   CONTENT SECTIONS
-========================================================= */
-.section {
-    position: relative;
-    z-index: 1;
-    padding: 70px 25px;
-}
-
-.cards {
-    width: min(1100px, 100%);
-    margin: auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-}
-
-.card {
-    padding: 32px 30px;
-    border: 1px solid rgba(255, 255, 255, 0.34);
-    border-radius: 26px;
-
-    background:
-        linear-gradient(
-            150deg,
-            rgba(255, 255, 255, 0.28),
-            rgba(255, 255, 255, 0.12)
-        );
-
-    backdrop-filter: blur(20px) saturate(150%);
-    -webkit-backdrop-filter: blur(20px) saturate(150%);
-
-    box-shadow:
-        0 15px 40px rgba(0, 0, 0, 0.10),
-        inset 0 1px 0 rgba(255, 255, 255, 0.55);
-
-    transition: transform 0.32s ease, background 0.32s ease, box-shadow 0.32s ease;
-}
-
-body.dark .card {
-    background:
-        linear-gradient(
-            150deg,
-            rgba(25, 25, 35, 0.42),
-            rgba(12, 12, 20, 0.28)
-        );
-    border-color: rgba(255, 255, 255, 0.14);
-    box-shadow:
-        0 15px 40px rgba(0, 0, 0, 0.32),
-        inset 0 1px 0 rgba(255, 255, 255, 0.10);
-}
-
-.card:hover {
-    transform: translateY(-7px);
-    background:
-        linear-gradient(
-            150deg,
-            rgba(255, 255, 255, 0.40),
-            rgba(255, 255, 255, 0.20)
-        );
-    box-shadow:
-        0 22px 55px rgba(0, 0, 0, 0.14),
-        inset 0 1px 0 rgba(255, 255, 255, 0.7);
-}
-
-body.dark .card:hover {
-    background:
-        linear-gradient(
-            150deg,
-            rgba(35, 35, 50, 0.55),
-            rgba(18, 18, 28, 0.40)
-        );
-}
-
-.card h3 {
-    margin-bottom: 12px;
-    font-size: 20px;
-    font-weight: 750;
-    letter-spacing: 0.2px;
-}
-
-.card p {
-    line-height: 1.75;
-    opacity: 0.78;
-}
-
-/* =========================================================
-   CONTACT
-========================================================= */
-.contact-box {
-    position: relative;
-    width: min(900px, 100%);
-    margin: auto;
-    padding: 55px 32px;
-    text-align: center;
-
-    border-radius: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.36);
-
-    background:
-        linear-gradient(
-            150deg,
-            rgba(255, 255, 255, 0.30),
-            rgba(255, 255, 255, 0.14)
-        );
-
-    backdrop-filter: blur(20px) saturate(150%);
-    -webkit-backdrop-filter: blur(20px) saturate(150%);
-
-    box-shadow:
-        0 18px 48px rgba(0, 0, 0, 0.10),
-        inset 0 1px 0 rgba(255, 255, 255, 0.6);
-}
-
-body.dark .contact-box {
-    background:
-        linear-gradient(
-            150deg,
-            rgba(25, 25, 35, 0.45),
-            rgba(12, 12, 20, 0.30)
-        );
-    border-color: rgba(255, 255, 255, 0.14);
-    box-shadow:
-        0 18px 48px rgba(0, 0, 0, 0.35),
-        inset 0 1px 0 rgba(255, 255, 255, 0.10);
-}
-
-/* =========================================================
-   ANIMATION
-========================================================= */
-@keyframes heroAppear {
-    from {
-        opacity: 0;
-        transform: translateY(30px) scale(0.98);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-/* =========================================================
-   TABLET / MOBILE
-========================================================= */
-@media (max-width: 800px) {
-    .header {
-        width: calc(100% - 28px);
-        top: 14px;
-        height: 68px;
-        padding: 0 10px 0 18px;
-    }
-
-    .nav {
-        display: none;
-    }
-
-    .menu-button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-left: auto;
-    }
-
-    .theme-button {
-        margin-left: 2px;
-    }
-
-    .cards {
-        grid-template-columns: 1fr;
-    }
-
-    .hero-card {
-        padding: 55px 28px;
-        border-radius: 30px;
-    }
-}
-
-/* =========================================================
-   SMALL MOBILE
-========================================================= */
-@media (max-width: 420px) {
-    .header {
-        top: 10px;
-        width: calc(100% - 20px);
-        height: 62px;
-        border-radius: 20px;
-        padding: 0 8px 0 14px;
-    }
-
-    .logo {
-        font-size: 18px;
-        min-width: 130px;
-    }
-
-    .menu-button,
-    .theme-button {
-        width: 42px;
-        height: 42px;
-    }
-
-    .hero {
-        padding: 120px 15px 60px;
-    }
-
-    .hero-card {
-        padding: 42px 22px;
-        border-radius: 26px;
-    }
-
-    .hero h1 {
-        font-size: clamp(30px, 9vw, 42px);
-        margin-bottom: 16px;
-    }
-
-    .hero p {
-        font-size: 14.5px;
-        line-height: 1.8;
-    }
-
-    .hero-buttons {
-        margin-top: 28px;
-        gap: 10px;
-    }
-
-    .hero-button {
-        min-width: 110px;
-        padding: 12px 20px;
-        font-size: 14px;
-    }
-
-    .section {
-        padding: 50px 15px;
-    }
-}
-
-/* =========================================================
-   REDUCE MOTION
-========================================================= */
-@media (prefers-reduced-motion: reduce) {
-    * {
-        scroll-behavior: auto !important;
-        animation: none !important;
-        transition: none !important;
-    }
-}
+  :root{
+    --concrete:#E9E6DD;
+    --concrete-mid:#C8C3B6;
+    --ink:#141210;
+    --steel:#6E6A61;
+    --hazard:#F4C10F;
+    --line:4px;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:inherit;margin:0;padding:0;}
+  html{scroll-padding-top:env(safe-area-inset-top,0px);}
+  html,body{height:100%;}
+  body{
+    background:var(--concrete);
+    color:var(--ink);
+    font-family:'JetBrains Mono',monospace;
+    overflow-x:hidden;
+    background-image:
+      radial-gradient(rgba(0,0,0,0.035) 1px, transparent 1px);
+    background-size:3px 3px;
+  }
+  ::selection{background:var(--hazard);color:var(--ink);}
+  .disp{font-family:'Anton',sans-serif;text-transform:uppercase;line-height:0.86;letter-spacing:-0.01em;}
+  a{color:inherit;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky;top:env(safe-area-inset-top,0px);z-index:50;
+    background:var(--concrete);
+    border-bottom:var(--line) solid var(--ink);
+    display:flex;justify-content:space-between;align-items:center;
+    padding:16px 24px;
+  }
+  nav .mark{font-family:'Anton',sans-serif;font-size:22px;text-transform:uppercase;}
+  nav .mark span{color:var(--hazard);-webkit-text-stroke:1.5px var(--ink);}
+  nav .meta{font-size:11px;font-weight:700;letter-spacing:0.04em;color:var(--steel);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:64px 24px 40px;
+    perspective:1200px;
+  }
+  .hero-block{
+    border:var(--line) solid var(--ink);
+    background:var(--concrete);
+    box-shadow:14px 14px 0 var(--ink);
+    padding:36px 28px 30px;
+    transform-style:preserve-3d;
+    transform:rotateX(6deg) rotateY(-3deg);
+    animation:drop 0.7s cubic-bezier(.2,.9,.3,1.1) both;
+  }
+  @keyframes drop{
+    0%{transform:translateY(-140px) rotateX(6deg) rotateY(-3deg) rotateZ(-2deg);opacity:0;}
+    70%{opacity:1;}
+    100%{transform:translateY(0) rotateX(6deg) rotateY(-3deg) rotateZ(0deg);opacity:1;}
+  }
+  .hero-block h1{font-size:clamp(52px,12vw,132px);}
+  .hero-row{display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:flex-end;margin-top:20px;border-top:2px solid var(--ink);padding-top:16px;}
+  .hero-row p{max-width:46ch;font-size:14.5px;line-height:1.6;}
+  .hero-tag{background:var(--hazard);border:3px solid var(--ink);padding:6px 12px;font-weight:800;font-size:12px;white-space:nowrap;transform:rotate(-2deg);}
+
+  /* ---------- MANIFESTO ---------- */
+  .stripe{height:26px;background:repeating-linear-gradient(-45deg,var(--ink) 0 22px,var(--hazard) 22px 44px);border-top:var(--line) solid var(--ink);border-bottom:var(--line) solid var(--ink);}
+  .manifesto{padding:56px 24px;background:var(--ink);color:var(--concrete);}
+  .manifesto .wrap{display:grid;grid-template-columns:1fr;gap:20px;}
+  @media(min-width:760px){.manifesto .wrap{grid-template-columns:0.9fr 1.4fr;align-items:start;}}
+  .manifesto h2{font-size:clamp(30px,5vw,46px);color:var(--hazard);}
+  .manifesto p{font-size:15px;line-height:1.75;color:#D8D5CB;}
+  .manifesto p + p{margin-top:14px;}
+
+  /* ---------- WORK ---------- */
+  .work{padding:60px 24px;}
+  .work h2{font-size:clamp(30px,5vw,46px);margin-bottom:8px;}
+  .work > .wrap > p{color:var(--steel);font-size:13px;margin-bottom:30px;max-width:50ch;}
+  .grid{display:grid;grid-template-columns:1fr;gap:26px;perspective:1000px;}
+  @media(min-width:700px){.grid{grid-template-columns:1fr 1fr;}}
+  .card{
+    border:var(--line) solid var(--ink);
+    background:var(--concrete);
+    box-shadow:10px 10px 0 var(--ink);
+    padding:22px;
+    transform-style:preserve-3d;
+    transition:transform 0.12s ease-out, box-shadow 0.12s ease-out;
+    will-change:transform;
+  }
+  .card:hover{box-shadow:16px 16px 0 var(--hazard);}
+  .card .num{font-size:11px;font-weight:700;color:var(--steel);}
+  .card h3{font-family:'Anton',sans-serif;text-transform:uppercase;font-size:28px;margin:10px 0 8px;line-height:0.95;}
+  .card p{font-size:13px;line-height:1.6;color:var(--ink);}
+  .card .material{display:inline-block;margin-top:14px;font-size:11px;font-weight:700;border:2px solid var(--ink);padding:3px 8px;background:var(--concrete-mid);}
+
+  /* ---------- SERVICES ---------- */
+  .services{padding:0 24px 60px;}
+  .srow{display:grid;grid-template-columns:1fr;border:var(--line) solid var(--ink);border-bottom:none;}
+  @media(min-width:700px){.srow{grid-template-columns:1fr 2fr 1fr;}}
+  .srow:last-child{border-bottom:var(--line) solid var(--ink);}
+  .srow > div{padding:18px 20px;border-bottom:2px solid var(--ink);}
+  @media(min-width:700px){.srow > div{border-bottom:none;border-right:2px solid var(--ink);}
+    .srow > div:last-child{border-right:none;}}
+  .srow .s-name{font-family:'Anton',sans-serif;text-transform:uppercase;font-size:22px;}
+  .srow .s-desc{font-size:13px;line-height:1.6;color:var(--steel);}
+  .srow .s-tag{font-size:12px;font-weight:700;background:var(--hazard);border:2px solid var(--ink);display:inline-block;padding:2px 8px;height:fit-content;}
+
+  /* ---------- CONTACT ---------- */
+  .contact{padding:70px 24px 90px;text-align:left;}
+  .contact-block{
+    background:var(--ink);color:var(--concrete);
+    border:var(--line) solid var(--ink);
+    box-shadow:14px 14px 0 var(--hazard);
+    padding:40px 28px;
+  }
+  .contact-block h2{font-size:clamp(34px,7vw,64px);color:var(--concrete);}
+  .contact-block a.cta{
+    display:inline-block;margin-top:22px;background:var(--hazard);color:var(--ink);
+    font-weight:800;text-decoration:none;padding:14px 22px;border:3px solid var(--concrete);
+    font-size:14px;letter-spacing:0.02em;
+  }
+  .contact-block a.cta:hover{background:var(--concrete);color:var(--ink);}
+  footer{padding:20px 24px;border-top:var(--line) solid var(--ink);display:flex;justify-content:space-between;font-size:11px;color:var(--steel);flex-wrap:wrap;gap:8px;}
+
+  :focus-visible{outline:3px solid var(--hazard);outline-offset:2px;}
+  @media(prefers-reduced-motion:reduce){.hero-block{animation:none;}.card{transition:none;}}
 </style>
 </head>
 <body>
 
-<!-- =========================================================
-     FIXED BACKGROUND LAYER (ছবি এখন আর নড়বে না)
-========================================================= -->
-<div class="background-layer" aria-hidden="true"></div>
+<nav>
+  <div class="mark">Fahi<span>L</span>trex</div>
+</nav>
 
-<!-- =========================================================
-     BACKGROUND OVERLAY
-========================================================= -->
-<div class="background-overlay" aria-hidden="true"></div>
-
-<!-- =========================================================
-     HEADER
-========================================================= -->
-<header class="header">
-
-    <div class="logo">
-        My Website
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-block" id="heroBlock">
+      <h1 class="disp">রঘু<br>নির্মাণ</h1>
+      <div class="hero-row">
+        <p>আমরা এমন ওয়েবসাইট বানাই যেগুলো ভার বহন করে — নরম গ্রেডিয়েন্ট নয়, কাঁচা কাঠামো। থ্রি-ডি ব্রুটালিজম স্টুডিও, ২০১৯ থেকে।</p>
+        <div class="hero-tag">সংস্করণ ০১.৩ — লোড-বেয়ারিং</div>
+      </div>
     </div>
+  </div>
+</section>
 
-    <!-- DESKTOP NAV -->
-    <nav class="nav">
-        <button class="nav-button active" data-section="home" onclick="goTo('home')">
-            Home
-        </button>
-        <button class="nav-button" data-section="about" onclick="goTo('about')">
-            About
-        </button>
-        <button class="nav-button" data-section="services" onclick="goTo('services')">
-            Services
-        </button>
-        <button class="nav-button" data-section="contact" onclick="goTo('contact')">
-            Contact
-        </button>
-    </nav>
+<div class="stripe"></div>
 
-    <!-- MOBILE MENU -->
-    <button class="menu-button" id="menuButton" aria-label="Open menu" aria-expanded="false" onclick="toggleMenu()">
-        <span id="menuIcon">☰</span>
-    </button>
+<section class="manifesto">
+  <div class="wrap">
+    <h2 class="disp">ইশতেহার</h2>
+    <div>
+      <p>কংক্রিট মিথ্যা বলে না। এর ফাটল দেখা যায়, এর ঢালাইয়ের দাগ দেখা যায়, এর ভার বহনের পথ চোখে ধরা পড়ে। ওয়েব ডিজাইনও তেমন হওয়া উচিত — গঠন লুকিয়ে না রেখে, সেটাকেই সামনে এনে।</p>
+      <p>প্রতিটি প্রোজেক্টে আমরা পিক্সেলকে ব্লকের মতো ঢালাই করি, ছায়াকে অফসেট করি হাতুড়ির ঘায়ের মতো, আর টাইপোগ্রাফিকে দাঁড় করাই বর্গাকার, ভারী, নিরেট করে।</p>
+    </div>
+  </div>
+</section>
 
-    <!-- THEME -->
-    <button class="theme-button" id="themeButton" aria-label="Change theme" onclick="toggleTheme()">
-        <svg id="themeIcon" class="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="4"></circle>
-            <path d="
-                M12 2v2
-                M12 20v2
-                M4.93 4.93l1.41 1.41
-                M17.66 17.66l1.41 1.41
-                M2 12h2
-                M20 12h2
-                M4.93 19.07l1.41-1.41
-                M17.66 6.34l1.41-1.41
-            "></path>
-        </svg>
-    </button>
+<section class="work">
+  <div class="wrap">
+    <h2 class="disp">নির্বাচিত কাজ</h2>
+    <p>মাউস সরালে ব্লকগুলো একটু কাত হয় — যেন সেগুলো সত্যিই দাঁড়িয়ে আছে।</p>
+    <div class="grid" id="grid">
+      <article class="card" data-tilt>
+        <div class="num">প্রোজেক্ট / ঢালাই-০১</div>
+        <h3 class="disp">সিমেন্ট ব্যাংক</h3>
+        <p>একটি সমবায় ব্যাংকের জন্য পোর্টাল, নব্বইয়ের দশকের সরকারি স্থাপত্যের আদলে ডিজাইন করা।</p>
+        <span class="material">কংক্রিট + কাচ</span>
+      </article>
+      <article class="card" data-tilt>
+        <div class="num">প্রোজেক্ট / ঢালাই-০২</div>
+        <h3 class="disp">খাদ ম্যাগাজিন</h3>
+        <p>একটি স্থাপত্য পত্রিকার ডিজিটাল সংস্করণ — কলাম, হেয়ারলাইন আর তীক্ষ্ণ কোণ নিয়ে গড়া।</p>
+        <span class="material">ইস্পাত + কালি</span>
+      </article>
+      <article class="card" data-tilt>
+        <div class="num">প্রোজেক্ট / ঢালাই-০৩</div>
+        <h3 class="disp">বাংকার ল্যাব</h3>
+        <p>একটি রিসার্চ ল্যাবের ওয়েবসাইট, যেখানে ডেটা ব্লকগুলো আক্ষরিক অর্থেই স্তূপাকারে সাজানো।</p>
+        <span class="material">রড + রেজিন</span>
+      </article>
+      <article class="card" data-tilt>
+        <div class="num">প্রোজেক্ট / ঢালাই-০৪</div>
+        <h3 class="disp">মনোরেল স্টুডিও</h3>
+        <p>একটি শিল্প নকশা স্টুডিওর পোর্টফোলিও, ভারী গ্রিড আর হার্ড শ্যাডো দিয়ে বাঁধা।</p>
+        <span class="material">অ্যাসফল্ট + নিয়ন</span>
+      </article>
+    </div>
+  </div>
+</section>
 
-</header>
+<section class="services">
+  <div class="wrap">
+    <div class="srow">
+      <div class="s-name">কাঠামো নকশা</div>
+      <div class="s-desc">তথ্যের গঠনকে দৃশ্যমান করা — লুকিয়ে না রেখে, বরং কাঠামোকেই নকশার অংশ বানানো।</div>
+      <div><span class="s-tag">৪–৬ সপ্তাহ</span></div>
+    </div>
+    <div class="srow">
+      <div class="s-name">থ্রি-ডি ইন্টারঅ্যাকশন</div>
+      <div class="s-desc">কার্সার-অনুসারী টিল্ট, স্তরীভূত ছায়া, আর ভার-বহনের অনুভূতি যুক্ত অ্যানিমেশন।</div>
+      <div><span class="s-tag">২–৩ সপ্তাহ</span></div>
+    </div>
+    <div class="srow">
+      <div class="s-name">টাইপ সিস্টেম</div>
+      <div class="s-desc">ভারী, নিরেট ডিসপ্লে টাইপ আর টেকনিক্যাল মনোস্পেস বডির সমন্বয়ে গড়া টাইপোগ্রাফি।</div>
+      <div><span class="s-tag">১–২ সপ্তাহ</span></div>
+    </div>
+  </div>
+</section>
 
-<!-- =========================================================
-     MOBILE MENU
-========================================================= -->
-<div class="mobile-menu" id="mobileMenu">
-    <button onclick="mobileGoTo('home')">Home</button>
-    <button onclick="mobileGoTo('about')">About</button>
-    <button onclick="mobileGoTo('services')">Services</button>
-    <button onclick="mobileGoTo('contact')">Contact</button>
-</div>
+<section class="contact">
+  <div class="wrap">
+    <div class="contact-block">
+      <h2 class="disp">ভিত্তি ঢালতে চান?</h2>
+      <p style="margin-top:14px;color:#CFCBBF;max-width:48ch;font-size:14.5px;line-height:1.6;">আপনার পরবর্তী প্রোজেক্টের কথা বলুন — আমরা নরম কিছু বানাই না।</p>
+      <a class="cta" href="mailto:studio@monolith.example">ইমেইল করুন — studio@monolith.example</a>
+    </div>
+  </div>
+</section>
 
-<!-- =========================================================
-     HOME
-========================================================= -->
-<main>
-
-    <section class="hero" id="home">
-        <div class="hero-card">
-
-            <h1>Welcome</h1>
-
-            <p>
-                আপনার ওয়েবসাইটে স্বাগতম। আধুনিক Glass UI, Responsive Design
-                এবং Light/Dark Mode সহ একটি সুন্দর interface।
-            </p>
-
-            <div class="hero-buttons">
-                <a href="#about" class="hero-button">শুরু করুন</a>
-                <a href="#services" class="hero-button">আরও দেখুন</a>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- =====================================================
-         ABOUT
-    ===================================================== -->
-    <section class="section" id="about">
-        <div class="cards">
-
-            <article class="card">
-                <h3>সুন্দর Design</h3>
-                <p>
-                    স্বচ্ছ কাঁচের মতো Glassmorphism interface এবং আপনার দেওয়া
-                    background image।
-                </p>
-            </article>
-
-            <article class="card">
-                <h3>Responsive</h3>
-                <p>
-                    মোবাইল, ট্যাবলেট এবং কম্পিউটার—সব screen-এ সুন্দরভাবে
-                    মানিয়ে যাবে।
-                </p>
-            </article>
-
-            <article class="card">
-                <h3>Light / Dark</h3>
-                <p>
-                    Header-এর Theme button ব্যবহার করে Light এবং Dark mode
-                    পরিবর্তন করুন।
-                </p>
-            </article>
-
-        </div>
-    </section>
-
-    <!-- =====================================================
-         SERVICES
-    ===================================================== -->
-    <section class="section" id="services">
-        <div class="cards">
-
-            <article class="card">
-                <h3>Fast</h3>
-                <p>
-                    কোনো framework ছাড়াই HTML, CSS এবং JavaScript দিয়ে তৈরি।
-                </p>
-            </article>
-
-            <article class="card">
-                <h3>Modern UI</h3>
-                <p>
-                    Blur, transparency, smooth animation এবং modern spacing
-                    ব্যবহার করা হয়েছে।
-                </p>
-            </article>
-
-            <article class="card">
-                <h3>সহজে পরিবর্তনযোগ্য</h3>
-                <p>
-                    Menu, লেখা, button এবং অন্যান্য অংশ সহজেই পরিবর্তন করা যাবে।
-                </p>
-            </article>
-
-        </div>
-    </section>
-
-    <!-- =====================================================
-         CONTACT
-    ===================================================== -->
-    <section class="section" id="contact">
-        <div class="contact-box">
-
-            <h2>Contact</h2>
-
-            <p style="
-                margin-top: 15px;
-                opacity: .78;
-                line-height: 1.8;
-            ">
-                আপনার যোগাযোগের তথ্য এখানে যোগ করতে পারবেন।
-            </p>
-
-        </div>
-    </section>
-
-</main>
+<footer>
+  <span>© ২০২৬ abdullah</span>
+  <span>date: 27.09.2026</span>
+</footer>
 
 <script>
-/* =====================================================
-   THEME MANAGEMENT
-===================================================== */
-const body = document.body;
-const themeButton = document.getElementById("themeButton");
-const themeIcon = document.getElementById("themeIcon");
-
-function setTheme(theme) {
-    if (theme === "dark") {
-        body.classList.add("dark");
-        themeButton.setAttribute("aria-label", "Switch to light mode");
-    } else {
-        body.classList.remove("dark");
-        themeButton.setAttribute("aria-label", "Switch to dark mode");
-    }
-    localStorage.setItem("website-theme", theme);
-}
-
-function toggleTheme() {
-    const isDark = body.classList.contains("dark");
-    setTheme(isDark ? "light" : "dark");
-}
-
-/* =====================================================
-   LOAD SAVED THEME
-===================================================== */
-(function loadTheme() {
-    const saved = localStorage.getItem("website-theme");
-
-    if (saved === "dark") {
-        setTheme("dark");
-    } else if (saved === "light") {
-        setTheme("light");
-    } else {
-        const systemDark =
-            window.matchMedia &&
-            window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-        setTheme(systemDark ? "dark" : "light");
-    }
-})();
-
-/* =====================================================
-   NAVIGATION
-===================================================== */
-function goTo(id) {
-    const section = document.getElementById(id);
-    if (!section) {
-        return;
-    }
-
-    section.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-    });
-}
-
-/* =====================================================
-   MOBILE MENU
-===================================================== */
-const mobileMenu = document.getElementById("mobileMenu");
-const menuButton = document.getElementById("menuButton");
-const menuIcon = document.getElementById("menuIcon");
-
-function toggleMenu() {
-    const opened = mobileMenu.classList.toggle("show");
-
-    menuButton.setAttribute("aria-expanded", opened ? "true" : "false");
-    menuIcon.textContent = opened ? "×" : "☰";
-}
-
-function mobileGoTo(id) {
-    goTo(id);
-
-    mobileMenu.classList.remove("show");
-    menuButton.setAttribute("aria-expanded", "false");
-    menuIcon.textContent = "☰";
-}
-
-/* =====================================================
-   ACTIVE NAVIGATION
-===================================================== */
-const sections = document.querySelectorAll("main section");
-const navButtons = document.querySelectorAll(".nav-button");
-
-const observer = new IntersectionObserver(
-    (entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const id = entry.target.id;
-
-                navButtons.forEach(button => {
-                    button.classList.toggle(
-                        "active",
-                        button.dataset.section === id
-                    );
-                });
-            }
-        });
-    },
-    {
-        threshold: 0.45
-    }
-);
-
-sections.forEach(section => {
-    observer.observe(section);
+document.querySelectorAll('[data-tilt]').forEach(function(card){
+  card.addEventListener('mousemove', function(e){
+    var r = card.getBoundingClientRect();
+    var x = (e.clientX - r.left) / r.width - 0.5;
+    var y = (e.clientY - r.top) / r.height - 0.5;
+    card.style.transform = 'rotateY(' + (x*10) + 'deg) rotateX(' + (-y*10) + 'deg) translateZ(6px)';
+  });
+  card.addEventListener('mouseleave', function(){
+    card.style.transform = 'rotateY(0deg) rotateX(0deg) translateZ(0px)';
+  });
 });
-
-/* =====================================================
-   CLOSE MOBILE MENU OUTSIDE
-===================================================== */
-document.addEventListener("click", function(event) {
-    if (
-        !mobileMenu.contains(event.target) &&
-        !menuButton.contains(event.target)
-    ) {
-        mobileMenu.classList.remove("show");
-        menuButton.setAttribute("aria-expanded", "false");
-        menuIcon.textContent = "☰";
-    }
-});
-
-/* =====================================================
-   DISABLE RIGHT CLICK
-===================================================== */
-document.addEventListener(
-    "contextmenu",
-    function(event) {
-        event.preventDefault();
-    },
-    { passive: false }
-);
-
-/* =====================================================
-   DISABLE DRAG
-===================================================== */
-document.addEventListener(
-    "dragstart",
-    function(event) {
-        event.preventDefault();
-    },
-    { passive: false }
-);
-
-/* =====================================================
-   DISABLE SELECTION
-===================================================== */
-document.addEventListener(
-    "selectstart",
-    function(event) {
-        event.preventDefault();
-    },
-    { passive: false }
-);
-
-/* =====================================================
-   DISABLE COMMON SHORTCUTS
-===================================================== */
-document.addEventListener(
-    "keydown",
-    function(event) {
-        const key = event.key.toLowerCase();
-
-        if (event.ctrlKey && key === "s") {
-            event.preventDefault();
-        }
-
-        if (event.ctrlKey && key === "u") {
-            event.preventDefault();
-        }
-
-        if (event.ctrlKey && key === "c") {
-            event.preventDefault();
-        }
-
-        if (event.ctrlKey && key === "a") {
-            event.preventDefault();
-        }
-
-        if (event.ctrlKey && key === "p") {
-            event.preventDefault();
-        }
-
-        if (event.key === "F12") {
-            event.preventDefault();
-        }
-
-        if (event.ctrlKey && event.shiftKey && key === "i") {
-            event.preventDefault();
-        }
-
-        if (event.ctrlKey && event.shiftKey && key === "j") {
-            event.preventDefault();
-        }
-
-        if (event.ctrlKey && event.shiftKey && key === "c") {
-            event.preventDefault();
-        }
-    },
-    { passive: false }
-);
-
-/* =====================================================
-   BLOCK CTRL + MOUSE WHEEL ZOOM
-===================================================== */
-document.addEventListener(
-    "wheel",
-    function(event) {
-        if (event.ctrlKey) {
-            event.preventDefault();
-        }
-    },
-    { passive: false }
-);
-
-/* =====================================================
-   BLOCK GESTURE ZOOM
-===================================================== */
-document.addEventListener(
-    "gesturestart",
-    function(event) {
-        event.preventDefault();
-    },
-    { passive: false }
-);
-
-document.addEventListener(
-    "gesturechange",
-    function(event) {
-        event.preventDefault();
-    },
-    { passive: false }
-);
-
-document.addEventListener(
-    "gestureend",
-    function(event) {
-        event.preventDefault();
-    },
-    { passive: false }
-);
-
-/* =====================================================
-   BLOCK DOUBLE TAP ZOOM
-   ---------------------------------------------------------
-   এখানে preventDefault() শুধু তখনই হবে যখন দুইবার
-   খুব দ্রুত tap হবে — কিন্তু সাধারণ scroll কে ব্লক করবে না।
-===================================================== */
-let lastTouchEnd = 0;
-
-document.addEventListener(
-    "touchend",
-    function(event) {
-        const now = Date.now();
-
-        if (now - lastTouchEnd <= 300) {
-            /* শুধু double tap হলে ব্লক করবো, এবং
-               যদি টাচটি scroll gesture না হয় */
-            if (event.cancelable) {
-                event.preventDefault();
-            }
-        }
-
-        lastTouchEnd = now;
-    },
-    { passive: false }
-);
 </script>
 
 </body>
