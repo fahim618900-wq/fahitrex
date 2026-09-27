@@ -3,249 +3,677 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>MONOLITH — Digital Brutalism Studio</title>
+<title>Abdullah Fahim — Software · Electrical · Electronics</title>
+<meta name="description" content="Abdullah Fahim — student technologist working across software, web applications, electrical systems and electronics.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --concrete:#E9E6DD;
-    --concrete-mid:#C8C3B6;
-    --ink:#141210;
-    --steel:#6E6A61;
-    --hazard:#F4C10F;
-    --line:4px;
-    box-sizing:border-box;
-    padding-top:env(safe-area-inset-top,0px);
-    padding-bottom:env(safe-area-inset-bottom,0px);
-  }
-  *{box-sizing:inherit;margin:0;padding:0;}
-  html{scroll-padding-top:env(safe-area-inset-top,0px);}
-  html,body{height:100%;}
-  body{
-    background:var(--concrete);
-    color:var(--ink);
-    font-family:'JetBrains Mono',monospace;
-    overflow-x:hidden;
-    background-image:
-      radial-gradient(rgba(0,0,0,0.035) 1px, transparent 1px);
-    background-size:3px 3px;
-  }
-  ::selection{background:var(--hazard);color:var(--ink);}
-  .disp{font-family:'Anton',sans-serif;text-transform:uppercase;line-height:0.86;letter-spacing:-0.01em;}
-  a{color:inherit;}
-  .wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+:root{
+  --bg:#EEF1F6; --bg-2:#E4E9F2;
+  --surface: rgba(255,255,255,0.55);
+  --surface-strong: rgba(255,255,255,0.75);
+  --border: rgba(20,25,40,0.12);
+  --ink:#0E1320; --ink-soft:#4C5568;
+  --accent:#2F6FED; --accent-2:#12B7C4;
+  --shadow: 0 20px 60px rgba(20,30,60,0.14);
+  --radius:22px;
+  --blur: blur(18px);
+}
+html[data-theme="dark"]{
+  --bg:#080B12; --bg-2:#0C111C;
+  --surface: rgba(18,22,34,0.55);
+  --surface-strong: rgba(20,25,38,0.78);
+  --border: rgba(255,255,255,0.10);
+  --ink:#EDF1FA; --ink-soft:#9AA4BE;
+  --accent:#5B8DF7; --accent-2:#39D5E0;
+  --shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;height:100%;}
+html{
+  scroll-behavior:smooth;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+body{
+  font-family:'Inter',sans-serif;
+  color:var(--ink);
+  background-color:var(--bg);
+  background-image:var(--bg-shot);
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+  background-repeat:no-repeat;
+  overflow-x:hidden;
+  -webkit-user-select:none; user-select:none;
+  transition:background-color .4s ease, color .4s ease;
+}
+p, span, li, a, input, textarea{ -webkit-user-select:text; user-select:text; }
+h1,h2,h3{ -webkit-user-select:text; user-select:text; }
+h1,h2,h3{font-family:'Space Grotesk',sans-serif;margin:0;letter-spacing:-0.01em;}
+p{margin:0;}
+a{color:inherit;text-decoration:none;}
+img{max-width:100%;display:block;-webkit-user-drag:none;user-drag:none;pointer-events:none;}
+button{font-family:inherit;cursor:pointer;}
+::selection{background:var(--accent);color:#fff;}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+.eyebrow{font-size:13px;color:var(--accent);font-weight:600;}
+.lead{color:var(--ink-soft);font-size:15.5px;line-height:1.7;max-width:62ch;}
+section{position:relative;z-index:2;padding:96px 0;}
+@media(max-width:700px){section{padding:64px 0;}}
 
-  /* ---------- NAV ---------- */
-  nav{
-    position:sticky;top:env(safe-area-inset-top,0px);z-index:50;
-    background:var(--concrete);
-    border-bottom:var(--line) solid var(--ink);
-    display:flex;justify-content:space-between;align-items:center;
-    padding:16px 24px;
-  }
-  nav .mark{font-family:'Anton',sans-serif;font-size:22px;text-transform:uppercase;}
-  nav .mark span{color:var(--hazard);-webkit-text-stroke:1.5px var(--ink);}
-  nav .meta{font-size:11px;font-weight:700;letter-spacing:0.04em;color:var(--steel);}
+/* glass surface */
+.glass{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  backdrop-filter:var(--blur);
+  -webkit-backdrop-filter:var(--blur);
+  box-shadow:var(--shadow);
+}
 
-  /* ---------- HERO ---------- */
-  .hero{
-    padding:64px 24px 40px;
-    perspective:1200px;
-  }
-  .hero-block{
-    border:var(--line) solid var(--ink);
-    background:var(--concrete);
-    box-shadow:14px 14px 0 var(--ink);
-    padding:36px 28px 30px;
-    transform-style:preserve-3d;
-    transform:rotateX(6deg) rotateY(-3deg);
-    animation:drop 0.7s cubic-bezier(.2,.9,.3,1.1) both;
-  }
-  @keyframes drop{
-    0%{transform:translateY(-140px) rotateX(6deg) rotateY(-3deg) rotateZ(-2deg);opacity:0;}
-    70%{opacity:1;}
-    100%{transform:translateY(0) rotateX(6deg) rotateY(-3deg) rotateZ(0deg);opacity:1;}
-  }
-  .hero-block h1{font-size:clamp(52px,12vw,132px);}
-  .hero-row{display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:flex-end;margin-top:20px;border-top:2px solid var(--ink);padding-top:16px;}
-  .hero-row p{max-width:46ch;font-size:14.5px;line-height:1.6;}
-  .hero-tag{background:var(--hazard);border:3px solid var(--ink);padding:6px 12px;font-weight:800;font-size:12px;white-space:nowrap;transform:rotate(-2deg);}
+/* canvas + loader */
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
+#loader{
+  position:fixed;inset:0;z-index:999;background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+  transition:opacity .6s ease, visibility .6s ease;
+}
+#loader .ring{width:46px;height:46px;border-radius:50%;border:3px solid var(--border);border-top-color:var(--accent);animation:spin 0.9s linear infinite;}
+#loader span{font-size:13px;color:var(--ink-soft);letter-spacing:.04em;}
+@keyframes spin{to{transform:rotate(360deg);}}
+#loader.hide{opacity:0;visibility:hidden;}
 
-  /* ---------- MANIFESTO ---------- */
-  .stripe{height:26px;background:repeating-linear-gradient(-45deg,var(--ink) 0 22px,var(--hazard) 22px 44px);border-top:var(--line) solid var(--ink);border-bottom:var(--line) solid var(--ink);}
-  .manifesto{padding:56px 24px;background:var(--ink);color:var(--concrete);}
-  .manifesto .wrap{display:grid;grid-template-columns:1fr;gap:20px;}
-  @media(min-width:760px){.manifesto .wrap{grid-template-columns:0.9fr 1.4fr;align-items:start;}}
-  .manifesto h2{font-size:clamp(30px,5vw,46px);color:var(--hazard);}
-  .manifesto p{font-size:15px;line-height:1.75;color:#D8D5CB;}
-  .manifesto p + p{margin-top:14px;}
+/* nav */
+nav{
+  position:fixed;top:calc(env(safe-area-inset-top,0px) + 16px);left:0;right:0;z-index:100;
+  display:flex;justify-content:center;pointer-events:none;
+}
+.nav-inner{
+  pointer-events:auto;
+  display:flex;align-items:center;gap:28px;
+  padding:10px 12px 10px 20px;
+  max-width:calc(100% - 32px);
+}
+.brand{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;white-space:nowrap;}
+.brand span{color:var(--accent);}
+.nav-links{display:flex;gap:4px;list-style:none;margin:0;padding:0;}
+.nav-links a{font-size:14px;font-weight:500;color:var(--ink-soft);padding:8px 12px;border-radius:12px;transition:color .2s, background .2s;}
+.nav-links a:hover, .nav-links a:focus-visible{color:var(--ink);background:rgba(120,140,200,0.14);}
+.nav-actions{display:flex;align-items:center;gap:8px;margin-left:4px;}
+.icon-btn{
+  width:38px;height:38px;border-radius:12px;border:1px solid var(--border);background:var(--surface-strong);
+  display:flex;align-items:center;justify-content:center;color:var(--ink);
+}
+.icon-btn svg{width:18px;height:18px;}
+#menuBtn{display:none;}
+@media(max-width:820px){
+  .nav-links{display:none;}
+  #menuBtn{display:flex;}
+}
+#mobileMenu{
+  position:fixed;inset:0;z-index:99;background:var(--bg);opacity:0;visibility:hidden;transform:translateY(-8px);
+  transition:opacity .3s ease, transform .3s ease, visibility .3s ease;
+  display:flex;flex-direction:column;padding:100px 28px 40px;gap:6px;
+}
+#mobileMenu.open{opacity:1;visibility:visible;transform:translateY(0);}
+#mobileMenu a{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:600;padding:14px 4px;border-bottom:1px solid var(--border);}
 
-  /* ---------- WORK ---------- */
-  .work{padding:60px 24px;}
-  .work h2{font-size:clamp(30px,5vw,46px);margin-bottom:8px;}
-  .work > .wrap > p{color:var(--steel);font-size:13px;margin-bottom:30px;max-width:50ch;}
-  .grid{display:grid;grid-template-columns:1fr;gap:26px;perspective:1000px;}
-  @media(min-width:700px){.grid{grid-template-columns:1fr 1fr;}}
-  .card{
-    border:var(--line) solid var(--ink);
-    background:var(--concrete);
-    box-shadow:10px 10px 0 var(--ink);
-    padding:22px;
-    transform-style:preserve-3d;
-    transition:transform 0.12s ease-out, box-shadow 0.12s ease-out;
-    will-change:transform;
-  }
-  .card:hover{box-shadow:16px 16px 0 var(--hazard);}
-  .card .num{font-size:11px;font-weight:700;color:var(--steel);}
-  .card h3{font-family:'Anton',sans-serif;text-transform:uppercase;font-size:28px;margin:10px 0 8px;line-height:0.95;}
-  .card p{font-size:13px;line-height:1.6;color:var(--ink);}
-  .card .material{display:inline-block;margin-top:14px;font-size:11px;font-weight:700;border:2px solid var(--ink);padding:3px 8px;background:var(--concrete-mid);}
+/* hero */
+.hero{padding-top:calc(150px + env(safe-area-inset-top,0px));min-height:92vh;display:flex;align-items:center;}
+.hero-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:48px;align-items:center;}
+@media(max-width:860px){.hero-grid{grid-template-columns:1fr;}}
+.hero h1{font-size:clamp(34px,5.4vw,58px);line-height:1.06;margin:14px 0 18px;}
+.hero-actions{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap;}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:14px;font-weight:600;font-size:14.5px;border:1px solid transparent;
+}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;box-shadow:0 12px 28px rgba(47,111,237,0.35);}
+.btn-primary:hover{filter:brightness(1.06);}
+.btn-ghost{background:var(--surface-strong);border-color:var(--border);color:var(--ink);}
+.btn-ghost:hover{border-color:var(--accent);}
+.hero-card{padding:22px;text-align:center;transform-style:preserve-3d;}
+.avatar-frame{
+  width:150px;height:150px;border-radius:28px;margin:0 auto 16px;overflow:hidden;
+  border:1px solid var(--border);box-shadow:0 18px 40px rgba(20,30,60,0.25);
+  transform:translateZ(20px);
+}
+.avatar-frame img{width:100%;height:100%;object-fit:cover;}
+.hero-card h3{font-size:18px;}
+.hero-card .role{color:var(--ink-soft);font-size:13.5px;margin-top:4px;}
+.hero-tags{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:16px;}
+.tag{font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:20px;background:rgba(47,111,237,0.12);color:var(--accent);}
 
-  /* ---------- SERVICES ---------- */
-  .services{padding:0 24px 60px;}
-  .srow{display:grid;grid-template-columns:1fr;border:var(--line) solid var(--ink);border-bottom:none;}
-  @media(min-width:700px){.srow{grid-template-columns:1fr 2fr 1fr;}}
-  .srow:last-child{border-bottom:var(--line) solid var(--ink);}
-  .srow > div{padding:18px 20px;border-bottom:2px solid var(--ink);}
-  @media(min-width:700px){.srow > div{border-bottom:none;border-right:2px solid var(--ink);}
-    .srow > div:last-child{border-right:none;}}
-  .srow .s-name{font-family:'Anton',sans-serif;text-transform:uppercase;font-size:22px;}
-  .srow .s-desc{font-size:13px;line-height:1.6;color:var(--steel);}
-  .srow .s-tag{font-size:12px;font-weight:700;background:var(--hazard);border:2px solid var(--ink);display:inline-block;padding:2px 8px;height:fit-content;}
+/* section headers */
+.s-head{max-width:640px;margin-bottom:44px;}
+.s-head h2{font-size:clamp(26px,4vw,38px);margin-top:8px;}
 
-  /* ---------- CONTACT ---------- */
-  .contact{padding:70px 24px 90px;text-align:left;}
-  .contact-block{
-    background:var(--ink);color:var(--concrete);
-    border:var(--line) solid var(--ink);
-    box-shadow:14px 14px 0 var(--hazard);
-    padding:40px 28px;
-  }
-  .contact-block h2{font-size:clamp(34px,7vw,64px);color:var(--concrete);}
-  .contact-block a.cta{
-    display:inline-block;margin-top:22px;background:var(--hazard);color:var(--ink);
-    font-weight:800;text-decoration:none;padding:14px 22px;border:3px solid var(--concrete);
-    font-size:14px;letter-spacing:0.02em;
-  }
-  .contact-block a.cta:hover{background:var(--concrete);color:var(--ink);}
-  footer{padding:20px 24px;border-top:var(--line) solid var(--ink);display:flex;justify-content:space-between;font-size:11px;color:var(--steel);flex-wrap:wrap;gap:8px;}
+/* about */
+.about-grid{display:grid;grid-template-columns:0.8fr 1.2fr;gap:40px;}
+@media(max-width:860px){.about-grid{grid-template-columns:1fr;}}
+.about-card{padding:26px;}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:18px;}
+.skill-chip{padding:11px 13px;font-size:13px;font-weight:500;border-radius:12px;background:var(--surface-strong);border:1px solid var(--border);}
+.timeline{display:flex;flex-direction:column;gap:18px;margin-top:16px;}
+.tl-item{display:grid;grid-template-columns:20px 1fr;gap:14px;}
+.tl-dot{width:10px;height:10px;border-radius:50%;background:var(--accent);margin-top:6px;position:relative;}
+.tl-dot::after{content:"";position:absolute;left:4px;top:12px;width:2px;height:calc(100% + 18px);background:var(--border);}
+.tl-item:last-child .tl-dot::after{display:none;}
+.tl-item h4{font-size:15px;font-weight:600;}
+.tl-item p{font-size:13.5px;color:var(--ink-soft);margin-top:4px;line-height:1.6;}
 
-  :focus-visible{outline:3px solid var(--hazard);outline-offset:2px;}
-  @media(prefers-reduced-motion:reduce){.hero-block{animation:none;}.card{transition:none;}}
+/* services */
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;}
+.service-card{padding:24px;}
+.service-card .ic{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+.service-card .ic svg{width:20px;height:20px;color:#fff;}
+.service-card h3{font-size:16.5px;margin-bottom:6px;}
+.service-card p{font-size:13.5px;color:var(--ink-soft);line-height:1.6;}
+
+/* projects */
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;perspective:1200px;}
+.proj-card{
+  padding:22px;cursor:pointer;transform-style:preserve-3d;transition:transform .15s ease-out, box-shadow .15s ease-out;
+  display:flex;flex-direction:column;height:100%;
+}
+.proj-card:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+.proj-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+.proj-cat{font-size:11.5px;font-weight:600;color:var(--accent-2);}
+.proj-status{font-size:11px;padding:4px 9px;border-radius:20px;background:rgba(18,183,196,0.15);color:var(--accent-2);white-space:nowrap;}
+.proj-card h3{font-size:19px;margin:12px 0 8px;}
+.proj-card p{font-size:13.5px;color:var(--ink-soft);line-height:1.6;flex:1;}
+.proj-tech{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px;}
+.tech-pill{font-size:11px;padding:4px 9px;border-radius:20px;background:var(--surface-strong);border:1px solid var(--border);}
+.proj-open{margin-top:16px;font-size:13px;font-weight:600;color:var(--accent);display:flex;align-items:center;gap:6px;}
+
+/* project details overlay */
+#detailsView{
+  position:fixed;inset:0;z-index:200;background:var(--bg);overflow-y:auto;
+  opacity:0;visibility:hidden;transform:translateY(24px);
+  transition:opacity .35s ease, transform .35s ease, visibility .35s ease;
+  padding:calc(24px + env(safe-area-inset-top,0px)) 0 60px;
+}
+#detailsView.open{opacity:1;visibility:visible;transform:translateY(0);}
+.back-btn{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:14px;padding:10px 16px;border-radius:12px;background:var(--surface-strong);border:1px solid var(--border);margin-bottom:26px;}
+.d-head{padding:30px;margin-bottom:26px;}
+.d-head .proj-cat{margin-bottom:8px;display:block;}
+.d-head h2{font-size:clamp(26px,4vw,38px);}
+.d-body{display:grid;grid-template-columns:1.4fr 1fr;gap:26px;}
+@media(max-width:860px){.d-body{grid-template-columns:1fr;}}
+.d-block{padding:24px;margin-bottom:20px;}
+.d-block h4{font-size:14px;color:var(--accent);margin-bottom:12px;}
+.feat-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;}
+.feat-list li{font-size:14px;color:var(--ink-soft);display:flex;gap:10px;line-height:1.5;}
+.feat-list li svg{width:16px;height:16px;color:var(--accent-2);flex-shrink:0;margin-top:3px;}
+.d-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;}
+
+/* contact */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+@media(max-width:700px){.contact-grid{grid-template-columns:1fr;}}
+.contact-card{padding:24px;display:flex;gap:14px;align-items:flex-start;}
+.contact-card .ic{width:42px;height:42px;border-radius:12px;background:var(--surface-strong);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.contact-card .ic svg{width:19px;height:19px;color:var(--accent);}
+.contact-card h4{font-size:14.5px;margin-bottom:4px;}
+.contact-card p{font-size:13.5px;color:var(--ink-soft);word-break:break-word;}
+.social-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px;}
+.social-btn{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;}
+.social-btn svg{width:19px;height:19px;}
+
+footer{padding:30px 0;border-top:1px solid var(--border);text-align:center;font-size:12.5px;color:var(--ink-soft);position:relative;z-index:2;}
+
+.cursor-dot{position:fixed;width:10px;height:10px;border-radius:50%;background:var(--accent);pointer-events:none;z-index:500;transform:translate(-50%,-50%);transition:width .15s,height .15s,background .15s;mix-blend-mode:normal;}
+@media(max-width:900px), (hover:none){.cursor-dot{display:none;}}
+
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  .proj-card, #detailsView, #mobileMenu, #loader{transition:none;}
+}
 </style>
 </head>
 <body>
 
+<canvas id="bg-canvas" aria-hidden="true"></canvas>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<div id="loader"><div class="ring"></div><span>লোড হচ্ছে…</span></div>
+
 <nav>
-  <div class="mark">Fahi<span>t</span>rex</div>
+  <div class="nav-inner glass">
+    <a href="#home" class="brand">Abdullah<span>Fahim</span></a>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" aria-label="Toggle theme">
+        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+      </button>
+      <button class="icon-btn" id="menuBtn" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+    </div>
+  </div>
 </nav>
 
-<section class="hero">
-  <div class="wrap">
-    <div class="hero-block" id="heroBlock">
-      <h1 class="disp">রঘু<br>নির্মাণ</h1>
-      <div class="hero-row">
-        <p>আমরা এমন ওয়েবসাইট বানাই যেগুলো ভার বহন করে — নরম গ্রেডিয়েন্ট নয়, কাঁচা কাঠামো। থ্রি-ডি ব্রুটালিজম স্টুডিও, ২০১৯ থেকে।</p>
-        <div class="hero-tag">সংস্করণ ০১.৩ — লোড-বেয়ারিং</div>
+<div id="mobileMenu">
+  <a href="#home">Home</a>
+  <a href="#about">About</a>
+  <a href="#projects">Projects</a>
+  <a href="#services">Services</a>
+  <a href="#contact">Contact</a>
+</div>
+
+<main id="home">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">সফটওয়্যার · ইলেকট্রিক্যাল · ইলেকট্রনিক্স</span>
+        <h1>Abdullah Fahim<br>ধারণাকে বাস্তব প্রযুক্তিতে রূপ দিই।</h1>
+        <p class="lead">আমি Abdullah Fahim — একজন শিক্ষার্থী ও প্রযুক্তি উৎসাহী, যার আগ্রহ সফটওয়্যার ডেভেলপমেন্ট, ইলেকট্রিক্যাল সিস্টেম এবং ইলেকট্রনিক্সে। আমি নতুন প্রযুক্তি শিখতে এবং সেগুলোকে বাস্তব ডিজিটাল ও টেকনিক্যাল প্রজেক্টে রূপান্তর করতে ভালোবাসি।</p>
+        <div class="hero-actions">
+          <a href="#projects" class="btn btn-primary">প্রজেক্ট দেখুন</a>
+          <a href="#about" class="btn btn-ghost">আমার সম্পর্কে</a>
+        </div>
+      </div>
+      <div class="hero-card glass" id="tiltCard">
+        <div class="avatar-frame">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Ab_Fahim.jpg" alt="Abdullah Fahim" width="256" height="256">
+        </div>
+        <h3>Abdullah Fahim</h3>
+        <p class="role">Student · Software, Electrical &amp; Electronics Enthusiast</p>
+        <div class="hero-tags">
+          <span class="tag">Python / Flask</span>
+          <span class="tag">Web Development</span>
+          <span class="tag">Electronics</span>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<div class="stripe"></div>
+  <section id="about">
+    <div class="wrap">
+      <div class="s-head">
+        <span class="eyebrow">About</span>
+        <h2>আমার সম্পর্কে</h2>
+      </div>
+      <div class="about-grid">
+        <div class="glass about-card">
+          <h3 style="font-size:17px;margin-bottom:14px;">Experience</h3>
+          <p style="font-size:13.5px;color:var(--ink-soft);line-height:1.7;">আমি বর্তমানে একজন শিক্ষার্থী এবং ব্যক্তিগত সফটওয়্যার, ওয়েব, ইলেকট্রিক্যাল ও ইলেকট্রনিক্স প্রজেক্টের মাধ্যমে ধারাবাহিকভাবে বাস্তব অভিজ্ঞতা অর্জন করছি। ওয়েব অ্যাপ্লিকেশন, ডেটাবেস-ভিত্তিক সিস্টেম, ডিজিটাল সার্ভিস এবং প্রযুক্তি-সম্পর্কিত প্রজেক্ট নিয়ে কাজ ও পরীক্ষা-নিরীক্ষা করার অভিজ্ঞতা আছে।</p>
+          <h3 style="font-size:17px;margin:22px 0 14px;">Education</h3>
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot"></div>
+              <div><h4>Class 9 — Science</h4><p>বর্তমানে শিক্ষার্থী হিসেবে অধ্যয়নরত।</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="glass about-card">
+          <p style="font-size:14.5px;line-height:1.8;color:var(--ink-soft);">আমি Abdullah Fahim, সফটওয়্যার, ইলেকট্রিক্যাল ইঞ্জিনিয়ারিং এবং ইলেকট্রনিক্সে গভীর আগ্রহ সম্পন্ন একজন শিক্ষার্থী। আমি বাস্তবসম্মত প্রজেক্ট তৈরি করা, নতুন প্রযুক্তি অন্বেষণ করা এবং প্রযুক্তির মাধ্যমে বাস্তব সমস্যার সমাধান করা উপভোগ করি।</p>
+          <p style="font-size:14.5px;line-height:1.8;color:var(--ink-soft);margin-top:14px;">আমার কাজ ও আগ্রহ ছড়িয়ে আছে সফটওয়্যার অ্যাপ্লিকেশন, ওয়েব ডেভেলপমেন্ট, ডিজিটাল সিস্টেম, ইলেকট্রিক্যাল প্রজেক্ট এবং ইলেকট্রনিক্স জুড়ে। প্রজেক্ট তৈরি এবং নতুন ধারণা নিয়ে পরীক্ষা-নিরীক্ষার মাধ্যমে আমি ক্রমাগত নিজের দক্ষতা বাড়িয়ে চলেছি।</p>
+          <p style="font-size:14.5px;line-height:1.8;color:var(--ink-soft);margin-top:14px;">আমার লক্ষ্য এমন প্রযুক্তি তৈরি করা যা সহজ, নির্ভরযোগ্য এবং দৈনন্দিন ব্যবহারের জন্য বাস্তবসম্মত।</p>
+          <h3 style="font-size:17px;margin:24px 0 4px;">Skills</h3>
+          <div class="skills-grid" id="skillsGrid"></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<section class="manifesto">
+  <section id="services">
+    <div class="wrap">
+      <div class="s-head">
+        <span class="eyebrow">Company Focus</span>
+        <h2>সফটওয়্যার ও ইলেকট্রনিক্স — দুই ক্ষেত্র জুড়ে কাজ</h2>
+        <p class="lead" style="margin-top:12px;">Abdullah Fahim-এর প্রযুক্তি প্র্যাকটিস সফটওয়্যার এবং ইলেকট্রিক্যাল/ইলেকট্রনিক্স — দুই ক্ষেত্রেই বিস্তৃত।</p>
+      </div>
+      <div class="services-grid" id="servicesGrid"></div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="wrap">
+      <div class="s-head">
+        <span class="eyebrow">Portfolio</span>
+        <h2>প্রজেক্টসমূহ</h2>
+        <p class="lead" style="margin-top:12px;">বিস্তারিত জানতে যেকোনো প্রজেক্ট কার্ডে ক্লিক করুন।</p>
+      </div>
+      <div class="proj-grid" id="projGrid"></div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="s-head">
+        <span class="eyebrow">Contact</span>
+        <h2>যোগাযোগ করুন</h2>
+      </div>
+      <div class="contact-grid">
+        <a href="mailto:fahim618900@gmail.com" class="glass contact-card">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"></path><path d="M22 6l-10 7L2 6"></path></svg></div>
+          <div><h4>Email</h4><p>fahim618900@gmail.com</p></div>
+        </a>
+        <a href="tel:+8801618517544" class="glass contact-card">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2z"></path></svg></div>
+          <div><h4>Phone</h4><p>+880 1618-517544</p></div>
+        </a>
+        <a href="https://wa.me/8801618517544" target="_blank" rel="noopener" class="glass contact-card">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></div>
+          <div><h4>WhatsApp</h4><p>+880 1618-517544</p></div>
+        </a>
+        <a href="https://github.com/fahim618900-wq" target="_blank" rel="noopener" class="glass contact-card">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.5 0-.24-.01-1.04-.01-1.88-2.78.62-3.37-1.21-3.37-1.21-.46-1.19-1.11-1.51-1.11-1.51-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.04 1.03-2.76-.1-.26-.45-1.31.1-2.73 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.42.2 2.47.1 2.73.64.72 1.03 1.64 1.03 2.76 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.5A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"></path></svg></div>
+          <div><h4>GitHub</h4><p>fahim618900-wq</p></div>
+        </a>
+      </div>
+      <div class="social-row">
+        <a href="https://github.com/fahim618900-wq" target="_blank" rel="noopener" class="glass social-btn" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.5 0-.24-.01-1.04-.01-1.88-2.78.62-3.37-1.21-3.37-1.21-.46-1.19-1.11-1.51-1.11-1.51-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.04 1.03-2.76-.1-.26-.45-1.31.1-2.73 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.42.2 2.47.1 2.73.64.72 1.03 1.64 1.03 2.76 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.5A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"></path></svg></a>
+        <a href="https://youtube.com/@abdfahim61" target="_blank" rel="noopener" class="glass social-btn" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 12s0-3.6-.46-5.3a2.9 2.9 0 0 0-2-2C18.9 4.2 12 4.2 12 4.2s-6.9 0-8.54.5a2.9 2.9 0 0 0-2 2C1 8.4 1 12 1 12s0 3.6.46 5.3a2.9 2.9 0 0 0 2 2c1.64.5 8.54.5 8.54.5s6.9 0 8.54-.5a2.9 2.9 0 0 0 2-2C23 15.6 23 12 23 12z"></path><path d="M9.75 15.25v-6.5L15.5 12l-5.75 3.25z" fill="var(--bg)"></path></svg></a>
+        <a href="https://www.facebook.com/share/1GkLfkduqx/" target="_blank" rel="noopener" class="glass social-btn" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.5H16l.4-3H13.5V8.4c0-.87.24-1.46 1.5-1.46H16.5V4.35C16.24 4.32 15.35 4.24 14.3 4.24c-2.2 0-3.7 1.34-3.7 3.8v2.46H8v3h2.6V21h2.9z"></path></svg></a>
+        <a href="https://www.instagram.com/afmrha" target="_blank" rel="noopener" class="glass social-btn" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1"></circle></svg></a>
+        <a href="https://en.wikipedia.org/wiki/User:Ab_Fahim" target="_blank" rel="noopener" class="glass social-btn" aria-label="Wikipedia" style="font-family:'Space Grotesk',serif;font-weight:700;font-size:15px;">W</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>© 2026 Abdullah Fahim — Software · Electrical · Electronics</footer>
+
+<div id="detailsView">
   <div class="wrap">
-    <h2 class="disp">ইশতেহার</h2>
-    <div>
-      <p>কংক্রিট মিথ্যা বলে না। এর ফাটল দেখা যায়, এর ঢালাইয়ের দাগ দেখা যায়, এর ভার বহনের পথ চোখে ধরা পড়ে। ওয়েব ডিজাইনও তেমন হওয়া উচিত — গঠন লুকিয়ে না রেখে, সেটাকেই সামনে এনে।</p>
-      <p>প্রতিটি প্রোজেক্টে আমরা পিক্সেলকে ব্লকের মতো ঢালাই করি, ছায়াকে অফসেট করি হাতুড়ির ঘায়ের মতো, আর টাইপোগ্রাফিকে দাঁড় করাই বর্গাকার, ভারী, নিরেট করে।</p>
-    </div>
+    <button class="back-btn" id="backBtn">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg>
+      সব প্রজেক্টে ফিরে যান
+    </button>
+    <div id="detailsContent"></div>
   </div>
-</section>
+</div>
 
-<section class="work">
-  <div class="wrap">
-    <h2 class="disp">নির্বাচিত কাজ</h2>
-    <p>মাউস সরালে ব্লকগুলো একটু কাত হয় — যেন সেগুলো সত্যিই দাঁড়িয়ে আছে।</p>
-    <div class="grid" id="grid">
-      <article class="card" data-tilt>
-        <div class="num">প্রোজেক্ট / ঢালাই-০১</div>
-        <h3 class="disp">সিমেন্ট ব্যাংক</h3>
-        <p>একটি সমবায় ব্যাংকের জন্য পোর্টাল, নব্বইয়ের দশকের সরকারি স্থাপত্যের আদলে ডিজাইন করা।</p>
-        <span class="material">কংক্রিট + কাচ</span>
-      </article>
-      <article class="card" data-tilt>
-        <div class="num">প্রোজেক্ট / ঢালাই-০২</div>
-        <h3 class="disp">খাদ ম্যাগাজিন</h3>
-        <p>একটি স্থাপত্য পত্রিকার ডিজিটাল সংস্করণ — কলাম, হেয়ারলাইন আর তীক্ষ্ণ কোণ নিয়ে গড়া।</p>
-        <span class="material">ইস্পাত + কালি</span>
-      </article>
-      <article class="card" data-tilt>
-        <div class="num">প্রোজেক্ট / ঢালাই-০৩</div>
-        <h3 class="disp">বাংকার ল্যাব</h3>
-        <p>একটি রিসার্চ ল্যাবের ওয়েবসাইট, যেখানে ডেটা ব্লকগুলো আক্ষরিক অর্থেই স্তূপাকারে সাজানো।</p>
-        <span class="material">রড + রেজিন</span>
-      </article>
-      <article class="card" data-tilt>
-        <div class="num">প্রোজেক্ট / ঢালাই-০৪</div>
-        <h3 class="disp">মনোরেল স্টুডিও</h3>
-        <p>একটি শিল্প নকশা স্টুডিওর পোর্টফোলিও, ভারী গ্রিড আর হার্ড শ্যাডো দিয়ে বাঁধা।</p>
-        <span class="material">অ্যাসফল্ট + নিয়ন</span>
-      </article>
-    </div>
-  </div>
-</section>
-
-<section class="services">
-  <div class="wrap">
-    <div class="srow">
-      <div class="s-name">কাঠামো নকশা</div>
-      <div class="s-desc">তথ্যের গঠনকে দৃশ্যমান করা — লুকিয়ে না রেখে, বরং কাঠামোকেই নকশার অংশ বানানো।</div>
-      <div><span class="s-tag">৪–৬ সপ্তাহ</span></div>
-    </div>
-    <div class="srow">
-      <div class="s-name">থ্রি-ডি ইন্টারঅ্যাকশন</div>
-      <div class="s-desc">কার্সার-অনুসারী টিল্ট, স্তরীভূত ছায়া, আর ভার-বহনের অনুভূতি যুক্ত অ্যানিমেশন।</div>
-      <div><span class="s-tag">২–৩ সপ্তাহ</span></div>
-    </div>
-    <div class="srow">
-      <div class="s-name">টাইপ সিস্টেম</div>
-      <div class="s-desc">ভারী, নিরেট ডিসপ্লে টাইপ আর টেকনিক্যাল মনোস্পেস বডির সমন্বয়ে গড়া টাইপোগ্রাফি।</div>
-      <div><span class="s-tag">১–২ সপ্তাহ</span></div>
-    </div>
-  </div>
-</section>
-
-<section class="contact">
-  <div class="wrap">
-    <div class="contact-block">
-      <h2 class="disp">ভিত্তি ঢালতে চান?</h2>
-      <p style="margin-top:14px;color:#CFCBBF;max-width:48ch;font-size:14.5px;line-height:1.6;">আপনার পরবর্তী প্রোজেক্টের কথা বলুন — আমরা নরম কিছু বানাই না।</p>
-      <a class="cta" href="mailto:studio@monolith.example">ইমেইল করুন — studio@monolith.example</a>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <span>© ২০২৬ abdullah</span>
-  <span>date: 27.09.2026</span>
-</footer>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-document.querySelectorAll('[data-tilt]').forEach(function(card){
-  card.addEventListener('mousemove', function(e){
-    var r = card.getBoundingClientRect();
-    var x = (e.clientX - r.left) / r.width - 0.5;
-    var y = (e.clientY - r.top) / r.height - 0.5;
-    card.style.transform = 'rotateY(' + (x*10) + 'deg) rotateX(' + (-y*10) + 'deg) translateZ(6px)';
+/* ---------------- DATA ---------------- */
+const skills = ["HTML","CSS","JavaScript","Responsive Web Design","Web App Development","UI/UX Design","Database Management","Python","Flask","Git & GitHub","Android/Web Technology","Basic Networking","Electrical Circuit Basics","Electronics","Digital Electronics","Hardware & Software Integration","Problem Solving","Technology Research"];
+
+const services = [
+  {t:"Software Development", d:"কাস্টম সফটওয়্যার ও ডেস্কটপ/ওয়েব টুল তৈরি, বাস্তব সমস্যার সমাধানের জন্য।", i:'<path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/>'},
+  {t:"Web Applications", d:"রেসপনসিভ, ডেটাবেস-ভিত্তিক ওয়েব অ্যাপ্লিকেশন ও প্ল্যাটফর্ম।", i:'<path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/>'},
+  {t:"Digital Systems", d:"তথ্য সংগঠন ও ব্যবস্থাপনার জন্য ডিজিটাল সিস্টেম ও ডেটাবেস সমাধান।", i:'<rect x="3" y="4" width="18" height="4" rx="1"/><rect x="3" y="10" width="18" height="4" rx="1"/><rect x="3" y="16" width="18" height="4" rx="1"/>'},
+  {t:"Electrical Technology", d:"বৈদ্যুতিক সার্কিট ও পাওয়ার সিস্টেম নিয়ে ব্যবহারিক কাজ ও পরীক্ষা-নিরীক্ষা।", i:'<path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/>'},
+  {t:"Electronics", d:"ইলেকট্রনিক কম্পোনেন্ট, ডিসপ্লে ও ডিজিটাল সার্কিট নিয়ে প্র্যাকটিক্যাল প্রজেক্ট।", i:'<circle cx="9" cy="9" r="2"/><circle cx="15" cy="15" r="2"/><path d="M9 11v2a2 2 0 0 0 2 2h2M15 13v-2a2 2 0 0 0-2-2h-2"/>'},
+  {t:"Hardware + Software Integration", d:"মাইক্রোকন্ট্রোলার ও সফটওয়্যার একসাথে কাজ করানো — বাস্তব ডিভাইসে রূপ দেওয়া।", i:'<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/>'},
+];
+
+const projects = [
+  {
+    id:1, category:"Software · Web · Database", status:"Ongoing Development",
+    title:"Darul Hikmah Madrasa Management System",
+    short:"মাদ্রাসার শিক্ষার্থী ও প্রশাসনিক তথ্য পরিচালনার জন্য একটি ডিজিটাল ম্যানেজমেন্ট সিস্টেম।",
+    full:"Darul Hikmah Madrasa Management System একটি ডিজিটাল প্ল্যাটফর্ম, যা মাদ্রাসা-সম্পর্কিত তথ্য এবং প্রশাসনিক কার্যক্রম পরিচালনার জন্য ডিজাইন করা হয়েছে। এটি শিক্ষার্থীদের তথ্য, আইডি এবং শ্রেণিভিত্তিক রেকর্ড সংগঠিতভাবে সংরক্ষণ ও পরিচালনা করতে সাহায্য করে।",
+    features:["Student information management","Student ID management","Class-based information","Student records","Database management","Web-based administration","Search & organized data viewing","Local network support","Responsive interface"],
+    tech:["HTML","CSS","JavaScript","Python","Flask","SQLite"],
+    liveUrl:null, githubUrl:null
+  },
+  {
+    id:2, category:"Islamic Digital Platform", status:"Active",
+    title:"Noble Hadith",
+    short:"বাংলা হাদিস ও ইসলামিক কনটেন্ট সহজ ও সুন্দরভাবে উপস্থাপনের একটি ডিজিটাল প্ল্যাটফর্ম।",
+    full:"Noble Hadith একটি ডিজিটাল প্ল্যাটফর্ম যা বাংলা ভাষায় হাদিস এবং ইসলামিক কনটেন্ট সহজ ও সুবিধাজনক একটি ওয়েব ইন্টারফেসের মাধ্যমে উপস্থাপন করে।",
+    features:["Bengali Hadith content","Daily content","Responsive design","Mobile-friendly interface","Search-friendly structure","Previous content fallback","Notification support","SEO-friendly structure"],
+    tech:["HTML","CSS","JavaScript","GitHub Pages"],
+    liveUrl:"https://noblehadith.github.io", githubUrl:null, extra:{label:"YouTube", url:"https://youtube.com/@abdfahim61"}
+  },
+  {
+    id:3, category:"Software · Database", status:"Ongoing Development",
+    title:"Database Viewer",
+    short:"ডেটাবেসের তথ্য সহজভাবে দেখা, খোঁজা এবং সংগঠিত করার জন্য একটি ব্রাউজার-ভিত্তিক টুল।",
+    full:"Database Viewer একটি ব্রাউজার-ভিত্তিক অ্যাপ্লিকেশন যা ডেটাবেসের তথ্যকে একটি পরিষ্কার ইন্টারফেসের মাধ্যমে দেখা, খোঁজা এবং সংগঠিত করা সহজ করে তোলে।",
+    features:["Database information viewing","Search","Organized records","Class/category-based information","Easy-to-read interface","Responsive design","Local database workflow"],
+    tech:["HTML","CSS","JavaScript","SQLite"],
+    liveUrl:null, githubUrl:null
+  },
+  {
+    id:4, category:"Electrical · Electronics · Hardware", status:"Ongoing Collection",
+    title:"Electrical & Electronics Technology Projects",
+    short:"সার্কিট, পাওয়ার সিস্টেম, ডিসপ্লে ও হার্ডওয়্যার-সফটওয়্যার ইন্টারঅ্যাকশন নিয়ে একটি ব্যবহারিক প্রজেক্ট সংগ্রহ।",
+    full:"এটি বৈদ্যুতিক ও ইলেকট্রনিক পরীক্ষা-নিরীক্ষা এবং প্রজেক্টের একটি সংগ্রহ, যা সার্কিট, পাওয়ার সিস্টেম, ডিসপ্লে, কম্পোনেন্ট এবং হার্ডওয়্যার-সফটওয়্যার ইন্টারঅ্যাকশন বোঝার ওপর কেন্দ্রীভূত। এটি একটি নির্দিষ্ট সম্পূর্ণ পণ্য নয়, বরং চলমান শেখার ও পরীক্ষার একটি ক্ষেত্র।",
+    featuresTitle:"Focus Areas",
+    features:["Basic electronic circuits","Power conversion","LED / display systems","Voltage & current concepts","Electronic components","Digital electronics","Hardware experimentation","Software-controlled electronics"],
+    tech:["Electronic components","LEDs","Displays","Power circuits","Digital circuits","Microcontroller/software integration"],
+    liveUrl:null, githubUrl:null
+  }
+];
+
+/* ---------------- RENDER ---------------- */
+const skillsGrid = document.getElementById('skillsGrid');
+skillsGrid.innerHTML = skills.map(s=>`<div class="skill-chip">${s}</div>`).join('');
+
+const servicesGrid = document.getElementById('servicesGrid');
+servicesGrid.innerHTML = services.map(s=>`
+  <div class="glass service-card">
+    <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${s.i}</svg></div>
+    <h3>${s.t}</h3><p>${s.d}</p>
+  </div>`).join('');
+
+function externalIcon(){return '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>';}
+function checkIcon(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';}
+function githubIcon(){return '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.5 0-.24-.01-1.04-.01-1.88-2.78.62-3.37-1.21-3.37-1.21-.46-1.19-1.11-1.51-1.11-1.51-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.04 1.03-2.76-.1-.26-.45-1.31.1-2.73 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.42.2 2.47.1 2.73.64.72 1.03 1.64 1.03 2.76 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.5A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg>';}
+
+const projGrid = document.getElementById('projGrid');
+projGrid.innerHTML = projects.map(p=>`
+  <article class="glass proj-card" tabindex="0" role="button" data-id="${p.id}" data-tilt>
+    <div class="proj-top"><span class="proj-cat">${p.category}</span><span class="proj-status">${p.status}</span></div>
+    <h3>${p.title}</h3>
+    <p>${p.short}</p>
+    <div class="proj-tech">${p.tech.slice(0,4).map(t=>`<span class="tech-pill">${t}</span>`).join('')}</div>
+    <div class="proj-open">বিস্তারিত দেখুন ${externalIcon()}</div>
+  </article>`).join('');
+
+function openDetails(id){
+  const p = projects.find(x=>x.id===id);
+  if(!p) return;
+  const linksHtml = `
+    ${p.liveUrl?`<a href="${p.liveUrl}" target="_blank" rel="noopener" class="btn btn-primary">লাইভ প্রজেক্ট ${externalIcon()}</a>`:''}
+    ${p.githubUrl?`<a href="${p.githubUrl}" target="_blank" rel="noopener" class="btn btn-ghost">${githubIcon()} GitHub</a>`:''}
+    ${p.extra?`<a href="${p.extra.url}" target="_blank" rel="noopener" class="btn btn-ghost">${p.extra.label} ${externalIcon()}</a>`:''}
+  `;
+  document.getElementById('detailsContent').innerHTML = `
+    <div class="glass d-head">
+      <span class="eyebrow proj-cat">${p.category}</span>
+      <h2>${p.title}</h2>
+      <p class="lead" style="margin-top:12px;">${p.full}</p>
+      <div class="d-links" style="margin-top:20px;">${linksHtml || '<span class="lead">এই প্রজেক্টের জন্য এই মুহূর্তে কোনো পাবলিক লিংক নেই।</span>'}</div>
+    </div>
+    <div class="d-body">
+      <div class="glass d-block">
+        <h4>${p.featuresTitle || 'Features'}</h4>
+        <ul class="feat-list">${p.features.map(f=>`<li>${checkIcon()}<span>${f}</span></li>`).join('')}</ul>
+      </div>
+      <div class="glass d-block">
+        <h4>Technology</h4>
+        <div class="proj-tech">${p.tech.map(t=>`<span class="tech-pill">${t}</span>`).join('')}</div>
+        <h4 style="margin-top:22px;">Status</h4>
+        <p style="font-size:14px;color:var(--ink-soft);">${p.status}</p>
+      </div>
+    </div>`;
+  document.getElementById('detailsView').classList.add('open');
+  document.getElementById('detailsView').scrollTop = 0;
+  document.body.style.overflow='hidden';
+}
+document.getElementById('projGrid').addEventListener('click', e=>{
+  const card = e.target.closest('.proj-card');
+  if(card) openDetails(Number(card.dataset.id));
+});
+document.getElementById('projGrid').addEventListener('keydown', e=>{
+  if((e.key==='Enter'||e.key===' ') && e.target.closest('.proj-card')){
+    e.preventDefault(); openDetails(Number(e.target.closest('.proj-card').dataset.id));
+  }
+});
+document.getElementById('backBtn').addEventListener('click', ()=>{
+  document.getElementById('detailsView').classList.remove('open');
+  document.body.style.overflow='';
+});
+
+/* ---------------- THEME + BACKGROUND ---------------- */
+function isMobile(){ return window.innerWidth < 768; }
+function applyBackground(){
+  const dark = document.documentElement.getAttribute('data-theme')==='dark';
+  const mobile = isMobile();
+  let path;
+  if(mobile) path = dark ? 'path/logod.m.png' : 'path/logol.m.png';
+  else path = dark ? 'path/logod.p.png' : 'path/logol.p.png';
+  document.documentElement.style.setProperty('--bg-shot', `url('${path}')`);
+}
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('theme', t);
+  document.getElementById('themeIcon').innerHTML = t==='dark'
+    ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>'
+    : '<circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>';
+  applyBackground();
+}
+const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+setTheme(savedTheme);
+document.getElementById('themeBtn').addEventListener('click', ()=>{
+  setTheme(document.documentElement.getAttribute('data-theme')==='dark' ? 'light' : 'dark');
+});
+window.addEventListener('resize', applyBackground);
+
+/* ---------------- MOBILE MENU ---------------- */
+const mobileMenu = document.getElementById('mobileMenu');
+const menuBtn = document.getElementById('menuBtn');
+menuBtn.addEventListener('click', ()=> mobileMenu.classList.toggle('open'));
+mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=> mobileMenu.classList.remove('open')));
+
+/* ---------------- CUSTOM CURSOR ---------------- */
+const cursorDot = document.getElementById('cursorDot');
+if(window.matchMedia('(hover:hover)').matches){
+  window.addEventListener('mousemove', e=>{
+    cursorDot.style.left = e.clientX+'px'; cursorDot.style.top = e.clientY+'px';
   });
-  card.addEventListener('mouseleave', function(){
-    card.style.transform = 'rotateY(0deg) rotateX(0deg) translateZ(0px)';
+  document.querySelectorAll('a,button,.proj-card').forEach(el=>{
+    el.addEventListener('mouseenter', ()=>{cursorDot.style.width='22px';cursorDot.style.height='22px';cursorDot.style.background='var(--accent-2)';});
+    el.addEventListener('mouseleave', ()=>{cursorDot.style.width='10px';cursorDot.style.height='10px';cursorDot.style.background='var(--accent)';});
   });
+}
+
+/* ---------------- TILT ---------------- */
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(!reduceMotion){
+  document.querySelectorAll('[data-tilt]').forEach(card=>{
+    card.addEventListener('mousemove', e=>{
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX-r.left)/r.width-0.5, y=(e.clientY-r.top)/r.height-0.5;
+      card.style.transform = `rotateY(${x*8}deg) rotateX(${-y*8}deg) translateZ(4px)`;
+    });
+    card.addEventListener('mouseleave', ()=>{ card.style.transform='rotateY(0) rotateX(0) translateZ(0)'; });
+  });
+  const tiltCard = document.getElementById('tiltCard');
+  window.addEventListener('mousemove', e=>{
+    const x = (e.clientX/window.innerWidth-0.5), y=(e.clientY/window.innerHeight-0.5);
+    tiltCard.style.transform = `rotateY(${x*10}deg) rotateX(${-y*10}deg)`;
+  });
+}
+
+/* ---------------- IMAGE / BACKGROUND PROTECTION ---------------- */
+document.addEventListener('contextmenu', e=>{ if(e.target.tagName==='IMG' || e.target===document.body) e.preventDefault(); });
+document.addEventListener('dragstart', e=>{ if(e.target.tagName==='IMG') e.preventDefault(); });
+document.addEventListener('keydown', e=>{
+  const k = e.key.toLowerCase();
+  if((e.ctrlKey||e.metaKey) && ['s','u','p'].includes(k)) e.preventDefault();
+  if(e.key==='F12') e.preventDefault();
+  if((e.ctrlKey||e.metaKey) && e.shiftKey && ['i','j','c'].includes(k)) e.preventDefault();
+});
+
+/* ---------------- THREE.JS BACKGROUND ---------------- */
+(function(){
+  const canvas = document.getElementById('bg-canvas');
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(55, window.innerWidth/window.innerHeight, 0.1, 100);
+  camera.position.z = 14;
+  const renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+  const dl = new THREE.DirectionalLight(0x8fb4ff, 1.1);
+  dl.position.set(5,8,6); scene.add(dl);
+  const dl2 = new THREE.DirectionalLight(0x39d5e0, 0.5);
+  dl2.position.set(-6,-4,4); scene.add(dl2);
+
+  const mobile = isMobile();
+  const shapeCount = mobile ? 3 : 6;
+  const shapes = [];
+  const geoms = [
+    ()=> new THREE.IcosahedronGeometry(1.1, 0),
+    ()=> new THREE.TorusGeometry(0.9, 0.28, 12, 36),
+    ()=> new THREE.OctahedronGeometry(1.0, 0),
+    ()=> new THREE.SphereGeometry(0.8, 20, 20)
+  ];
+  for(let i=0;i<shapeCount;i++){
+    const geo = geoms[i % geoms.length]();
+    const mat = new THREE.MeshStandardMaterial({
+      color: i%2===0 ? 0x2f6fed : 0x12b7c4,
+      roughness:0.25, metalness:0.15, transparent:true, opacity:0.16, wireframe:(i%3===0)
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.set((Math.random()-0.5)*16,(Math.random()-0.5)*10,(Math.random()-0.5)*8-4);
+    mesh.userData.speed = 0.15+Math.random()*0.25;
+    mesh.userData.axis = new THREE.Vector3(Math.random(),Math.random(),Math.random()).normalize();
+    scene.add(mesh); shapes.push(mesh);
+  }
+
+  const particleCount = mobile ? 120 : 300;
+  const positions = new Float32Array(particleCount*3);
+  for(let i=0;i<particleCount;i++){
+    positions[i*3]=(Math.random()-0.5)*30;
+    positions[i*3+1]=(Math.random()-0.5)*20;
+    positions[i*3+2]=(Math.random()-0.5)*14;
+  }
+  const pGeo = new THREE.BufferGeometry();
+  pGeo.setAttribute('position', new THREE.BufferAttribute(positions,3));
+  const pMat = new THREE.PointsMaterial({color:0x8fb4ff, size:0.045, transparent:true, opacity:0.5});
+  const points = new THREE.Points(pGeo, pMat);
+  scene.add(points);
+
+  let mouseX=0, mouseY=0;
+  window.addEventListener('mousemove', e=>{
+    mouseX = (e.clientX/window.innerWidth-0.5);
+    mouseY = (e.clientY/window.innerHeight-0.5);
+  });
+
+  window.addEventListener('resize', ()=>{
+    camera.aspect = window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
+  const clock = new THREE.Clock();
+  function animate(){
+    requestAnimationFrame(animate);
+    const t = clock.getElapsedTime();
+    shapes.forEach(m=>{
+      m.rotation.x += 0.002*m.userData.speed*60/60;
+      m.rotation.y += 0.003*m.userData.speed*60/60;
+      m.position.y += Math.sin(t*0.4*m.userData.speed+m.id)*0.0025;
+    });
+    points.rotation.y += 0.0006;
+    if(!reduceMotion){
+      camera.position.x += (mouseX*1.6 - camera.position.x)*0.02;
+      camera.position.y += (-mouseY*1.0 - camera.position.y)*0.02;
+      camera.lookAt(0,0,0);
+    }
+    renderer.render(scene, camera);
+  }
+  animate();
+})();
+
+/* ---------------- LOADER ---------------- */
+window.addEventListener('load', ()=>{
+  setTimeout(()=> document.getElementById('loader').classList.add('hide'), 350);
 });
 </script>
-
 </body>
 </html>
