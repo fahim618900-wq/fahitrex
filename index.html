@@ -406,12 +406,21 @@ const services = [
   {t:"Hardware + Software Integration", d:"মাইক্রোকন্ট্রোলার ও সফটওয়্যার একসাথে কাজ করানো — বাস্তব ডিভাইসে রূপ দেওয়া।", i:'<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/>'},
 ];
 
+/* ------------------------------------------------------------------
+   প্রজেক্ট ফাইল: রুট ফোল্ডারের "project" ডিরেক্টরির ভেতরে রাখুন।
+   যেমন: project/madrasa-management.html
+         project/noble-hadith.html
+         project/database-viewer.html
+         project/electrical-electronics.pdf
+   শুধু নিচের file: "..." অংশটুকু আপনার ফাইলের নাম অনুযায়ী বদলান।
+-------------------------------------------------------------------*/
 const projects = [
   {
     id:1, category:"Software · Web · Database", status:"Ongoing Development",
     title:"Darul Hikmah Madrasa Management System",
     short:"মাদ্রাসার শিক্ষার্থী ও প্রশাসনিক তথ্য পরিচালনার জন্য একটি ডিজিটাল ম্যানেজমেন্ট সিস্টেম।",
     full:"Darul Hikmah Madrasa Management System একটি ডিজিটাল প্ল্যাটফর্ম, যা মাদ্রাসা-সম্পর্কিত তথ্য এবং প্রশাসনিক কার্যক্রম পরিচালনার জন্য ডিজাইন করা হয়েছে। এটি শিক্ষার্থীদের তথ্য, আইডি এবং শ্রেণিভিত্তিক রেকর্ড সংগঠিতভাবে সংরক্ষণ ও পরিচালনা করতে সাহায্য করে।",
+    file:"project/madrasa-management.html",
     features:["Student information management","Student ID management","Class-based information","Student records","Database management","Web-based administration","Search & organized data viewing","Local network support","Responsive interface"],
     tech:["HTML","CSS","JavaScript","Python","Flask","SQLite"],
     liveUrl:null, githubUrl:null
@@ -421,6 +430,7 @@ const projects = [
     title:"Noble Hadith",
     short:"বাংলা হাদিস ও ইসলামিক কনটেন্ট সহজ ও সুন্দরভাবে উপস্থাপনের একটি ডিজিটাল প্ল্যাটফর্ম।",
     full:"Noble Hadith একটি ডিজিটাল প্ল্যাটফর্ম যা বাংলা ভাষায় হাদিস এবং ইসলামিক কনটেন্ট সহজ ও সুবিধাজনক একটি ওয়েব ইন্টারফেসের মাধ্যমে উপস্থাপন করে।",
+    file:"project/noble-hadith.html",
     features:["Bengali Hadith content","Daily content","Responsive design","Mobile-friendly interface","Search-friendly structure","Previous content fallback","Notification support","SEO-friendly structure"],
     tech:["HTML","CSS","JavaScript","GitHub Pages"],
     liveUrl:"https://noblehadith.github.io", githubUrl:null, extra:{label:"YouTube", url:"https://youtube.com/@abdfahim61"}
@@ -430,6 +440,7 @@ const projects = [
     title:"Database Viewer",
     short:"ডেটাবেসের তথ্য সহজভাবে দেখা, খোঁজা এবং সংগঠিত করার জন্য একটি ব্রাউজার-ভিত্তিক টুল।",
     full:"Database Viewer একটি ব্রাউজার-ভিত্তিক অ্যাপ্লিকেশন যা ডেটাবেসের তথ্যকে একটি পরিষ্কার ইন্টারফেসের মাধ্যমে দেখা, খোঁজা এবং সংগঠিত করা সহজ করে তোলে।",
+    file:"project/database-viewer.html",
     features:["Database information viewing","Search","Organized records","Class/category-based information","Easy-to-read interface","Responsive design","Local database workflow"],
     tech:["HTML","CSS","JavaScript","SQLite"],
     liveUrl:null, githubUrl:null
@@ -439,6 +450,7 @@ const projects = [
     title:"Electrical & Electronics Technology Projects",
     short:"সার্কিট, পাওয়ার সিস্টেম, ডিসপ্লে ও হার্ডওয়্যার-সফটওয়্যার ইন্টারঅ্যাকশন নিয়ে একটি ব্যবহারিক প্রজেক্ট সংগ্রহ।",
     full:"এটি বৈদ্যুতিক ও ইলেকট্রনিক পরীক্ষা-নিরীক্ষা এবং প্রজেক্টের একটি সংগ্রহ, যা সার্কিট, পাওয়ার সিস্টেম, ডিসপ্লে, কম্পোনেন্ট এবং হার্ডওয়্যার-সফটওয়্যার ইন্টারঅ্যাকশন বোঝার ওপর কেন্দ্রীভূত। এটি একটি নির্দিষ্ট সম্পূর্ণ পণ্য নয়, বরং চলমান শেখার ও পরীক্ষার একটি ক্ষেত্র।",
+    file:"project/electrical-electronics.html",
     featuresTitle:"Focus Areas",
     features:["Basic electronic circuits","Power conversion","LED / display systems","Voltage & current concepts","Electronic components","Digital electronics","Hardware experimentation","Software-controlled electronics"],
     tech:["Electronic components","LEDs","Displays","Power circuits","Digital circuits","Microcontroller/software integration"],
@@ -475,7 +487,8 @@ function openDetails(id){
   const p = projects.find(x=>x.id===id);
   if(!p) return;
   const linksHtml = `
-    ${p.liveUrl?`<a href="${p.liveUrl}" target="_blank" rel="noopener" class="btn btn-primary">লাইভ প্রজেক্ট ${externalIcon()}</a>`:''}
+    ${p.file?`<a href="${p.file}" target="_blank" rel="noopener" class="btn btn-primary">প্রজেক্ট দেখুন ${externalIcon()}</a>`:''}
+    ${p.liveUrl?`<a href="${p.liveUrl}" target="_blank" rel="noopener" class="btn btn-ghost">লাইভ প্রজেক্ট ${externalIcon()}</a>`:''}
     ${p.githubUrl?`<a href="${p.githubUrl}" target="_blank" rel="noopener" class="btn btn-ghost">${githubIcon()} GitHub</a>`:''}
     ${p.extra?`<a href="${p.extra.url}" target="_blank" rel="noopener" class="btn btn-ghost">${p.extra.label} ${externalIcon()}</a>`:''}
   `;
