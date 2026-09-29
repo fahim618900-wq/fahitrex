@@ -407,14 +407,10 @@ const services = [
 ];
 
 /* ------------------------------------------------------------------
-   প্রজেক্ট ফাইল: রুট ফোল্ডারের "project" ডিরেক্টরির ভেতরে রাখুন।
-   যেমন: project/madrasa-management.html
-         project/noble-hadith.html
-         project/database-viewer.html
-         project/electrical-electronics.pdf
-   শুধু নিচের file: "..." অংশটুকু আপনার ফাইলের নাম অনুযায়ী বদলান।
+   ডিফল্ট প্রজেক্ট তালিকা (প্রয়োজনে ব্যবহারকারী project/projects.json
+   দিয়ে সম্পূর্ণ তালিকা ওভাররাইড করতে পারবেন)।
 -------------------------------------------------------------------*/
-const projects = [
+const defaultProjects = [
   {
     id:1, category:"Software · Web · Database", status:"Ongoing Development",
     title:"Darul Hikmah Madrasa Management System",
@@ -458,6 +454,76 @@ const projects = [
   }
 ];
 
+/* ---------------- অটো প্রজেক্ট ডিটেকশন ---------------- */
+function getGitHubRepoInfo() {
+  const hostname = window.location.hostname;
+  const pathname = window.location.pathname;
+  if (hostname.endsWith('.github.io')) {
+    const username = hostname.split('.')[0];
+    let repo = username + '.github.io';
+    const parts = pathname.split('/').filter(p => p);
+    if (parts.length > 0) {
+      repo = parts[0];
+    }
+    return { username, repo };
+  }
+  return null;
+}
+
+async function fetchProjects() {
+  let projects = [...defaultProjects];
+
+  // ১) project/projects.json থাকলে সেটি দিয়ে সম্পূর্ণ তালিকা প্রতিস্থাপন
+  try {
+    const res = await fetch('project/projects.json');
+    if (res.ok) {
+      const json = await res.json();
+      if (Array.isArray(json)) {
+        json.forEach((p, i) => { if (!p.id) p.id = i + 1; });
+        return json;
+      }
+    }
+  } catch (e) { /* ignore */ }
+
+  // ২) GitHub API থেকে project ফোল্ডারের ফাইল লিস্ট আনা
+  const repoInfo = getGitHubRepoInfo();
+  if (repoInfo) {
+    try {
+      const { username, repo } = repoInfo;
+      const apiUrl = `https://api.github.com/repos/${username}/${repo}/contents/project`;
+      const res = await fetch(apiUrl);
+      if (res.ok) {
+        const files = await res.json();
+        const existingFiles = new Set(projects.map(p => p.file).filter(Boolean));
+        let nextId = Math.max(...projects.map(p => p.id), 0) + 1;
+        for (const file of files) {
+          if (file.type === 'file' && /\.(html|pdf|md|txt|zip)$/i.test(file.name)) {
+            const filePath = `project/${file.name}`;
+            if (existingFiles.has(filePath)) continue;
+            const title = file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+            projects.push({
+              id: nextId++,
+              category: "Uploaded Project",
+              status: "New",
+              title: title,
+              short: `প্রজেক্ট ফাইল: ${file.name}`,
+              full: `এটি একটি আপলোড করা প্রজেক্ট ফাইল (${file.name})। বিস্তারিত দেখতে নিচের লিংকে ক্লিক করুন।`,
+              file: filePath,
+              features: ["Uploaded file", "Auto-detected", "Click to open"],
+              tech: [file.name.split('.').pop().toUpperCase()],
+              liveUrl: null,
+              githubUrl: null
+            });
+            existingFiles.add(filePath);
+          }
+        }
+      }
+    } catch (e) { /* ignore */ }
+  }
+
+  return projects;
+}
+
 /* ---------------- RENDER ---------------- */
 const skillsGrid = document.getElementById('skillsGrid');
 skillsGrid.innerHTML = skills.map(s=>`<div class="skill-chip">${s}</div>`).join('');
@@ -473,18 +539,22 @@ function externalIcon(){return '<svg viewBox="0 0 24 24" width="14" height="14" 
 function checkIcon(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';}
 function githubIcon(){return '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.5 0-.24-.01-1.04-.01-1.88-2.78.62-3.37-1.21-3.37-1.21-.46-1.19-1.11-1.51-1.11-1.51-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.04 1.03-2.76-.1-.26-.45-1.31.1-2.73 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.42.2 2.47.1 2.73.64.72 1.03 1.64 1.03 2.76 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.5A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg>';}
 
-const projGrid = document.getElementById('projGrid');
-projGrid.innerHTML = projects.map(p=>`
-  <article class="glass proj-card" tabindex="0" role="button" data-id="${p.id}" data-tilt>
-    <div class="proj-top"><span class="proj-cat">${p.category}</span><span class="proj-status">${p.status}</span></div>
-    <h3>${p.title}</h3>
-    <p>${p.short}</p>
-    <div class="proj-tech">${p.tech.slice(0,4).map(t=>`<span class="tech-pill">${t}</span>`).join('')}</div>
-    <div class="proj-open">বিস্তারিত দেখুন ${externalIcon()}</div>
-  </article>`).join('');
+let allProjects = [];
+
+function renderProjects(projects) {
+  const projGrid = document.getElementById('projGrid');
+  projGrid.innerHTML = projects.map(p=>`
+    <article class="glass proj-card" tabindex="0" role="button" data-id="${p.id}" data-tilt>
+      <div class="proj-top"><span class="proj-cat">${p.category}</span><span class="proj-status">${p.status}</span></div>
+      <h3>${p.title}</h3>
+      <p>${p.short}</p>
+      <div class="proj-tech">${p.tech.slice(0,4).map(t=>`<span class="tech-pill">${t}</span>`).join('')}</div>
+      <div class="proj-open">বিস্তারিত দেখুন ${externalIcon()}</div>
+    </article>`).join('');
+}
 
 function openDetails(id){
-  const p = projects.find(x=>x.id===id);
+  const p = allProjects.find(x=>x.id===id);
   if(!p) return;
   const linksHtml = `
     ${p.file?`<a href="${p.file}" target="_blank" rel="noopener" class="btn btn-primary">প্রজেক্ট দেখুন ${externalIcon()}</a>`:''}
@@ -515,18 +585,37 @@ function openDetails(id){
   document.getElementById('detailsView').scrollTop = 0;
   document.body.style.overflow='hidden';
 }
-document.getElementById('projGrid').addEventListener('click', e=>{
-  const card = e.target.closest('.proj-card');
-  if(card) openDetails(Number(card.dataset.id));
-});
-document.getElementById('projGrid').addEventListener('keydown', e=>{
-  if((e.key==='Enter'||e.key===' ') && e.target.closest('.proj-card')){
-    e.preventDefault(); openDetails(Number(e.target.closest('.proj-card').dataset.id));
+
+// প্রজেক্ট গ্রিড রেন্ডার ও ইভেন্ট লিসেনার সেটআপ
+fetchProjects().then(projects => {
+  allProjects = projects;
+  renderProjects(projects);
+
+  document.getElementById('projGrid').addEventListener('click', e=>{
+    const card = e.target.closest('.proj-card');
+    if(card) openDetails(Number(card.dataset.id));
+  });
+  document.getElementById('projGrid').addEventListener('keydown', e=>{
+    if((e.key==='Enter'||e.key===' ') && e.target.closest('.proj-card')){
+      e.preventDefault(); openDetails(Number(e.target.closest('.proj-card').dataset.id));
+    }
+  });
+  document.getElementById('backBtn').addEventListener('click', ()=>{
+    document.getElementById('detailsView').classList.remove('open');
+    document.body.style.overflow='';
+  });
+
+  // টিল্ট ইফেক্ট নতুন কার্ডেও প্রয়োগ
+  if(!reduceMotion){
+    document.querySelectorAll('[data-tilt]').forEach(card=>{
+      card.addEventListener('mousemove', e=>{
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX-r.left)/r.width-0.5, y=(e.clientY-r.top)/r.height-0.5;
+        card.style.transform = `rotateY(${x*8}deg) rotateX(${-y*8}deg) translateZ(4px)`;
+      });
+      card.addEventListener('mouseleave', ()=>{ card.style.transform='rotateY(0) rotateX(0) translateZ(0)'; });
+    });
   }
-});
-document.getElementById('backBtn').addEventListener('click', ()=>{
-  document.getElementById('detailsView').classList.remove('open');
-  document.body.style.overflow='';
 });
 
 /* ---------------- THEME + BACKGROUND ---------------- */
@@ -572,17 +661,9 @@ if(window.matchMedia('(hover:hover)').matches){
   });
 }
 
-/* ---------------- TILT ---------------- */
+/* ---------------- TILT (হিরো কার্ড) ---------------- */
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 if(!reduceMotion){
-  document.querySelectorAll('[data-tilt]').forEach(card=>{
-    card.addEventListener('mousemove', e=>{
-      const r = card.getBoundingClientRect();
-      const x = (e.clientX-r.left)/r.width-0.5, y=(e.clientY-r.top)/r.height-0.5;
-      card.style.transform = `rotateY(${x*8}deg) rotateX(${-y*8}deg) translateZ(4px)`;
-    });
-    card.addEventListener('mouseleave', ()=>{ card.style.transform='rotateY(0) rotateX(0) translateZ(0)'; });
-  });
   const tiltCard = document.getElementById('tiltCard');
   window.addEventListener('mousemove', e=>{
     const x = (e.clientX/window.innerWidth-0.5), y=(e.clientY/window.innerHeight-0.5);
