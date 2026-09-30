@@ -208,6 +208,7 @@ nav{
 .file-card[data-kind="archive"] .node-icon{background:rgba(200,160,40,.16);color:#B98A0E;}
 .file-card[data-kind="video"] .node-icon{background:rgba(226,72,120,.15);color:#E24878;}
 .file-card[data-kind="audio"] .node-icon{background:rgba(60,160,220,.16);color:#2E9BDC;}
+.file-card[data-kind="office"] .node-icon{background:rgba(43,87,154,.16);color:#2B579A;}
 .node-meta{font-size:12px;color:var(--ink-soft);margin-top:2px;}
 
 .browse-bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:22px;}
@@ -410,26 +411,8 @@ nav{
 
 footer{padding:30px 0;border-top:1px solid var(--border);text-align:center;font-size:12.5px;color:var(--ink-soft);position:relative;z-index:2;}
 
-/* ============ CUSTOM CURSOR (ডিফল্ট কার্সর লুকানো) ============ */
-.cursor-dot{
-  position:fixed;width:10px;height:10px;border-radius:50%;
-  background:var(--accent);pointer-events:none;z-index:500;
-  transform:translate(-50%,-50%);
-  transition:width .15s,height .15s,background .15s;
-}
-
-/* ডেস্কটপ / মাউস-ওয়ালা ডিভাইসে ডিফল্ট কার্সর লুকাও */
-@media (hover: hover) and (pointer: fine){
-  html, body, a, button, input, textarea, select,
-  .proj-card, [role="button"], [role="link"]{
-    cursor: none;
-  }
-}
-
-/* মোবাইল / টাচ ডিভাইসে ডট দেখাবেই না */
-@media(max-width:900px), (hover:none), (pointer:coarse){
-  .cursor-dot{display:none;}
-}
+.cursor-dot{position:fixed;width:10px;height:10px;border-radius:50%;background:var(--accent);pointer-events:none;z-index:500;transform:translate(-50%,-50%);transition:width .15s,height .15s,background .15s;}
+@media(max-width:900px), (hover:none){.cursor-dot{display:none;}}
 
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto;}
@@ -528,7 +511,7 @@ footer{padding:30px 0;border-top:1px solid var(--border);text-align:center;font-
               </div>
               <div class="tl-item">
                 <div class="tl-dot"></div>
-                <div><h4>মোবাইল ইন-পেজ ভিউয়ার</h4><p>মোবাইলে PDF, ছবি, HTML, কোড, অডিও, ভিডিও — সবই ওয়েবের ভেতরেই খোলে।</p></div>
+                <div><h4>মোবাইল ইন-পেজ ভিউয়ার</h4><p>মোবাইলে PDF, ছবি, HTML, কোড, অডিও, ভিডিও এবং Office ফাইল — সবই ওয়েবের ভেতরেই খোলে।</p></div>
               </div>
               <div class="tl-item">
                 <div class="tl-dot"></div>
@@ -708,6 +691,7 @@ const ICONS = {
   video: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m10 9 5 3-5 3z"/></svg>',
   audio: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V6l10-2v12"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/></svg>',
   doc: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg>',
+  office: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 14h6M9 17h3"/></svg>',
   file: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>'
 };
 
@@ -766,7 +750,6 @@ async function ghList(path){
   const key = info.owner + "/" + info.repo + "/" + path;
   const cached = cacheGet(key);
   if(cached) return cached;
-  // বাংলা/স্পেস/বিশেষ অক্ষর থাকলে API URL-এর জন্য encode করি
   const encodedPath = path.split("/").map(safeEncodeSeg).join("/");
   const url = "https://api.github.com/repos/" + info.owner + "/" + info.repo + "/contents/" + encodedPath;
   const res = await fetch(url, {headers: {Accept: "application/vnd.github+json"}});
@@ -784,9 +767,18 @@ const FILE_TYPES = {
   pdf:{label:"PDF", kind:"pdf"},
   html:{label:"HTML", kind:"html"}, htm:{label:"HTML", kind:"html"},
   md:{label:"Markdown", kind:"doc"}, txt:{label:"Text", kind:"doc"},
-  doc:{label:"Document", kind:"doc"}, docx:{label:"Document", kind:"doc"},
-  xls:{label:"Spreadsheet", kind:"doc"}, xlsx:{label:"Spreadsheet", kind:"doc"},
-  ppt:{label:"Slides", kind:"doc"}, pptx:{label:"Slides", kind:"doc"},
+  /* ---- Office documents (Google Docs Viewer) ---- */
+  doc:{label:"Word", kind:"office"},
+  docx:{label:"Word", kind:"office"},
+  xls:{label:"Excel", kind:"office"},
+  xlsx:{label:"Excel", kind:"office"},
+  ppt:{label:"PowerPoint", kind:"office"},
+  pptx:{label:"PowerPoint", kind:"office"},
+  rtf:{label:"Rich Text", kind:"office"},
+  odt:{label:"OpenDocument", kind:"office"},
+  ods:{label:"OpenDocument", kind:"office"},
+  odp:{label:"OpenDocument", kind:"office"},
+  /* ---- Code / text ---- */
   json:{label:"JSON", kind:"code"}, js:{label:"JavaScript", kind:"code"},
   mjs:{label:"JavaScript", kind:"code"}, ts:{label:"TypeScript", kind:"code"},
   tsx:{label:"TypeScript", kind:"code"}, jsx:{label:"JSX", kind:"code"},
@@ -801,6 +793,7 @@ const FILE_TYPES = {
   ini:{label:"INI", kind:"code"}, conf:{label:"Config", kind:"code"},
   csv:{label:"CSV", kind:"code"}, log:{label:"Log", kind:"code"},
   sql:{label:"SQL", kind:"code"},
+  /* ---- Media ---- */
   png:{label:"Image", kind:"image"}, jpg:{label:"Image", kind:"image"},
   jpeg:{label:"Image", kind:"image"}, gif:{label:"Image", kind:"image"},
   webp:{label:"Image", kind:"image"}, svg:{label:"Image", kind:"image"},
@@ -874,7 +867,6 @@ const pathIndex = new Map();
 
 function nodeHref(node){
   if(node.type === "folder"){
-    // folder-এর path থেকে "project/" বাদ দিয়ে প্রতিটা segment encode করি
     const rel = node.path.replace(/^project\//, "");
     const encoded = rel.split("/").map(safeEncodeSeg).join("/");
     return "#/projects/" + encoded;
@@ -975,6 +967,7 @@ function canPreviewInPage(node){
   if(ext === "html" || ext === "htm") return true;
   if(node.kind === "audio") return true;
   if(node.kind === "video") return true;
+  if(node.kind === "office") return true;   /* ← Office ফাইল এখন ইন-পেজ */
   if(TEXT_EXTS.has(ext)) return true;
   return false;
 }
@@ -1001,7 +994,6 @@ function openFile(node){
 ================================================================== */
 function parseRoute(){
   const hash = location.hash.replace(/^#\/?/, "");
-  // বাংলা / %-encoded — যাই থাকুক, decode করে নিই
   const parts = hash.split("/").filter(Boolean).map(safeDecode);
   if(!parts.length) return {page: "home"};
   const [first, ...rest] = parts;
@@ -1143,7 +1135,6 @@ async function populateBrowsePage(folderPath){
   title.textContent = prettyName(folderName);
   meta.textContent = "";
 
-  // Breadcrumb — সব লিংকে encode করা hash
   let bcHtml = `<a href="#/projects">${esc(PROJECT_CONFIG.dir)}</a>`;
   for(let i = 1; i < segments.length; i++){
     const seg = segments[i];
@@ -1158,7 +1149,6 @@ async function populateBrowsePage(folderPath){
   }
   bc.innerHTML = bcHtml;
 
-  // Back link — প্যারেন্ট ফোল্ডারে (encode সহ)
   const parentSegments = segments.slice(0, -1);
   if(parentSegments.length <= 1){
     backLink.href = "#/projects";
@@ -1380,6 +1370,8 @@ function openMobileViewer(node){
     mvOpenAudio(node);
   } else if(node.kind === "video"){
     mvOpenVideo(node);
+  } else if(node.kind === "office"){
+    mvOpenOffice(node);
   } else if(TEXT_EXTS.has(node.ext)){
     mvOpenText(node);
   } else {
@@ -1388,6 +1380,7 @@ function openMobileViewer(node){
   }
 }
 
+/* ---------- PDF ---------- */
 async function mvOpenPdf(node){
   const url = node.path;
 
@@ -1537,6 +1530,7 @@ window.addEventListener("afterprint", () => {
   document.body.classList.remove("printing-mobile-pdf");
 });
 
+/* ---------- Image ---------- */
 function mvOpenImage(node){
   const url = node.path;
   mvSetActions(downloadBtn(url, node.name) + openInNewTabBtn(url));
@@ -1549,6 +1543,7 @@ function mvOpenImage(node){
   mvStage.appendChild(img);
 }
 
+/* ---------- HTML ---------- */
 function mvOpenHtml(node){
   const url = node.path;
   mvSetActions(
@@ -1571,6 +1566,7 @@ function mvOpenHtml(node){
   }
 }
 
+/* ---------- Text ---------- */
 async function mvOpenText(node){
   const url = node.path;
   mvSetActions(downloadBtn(url, node.name) + openInNewTabBtn(url));
@@ -1593,6 +1589,7 @@ async function mvOpenText(node){
   }
 }
 
+/* ---------- Audio ---------- */
 function mvOpenAudio(node){
   const url = node.path;
   mvSetActions(downloadBtn(url, node.name) + openInNewTabBtn(url));
@@ -1614,6 +1611,7 @@ function mvOpenAudio(node){
   mvStage.appendChild(wrap);
 }
 
+/* ---------- Video ---------- */
 function mvOpenVideo(node){
   const url = node.path;
   mvSetActions(downloadBtn(url, node.name) + openInNewTabBtn(url));
@@ -1627,6 +1625,44 @@ function mvOpenVideo(node){
   mvStage.appendChild(video);
 }
 
+/* ---------- Office (docx / xlsx / pptx via Google Docs Viewer) ---------- */
+function mvOpenOffice(node){
+  const url = node.path;
+  const absUrl = new URL(url, location.href).href;
+  const gview = "https://docs.google.com/gview?url="
+              + encodeURIComponent(absUrl)
+              + "&embedded=true";
+
+  mvSetActions(
+    `<button class="mv-btn" id="mvOfficeNewTab" title="নতুন ট্যাবে Google Viewer-এ খুলুন">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+    </button>
+    <button class="mv-btn" id="mvOfficeReload" title="রিফ্রেশ">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+    </button>
+    ${downloadBtn(url, node.name)}
+    ${openInNewTabBtn(url)}`
+  );
+
+  mvClearStage("");
+  const frame = document.createElement("iframe");
+  frame.className = "mv-iframe";
+  frame.src = gview;
+  frame.title = node.name;
+  frame.setAttribute("allowfullscreen", "");
+  mvStage.appendChild(frame);
+
+  const newTabBtn = document.getElementById("mvOfficeNewTab");
+  if(newTabBtn){
+    newTabBtn.addEventListener("click", () => window.open(gview, "_blank", "noopener"));
+  }
+  const reloadBtn = document.getElementById("mvOfficeReload");
+  if(reloadBtn){
+    reloadBtn.addEventListener("click", () => { frame.src = frame.src; });
+  }
+}
+
+/* ---------- Close ---------- */
 function closeMobileViewer(){
   mv.classList.remove("open");
   mvPdfToken++;
