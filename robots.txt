@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /project/
+
+Sitemap: https://fahim618900-wq.github.io/fahitrex/sitemap.xml
