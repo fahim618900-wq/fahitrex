@@ -60,7 +60,7 @@ button{font-family:inherit;cursor:pointer;}
 .wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
 .eyebrow{font-size:13px;color:var(--accent);font-weight:600;}
 .lead{color:var(--ink-soft);font-size:15.5px;line-height:1.7;max-width:62ch;}
-section{position:relative;z-index:2;padding:96px 0;}
+section{position:relative;z-index:2;padding:96px 0;scroll-margin-top:90px;}
 @media(max-width:700px){section{padding:64px 0;}}
 
 /* glass surface */
@@ -80,7 +80,7 @@ section{position:relative;z-index:2;padding:96px 0;}
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
   transition:opacity .6s ease, visibility .6s ease;
 }
-#loader .ring{width:46px;height:46px;border-radius:50%;border:3px solid var(--border);border-top-color:var(--accent);animation:spin 0.9s linear infinite;}
+#loader .ring,#pdfLoading .ring{width:46px;height:46px;border-radius:50%;border:3px solid var(--border);border-top-color:var(--accent);animation:spin 0.9s linear infinite;}
 #loader span{font-size:13px;color:var(--ink-soft);letter-spacing:.04em;}
 @keyframes spin{to{transform:rotate(360deg);}}
 #loader.hide{opacity:0;visibility:hidden;}
@@ -181,24 +181,48 @@ nav{
 .proj-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
 .proj-cat{font-size:11.5px;font-weight:600;color:var(--accent-2);}
 .proj-status{font-size:11px;padding:4px 9px;border-radius:20px;background:rgba(18,183,196,0.15);color:var(--accent-2);white-space:nowrap;}
-.proj-card h3{font-size:19px;margin:12px 0 8px;}
+.proj-card h3{font-size:19px;margin:12px 0 8px;word-break:break-word;}
 .proj-card p{font-size:13.5px;color:var(--ink-soft);line-height:1.6;flex:1;}
 .proj-tech{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px;}
 .tech-pill{font-size:11px;padding:4px 9px;border-radius:20px;background:var(--surface-strong);border:1px solid var(--border);}
 .proj-open{margin-top:16px;font-size:13px;font-weight:600;color:var(--accent);display:flex;align-items:center;gap:6px;}
 
-/* project details overlay */
-#detailsView{
-  position:fixed;inset:0;z-index:200;background:var(--bg);overflow-y:auto;
+/* node (folder / file) card */
+.node-icon{
+  width:54px;height:54px;border-radius:15px;
+  display:flex;align-items:center;justify-content:center;
+  margin:14px 0 2px;flex-shrink:0;
+}
+.node-icon svg{width:26px;height:26px;}
+.folder-card .node-icon{background:linear-gradient(135deg,rgba(47,111,237,.16),rgba(18,183,196,.16));color:var(--accent);}
+.file-card .node-icon{background:rgba(120,140,200,.14);color:var(--ink-soft);}
+.file-card[data-kind="pdf"] .node-icon{background:rgba(226,72,72,.15);color:#E24848;}
+.file-card[data-kind="html"] .node-icon{background:rgba(230,140,40,.16);color:#E68C28;}
+.file-card[data-kind="image"] .node-icon{background:rgba(140,90,220,.16);color:#8C5ADC;}
+.file-card[data-kind="code"] .node-icon{background:rgba(40,180,120,.16);color:#1FA96D;}
+.file-card[data-kind="archive"] .node-icon{background:rgba(200,160,40,.16);color:#B98A0E;}
+.file-card[data-kind="video"] .node-icon{background:rgba(226,72,120,.15);color:#E24878;}
+.file-card[data-kind="audio"] .node-icon{background:rgba(60,160,220,.16);color:#2E9BDC;}
+.node-meta{font-size:12px;color:var(--ink-soft);margin-top:2px;}
+
+/* overlays shared */
+.overlay{
+  position:fixed;inset:0;background:var(--bg);overflow-y:auto;
   opacity:0;visibility:hidden;transform:translateY(24px);
   transition:opacity .35s ease, transform .35s ease, visibility .35s ease;
-  padding:calc(24px + env(safe-area-inset-top,0px)) 0 60px;
 }
-#detailsView.open{opacity:1;visibility:visible;transform:translateY(0);}
-.back-btn{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:14px;padding:10px 16px;border-radius:12px;background:var(--surface-strong);border:1px solid var(--border);margin-bottom:26px;}
+.overlay.open{opacity:1;visibility:visible;transform:translateY(0);}
+#detailsView{z-index:200;padding:calc(24px + env(safe-area-inset-top,0px)) 0 60px;}
+#browseView{z-index:210;padding:calc(24px + env(safe-area-inset-top,0px)) 0 60px;}
+.back-btn{
+  display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:14px;
+  padding:10px 16px;border-radius:12px;background:var(--surface-strong);
+  border:1px solid var(--border);margin-bottom:22px;color:var(--ink);
+}
+.back-btn:hover{border-color:var(--accent);}
 .d-head{padding:30px;margin-bottom:26px;}
 .d-head .proj-cat{margin-bottom:8px;display:block;}
-.d-head h2{font-size:clamp(26px,4vw,38px);}
+.d-head h2{font-size:clamp(26px,4vw,38px);word-break:break-word;}
 .d-body{display:grid;grid-template-columns:1.4fr 1fr;gap:26px;}
 @media(max-width:860px){.d-body{grid-template-columns:1fr;}}
 .d-block{padding:24px;margin-bottom:20px;}
@@ -207,6 +231,71 @@ nav{
 .feat-list li{font-size:14px;color:var(--ink-soft);display:flex;gap:10px;line-height:1.5;}
 .feat-list li svg{width:16px;height:16px;color:var(--accent-2);flex-shrink:0;margin-top:3px;}
 .d-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;}
+
+/* browse view */
+.browse-bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px;}
+.breadcrumb{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:13px;color:var(--ink-soft);}
+.breadcrumb button{
+  background:none;border:0;padding:4px 6px;border-radius:8px;
+  color:var(--ink-soft);font-size:13px;font-weight:500;
+}
+.breadcrumb button:hover{color:var(--ink);background:rgba(120,140,200,.14);}
+.breadcrumb .sep{opacity:.45;}
+.breadcrumb .current{color:var(--ink);font-weight:600;padding:4px 6px;}
+.browse-head{padding:24px 26px;margin-bottom:24px;}
+.browse-head h2{font-size:clamp(22px,3.6vw,32px);word-break:break-word;}
+.browse-head .lead{margin-top:8px;font-size:14px;}
+.empty-note{
+  padding:60px 0;text-align:center;color:var(--ink-soft);font-size:14px;
+}
+.browse-loading{display:flex;flex-direction:column;align-items:center;gap:14px;padding:70px 0;color:var(--ink-soft);font-size:14px;}
+
+/* PDF viewer */
+#pdfView{
+  position:fixed;inset:0;z-index:300;background:var(--bg);
+  display:flex;flex-direction:column;
+  opacity:0;visibility:hidden;transform:translateY(20px);
+  transition:opacity .3s ease, transform .3s ease, visibility .3s ease;
+}
+#pdfView.open{opacity:1;visibility:visible;transform:translateY(0);}
+.pdf-toolbar{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;
+  padding-top:calc(10px + env(safe-area-inset-top,0px));
+  background:var(--surface-strong);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  flex-shrink:0;flex-wrap:wrap;
+}
+.pdf-title{
+  font-size:14px;font-weight:600;flex:1;min-width:120px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.pdf-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.pdf-btn{
+  height:36px;min-width:36px;padding:0 10px;border-radius:10px;
+  border:1px solid var(--border);background:var(--surface);color:var(--ink);
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  font-size:13px;font-weight:600;transition:border-color .2s, background .2s;
+}
+.pdf-btn:hover{border-color:var(--accent);}
+.pdf-btn:disabled{opacity:.4;cursor:not-allowed;}
+.pdf-btn svg{width:16px;height:16px;}
+.pdf-zoom-label{font-size:12.5px;font-weight:600;min-width:46px;text-align:center;color:var(--ink-soft);}
+.pdf-stage{
+  flex:1;overflow:auto;padding:24px 16px 70px;
+  display:flex;flex-direction:column;align-items:center;gap:20px;
+  background:var(--bg-2);
+  -webkit-overflow-scrolling:touch;
+}
+.pdf-page{
+  background:#fff;box-shadow:0 10px 34px rgba(0,0,0,.22);
+  border-radius:6px;overflow:hidden;line-height:0;
+  flex-shrink:0;
+}
+.pdf-page canvas{display:block;}
+.pdf-loading{display:flex;flex-direction:column;align-items:center;gap:14px;padding:70px 20px;color:var(--ink-soft);font-size:14px;text-align:center;}
+.pdf-loading a{color:var(--accent);text-decoration:underline;}
 
 /* contact */
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
@@ -222,12 +311,42 @@ nav{
 
 footer{padding:30px 0;border-top:1px solid var(--border);text-align:center;font-size:12.5px;color:var(--ink-soft);position:relative;z-index:2;}
 
-.cursor-dot{position:fixed;width:10px;height:10px;border-radius:50%;background:var(--accent);pointer-events:none;z-index:500;transform:translate(-50%,-50%);transition:width .15s,height .15s,background .15s;mix-blend-mode:normal;}
+.cursor-dot{position:fixed;width:10px;height:10px;border-radius:50%;background:var(--accent);pointer-events:none;z-index:500;transform:translate(-50%,-50%);transition:width .15s,height .15s,background .15s;}
 @media(max-width:900px), (hover:none){.cursor-dot{display:none;}}
 
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto;}
-  .proj-card, #detailsView, #mobileMenu, #loader{transition:none;}
+  .proj-card, .overlay, #mobileMenu, #loader, #pdfView{transition:none;}
+}
+
+/* ---------- PRINT (PDF) ---------- */
+@media print{
+  @page{ margin:0; }
+  html,body{ background:#fff !important; }
+  body.printing-pdf > *:not(#pdfView){ display:none !important; }
+  body.printing-pdf #pdfView{
+    position:static !important;
+    opacity:1 !important; visibility:visible !important; transform:none !important;
+    background:#fff !important; display:block !important;
+    overflow:visible !important;
+  }
+  body.printing-pdf .pdf-toolbar{ display:none !important; }
+  body.printing-pdf .pdf-stage{
+    display:block !important; overflow:visible !important;
+    padding:0 !important; background:#fff !important;
+  }
+  body.printing-pdf .pdf-page{
+    box-shadow:none !important; border-radius:0 !important;
+    page-break-after:always; break-after:page;
+    margin:0 auto !important; width:100% !important;
+  }
+  body.printing-pdf .pdf-page:last-child{
+    page-break-after:auto; break-after:auto;
+  }
+  body.printing-pdf .pdf-page canvas{
+    width:100% !important; height:auto !important;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
 }
 </style>
 </head>
@@ -339,9 +458,10 @@ footer{padding:30px 0;border-top:1px solid var(--border);text-align:center;font-
       <div class="s-head">
         <span class="eyebrow">Portfolio</span>
         <h2>প্রজেক্টসমূহ</h2>
-        <p class="lead" style="margin-top:12px;">বিস্তারিত জানতে যেকোনো প্রজেক্ট কার্ডে ক্লিক করুন।</p>
+        <p class="lead" style="margin-top:12px;">ফোল্ডারে ক্লিক করে ভেতরের ফাইল দেখুন। PDF ফাইল ওয়েবের ভেতরেই খুলবে।</p>
       </div>
       <div class="proj-grid" id="projGrid"></div>
+      <div class="empty-note" id="projEmpty" style="display:none;">এখনো কোনো প্রজেক্ট যোগ করা হয়নি।</div>
     </div>
   </section>
 
@@ -382,7 +502,8 @@ footer{padding:30px 0;border-top:1px solid var(--border);text-align:center;font-
 
 <footer>© 2026 Abdullah Fahim — Software · Electrical · Electronics</footer>
 
-<div id="detailsView">
+<!-- ============ MANIFEST PROJECT DETAILS ============ -->
+<div id="detailsView" class="overlay">
   <div class="wrap">
     <button class="back-btn" id="backBtn">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg>
@@ -392,9 +513,76 @@ footer{padding:30px 0;border-top:1px solid var(--border);text-align:center;font-
   </div>
 </div>
 
+<!-- ============ FOLDER BROWSER ============ -->
+<div id="browseView" class="overlay">
+  <div class="wrap">
+    <div class="browse-bar">
+      <button class="back-btn" id="browseBack" style="margin-bottom:0;">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg>
+        <span id="browseBackLabel">প্রজেক্ট</span>
+      </button>
+      <nav class="breadcrumb" id="breadcrumb" aria-label="Breadcrumb"></nav>
+    </div>
+    <div class="glass browse-head">
+      <span class="eyebrow" style="font-size:12px;">Folder</span>
+      <h2 id="browseTitle">প্রজেক্ট</h2>
+      <p class="lead" id="browseMeta"></p>
+    </div>
+    <div class="proj-grid" id="browseGrid"></div>
+    <div class="browse-loading" id="browseLoading" style="display:none;">
+      <div class="ring" style="width:36px;height:36px;border-radius:50%;border:3px solid var(--border);border-top-color:var(--accent);animation:spin .9s linear infinite;"></div>
+      <span>লোড হচ্ছে…</span>
+    </div>
+    <div class="empty-note" id="browseEmpty" style="display:none;">এই ফোল্ডারে কোনো ফাইল নেই।</div>
+  </div>
+</div>
+
+<!-- ============ PDF VIEWER ============ -->
+<div id="pdfView">
+  <div class="pdf-toolbar">
+    <button class="pdf-btn" id="pdfClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg>
+      <span style="display:none;">ফিরে যান</span>
+    </button>
+    <span class="pdf-title" id="pdfTitle">Document.pdf</span>
+    <div class="pdf-actions">
+      <button class="pdf-btn" id="pdfZoomOut" aria-label="Zoom out">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M8 11h6M21 21l-4.3-4.3"></path></svg>
+      </button>
+      <span class="pdf-zoom-label" id="pdfZoomLabel">100%</span>
+      <button class="pdf-btn" id="pdfZoomIn" aria-label="Zoom in">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M8 11h6M11 8v6M21 21l-4.3-4.3"></path></svg>
+      </button>
+      <button class="pdf-btn" id="pdfFit" aria-label="Fit width" title="Fit width">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8V5a2 2 0 0 1 2-2h3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3"></path></svg>
+      </button>
+      <button class="pdf-btn" id="pdfPrint" title="Print">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="7"></rect></svg>
+        <span>প্রিন্ট</span>
+      </button>
+      <a class="pdf-btn" id="pdfDownload" download title="Download">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>
+      </a>
+      <a class="pdf-btn" id="pdfOpenTab" target="_blank" rel="noopener" title="Open in new tab">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="pdf-stage" id="pdfStage">
+    <div class="pdf-loading" id="pdfLoading">
+      <div class="ring"></div>
+      <span>PDF লোড হচ্ছে…</span>
+    </div>
+    <div id="pdfPages" style="display:contents;"></div>
+  </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
-/* ---------------- DATA ---------------- */
+/* ==================================================================
+   1) STATIC DATA
+================================================================== */
 const skills = ["HTML","CSS","JavaScript","Responsive Web Design","Web App Development","UI/UX Design","Database Management","Python","Flask","Git & GitHub","Android/Web Technology","Basic Networking","Electrical Circuit Basics","Electronics","Digital Electronics","Hardware & Software Integration","Problem Solving","Technology Research"];
 
 const services = [
@@ -406,84 +594,6 @@ const services = [
   {t:"Hardware + Software Integration", d:"মাইক্রোকন্ট্রোলার ও সফটওয়্যার একসাথে কাজ করানো — বাস্তব ডিভাইসে রূপ দেওয়া।", i:'<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/>'},
 ];
 
-/* ------------------------------------------------------------------
-   ডিফল্ট প্রজেক্ট তালিকা (প্রয়োজনে ব্যবহারকারী project/projects.json
-   দিয়ে সম্পূর্ণ তালিকা ওভাররাইড করতে পারবেন)।
--------------------------------------------------------------------*/
-const defaultProjects = [
-];
-
-/* ---------------- অটো প্রজেক্ট ডিটেকশন ---------------- */
-function getGitHubRepoInfo() {
-  const hostname = window.location.hostname;
-  const pathname = window.location.pathname;
-  if (hostname.endsWith('.github.io')) {
-    const username = hostname.split('.')[0];
-    let repo = username + '.github.io';
-    const parts = pathname.split('/').filter(p => p);
-    if (parts.length > 0) {
-      repo = parts[0];
-    }
-    return { username, repo };
-  }
-  return null;
-}
-
-async function fetchProjects() {
-  let projects = [...defaultProjects];
-
-  // ১) project/projects.json থাকলে সেটি দিয়ে সম্পূর্ণ তালিকা প্রতিস্থাপন
-  try {
-    const res = await fetch('project/projects.json');
-    if (res.ok) {
-      const json = await res.json();
-      if (Array.isArray(json)) {
-        json.forEach((p, i) => { if (!p.id) p.id = i + 1; });
-        return json;
-      }
-    }
-  } catch (e) { /* ignore */ }
-
-  // ২) GitHub API থেকে project ফোল্ডারের ফাইল লিস্ট আনা
-  const repoInfo = getGitHubRepoInfo();
-  if (repoInfo) {
-    try {
-      const { username, repo } = repoInfo;
-      const apiUrl = `https://api.github.com/repos/${username}/${repo}/contents/project`;
-      const res = await fetch(apiUrl);
-      if (res.ok) {
-        const files = await res.json();
-        const existingFiles = new Set(projects.map(p => p.file).filter(Boolean));
-        let nextId = Math.max(...projects.map(p => p.id), 0) + 1;
-        for (const file of files) {
-          if (file.type === 'file' && /\.(html|pdf|md|txt|zip)$/i.test(file.name)) {
-            const filePath = `project/${file.name}`;
-            if (existingFiles.has(filePath)) continue;
-            const title = file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-            projects.push({
-              id: nextId++,
-              category: "Uploaded Project",
-              status: "New",
-              title: title,
-              short: `প্রজেক্ট ফাইল: ${file.name}`,
-              full: `এটি একটি আপলোড করা প্রজেক্ট ফাইল (${file.name})। বিস্তারিত দেখতে নিচের লিংকে ক্লিক করুন।`,
-              file: filePath,
-              features: ["Uploaded file", "Auto-detected", "Click to open"],
-              tech: [file.name.split('.').pop().toUpperCase()],
-              liveUrl: null,
-              githubUrl: null
-            });
-            existingFiles.add(filePath);
-          }
-        }
-      }
-    } catch (e) { /* ignore */ }
-  }
-
-  return projects;
-}
-
-/* ---------------- RENDER ---------------- */
 const skillsGrid = document.getElementById('skillsGrid');
 skillsGrid.innerHTML = skills.map(s=>`<div class="skill-chip">${s}</div>`).join('');
 
@@ -494,239 +604,919 @@ servicesGrid.innerHTML = services.map(s=>`
     <h3>${s.t}</h3><p>${s.d}</p>
   </div>`).join('');
 
-function externalIcon(){return '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>';}
-function checkIcon(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';}
-function githubIcon(){return '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.5 0-.24-.01-1.04-.01-1.88-2.78.62-3.37-1.21-3.37-1.21-.46-1.19-1.11-1.51-1.11-1.51-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.04 1.03-2.76-.1-.26-.45-1.31.1-2.73 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.42.2 2.47.1 2.73.64.72 1.03 1.64 1.03 2.76 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.5A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg>';}
+/* ==================================================================
+   2) ICONS
+================================================================== */
+const extIcon = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>';
+const checkIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+const githubIcon = '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.5 0-.24-.01-1.04-.01-1.88-2.78.62-3.37-1.21-3.37-1.21-.46-1.19-1.11-1.51-1.11-1.51-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.04 1.03-2.76-.1-.26-.45-1.31.1-2.73 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.42.2 2.47.1 2.73.64.72 1.03 1.64 1.03 2.76 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.5A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg>';
 
-let allProjects = [];
+const ICONS = {
+  folder: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5h3.4a1 1 0 0 1 .8.4L11.5 7h7A2.5 2.5 0 0 1 21 9.5v7A2.5 2.5 0 0 1 18.5 19h-13A2.5 2.5 0 0 1 3 16.5z"/></svg>',
+  pdf: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h1.5a1 1 0 0 1 0 2H9v2m0-4v4"/></svg>',
+  html: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="m10 13-2 2 2 2m4-4 2 2-2 2"/></svg>',
+  image: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="m21 16-5-5-5 5-2-2-6 6"/></svg>',
+  code: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18-6-6 6-6M15 6l6 6-6 6"/></svg>',
+  archive: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="5" rx="1.5"/><path d="M5 9v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9"/><path d="M10 13h4"/></svg>',
+  video: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m10 9 5 3-5 3z"/></svg>',
+  audio: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V6l10-2v12"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/></svg>',
+  doc: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg>',
+  file: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>'
+};
 
-function renderProjects(projects) {
-  const projGrid = document.getElementById('projGrid');
-  projGrid.innerHTML = projects.map(p=>`
-    <article class="glass proj-card" tabindex="0" role="button" data-id="${p.id}" data-tilt>
-      <div class="proj-top"><span class="proj-cat">${p.category}</span><span class="proj-status">${p.status}</span></div>
-      <h3>${p.title}</h3>
-      <p>${p.short}</p>
-      <div class="proj-tech">${p.tech.slice(0,4).map(t=>`<span class="tech-pill">${t}</span>`).join('')}</div>
-      <div class="proj-open">বিস্তারিত দেখুন ${externalIcon()}</div>
-    </article>`).join('');
+/* ==================================================================
+   3) CONFIG + GITHUB HELPERS
+================================================================== */
+const PROJECT_CONFIG = {
+  owner: "fahim618900-wq",   // আপনার GitHub username
+  repo: "",                  // খালি = অটো ডিটেক্ট
+  dir: "project",            // প্রজেক্ট ফোল্ডারের নাম
+  cacheTTL: 5 * 60 * 1000
+};
+
+function ghRepoInfo(){
+  const host = location.hostname;
+  let owner = PROJECT_CONFIG.owner || "";
+  let repo  = PROJECT_CONFIG.repo || "";
+  if(host.endsWith(".github.io")){
+    if(!owner) owner = host.split(".")[0];
+    if(!repo){
+      const parts = location.pathname.split("/").filter(p => p && !p.includes("."));
+      repo = parts.length ? parts[0] : owner + ".github.io";
+    }
+  }
+  if(owner && !repo) repo = owner + ".github.io";
+  return (owner && repo) ? {owner, repo} : null;
 }
 
+const GH_CACHE = "af_gh_";
+function cacheGet(key){
+  try{
+    const raw = sessionStorage.getItem(GH_CACHE + key);
+    if(!raw) return null;
+    const o = JSON.parse(raw);
+    if(Date.now() - o.t > PROJECT_CONFIG.cacheTTL) return null;
+    return o.v;
+  }catch(e){ return null; }
+}
+function cacheSet(key, v){
+  try{ sessionStorage.setItem(GH_CACHE + key, JSON.stringify({t: Date.now(), v})); }catch(e){}
+}
+
+async function ghList(path){
+  const info = ghRepoInfo();
+  if(!info) throw new Error("no-repo");
+  const key = info.owner + "/" + info.repo + "/" + path;
+  const cached = cacheGet(key);
+  if(cached) return cached;
+  const url = "https://api.github.com/repos/" + info.owner + "/" + info.repo + "/contents/" + path;
+  const res = await fetch(url, {headers: {Accept: "application/vnd.github+json"}});
+  if(!res.ok) throw new Error("gh-" + res.status);
+  const data = await res.json();
+  if(!Array.isArray(data)) throw new Error("not-dir");
+  cacheSet(key, data);
+  return data;
+}
+
+/* ==================================================================
+   4) FILE TYPE DETECTION
+================================================================== */
+const FILE_TYPES = {
+  pdf:{label:"PDF", kind:"pdf"},
+  html:{label:"HTML", kind:"html"}, htm:{label:"HTML", kind:"html"},
+  md:{label:"Markdown", kind:"doc"}, txt:{label:"Text", kind:"doc"},
+  doc:{label:"Document", kind:"doc"}, docx:{label:"Document", kind:"doc"},
+  xls:{label:"Spreadsheet", kind:"doc"}, xlsx:{label:"Spreadsheet", kind:"doc"},
+  ppt:{label:"Slides", kind:"doc"}, pptx:{label:"Slides", kind:"doc"},
+  json:{label:"JSON", kind:"code"}, js:{label:"JavaScript", kind:"code"},
+  css:{label:"CSS", kind:"code"}, py:{label:"Python", kind:"code"},
+  c:{label:"C", kind:"code"}, cpp:{label:"C++", kind:"code"},
+  java:{label:"Java", kind:"code"}, sh:{label:"Shell", kind:"code"},
+  png:{label:"Image", kind:"image"}, jpg:{label:"Image", kind:"image"},
+  jpeg:{label:"Image", kind:"image"}, gif:{label:"Image", kind:"image"},
+  webp:{label:"Image", kind:"image"}, svg:{label:"Image", kind:"image"},
+  zip:{label:"ZIP", kind:"archive"}, rar:{label:"Archive", kind:"archive"},
+  "7z":{label:"Archive", kind:"archive"},
+  mp4:{label:"Video", kind:"video"}, webm:{label:"Video", kind:"video"},
+  mp3:{label:"Audio", kind:"audio"}, wav:{label:"Audio", kind:"audio"}
+};
+function fileMeta(name){
+  const ext = (name.split(".").pop() || "").toLowerCase();
+  const t = FILE_TYPES[ext] || {label: ext ? ext.toUpperCase() : "File", kind:"file"};
+  return {ext, label: t.label, kind: t.kind};
+}
+function prettyName(name){
+  const base = name.replace(/\.[^.]+$/, "");
+  return base.replace(/[-_]+/g, " ").replace(/\s+/g, " ").trim()
+             .replace(/\b\w/g, c => c.toUpperCase()) || name;
+}
+function humanSize(bytes){
+  if(typeof bytes !== "number" || !isFinite(bytes)) return "";
+  const u = ["B","KB","MB","GB"]; let i = 0, n = bytes;
+  while(n >= 1024 && i < u.length - 1){ n /= 1024; i++; }
+  return (i === 0 ? n : n.toFixed(n < 10 ? 1 : 0)) + " " + u[i];
+}
+
+/* ==================================================================
+   5) DIRECTORY LISTING (folder tree)
+================================================================== */
+async function listDir(path){
+  const entries = await ghList(path);
+  const folders = [], files = [];
+  for(const e of entries){
+    if(!e || !e.name || e.name.startsWith(".")) continue;
+    if(e.name.toLowerCase() === "projects.json") continue;
+    if(e.type === "dir"){
+      folders.push({type:"folder", name:e.name, path:e.path, children:null, count:null});
+    } else if(e.type === "file"){
+      const m = fileMeta(e.name);
+      files.push({
+        type:"file", name:e.name, path:e.path, size:e.size,
+        ext:m.ext, label:m.label, kind:m.kind
+      });
+    }
+  }
+  folders.sort((a,b)=> a.name.localeCompare(b.name, undefined, {numeric:true}));
+  files.sort((a,b)=> a.name.localeCompare(b.name, undefined, {numeric:true}));
+  return [...folders, ...files];
+}
+async function listDirSafe(path){
+  try{ return await listDir(path); }catch(e){ return []; }
+}
+
+/* ==================================================================
+   6) RENDER CARDS
+================================================================== */
+const pathIndex = new Map();
+
+function renderNodeCard(node){
+  pathIndex.set(node.path, node);
+  if(node.type === "folder"){
+    const count = (typeof node.count === "number") ? node.count : null;
+    const badge = count === null ? "Folder" : (count + " আইটেম");
+    return `
+      <article class="glass proj-card folder-card" tabindex="0" role="button"
+               data-path="${esc(node.path)}" data-type="folder" data-tilt>
+        <div class="proj-top">
+          <span class="proj-cat">Folder</span>
+          <span class="proj-status">${badge}</span>
+        </div>
+        <div class="node-icon">${ICONS.folder}</div>
+        <h3>${esc(prettyName(node.name))}</h3>
+        <p class="node-meta">${esc(node.name)}</p>
+        <div class="proj-open">ফোল্ডার খুলুন ${extIcon}</div>
+      </article>`;
+  }
+  const size = humanSize(node.size);
+  return `
+    <article class="glass proj-card file-card" tabindex="0" role="button"
+             data-path="${esc(node.path)}" data-type="file" data-kind="${node.kind}" data-tilt>
+      <div class="proj-top">
+        <span class="proj-cat">${esc(node.label)}</span>
+        ${size ? `<span class="proj-status">${size}</span>` : ""}
+      </div>
+      <div class="node-icon">${ICONS[node.kind] || ICONS.file}</div>
+      <h3>${esc(prettyName(node.name))}</h3>
+      <p class="node-meta">${esc(node.name)}</p>
+      <div class="proj-open">${node.kind === "pdf" ? "ভিউয়ারে খুলুন" : "খুলুন"} ${extIcon}</div>
+    </article>`;
+}
+
+function esc(s){
+  return String(s == null ? "" : s)
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+}
+
+/* ==================================================================
+   7) LOAD PROJECTS (root)
+================================================================== */
+let featuredProjects = [];
+let rootItems = [];
+
+async function loadFeatured(){
+  try{
+    const res = await fetch("project/projects.json", {cache: "no-store"});
+    if(!res.ok) return [];
+    const json = await res.json();
+    if(!Array.isArray(json)) return [];
+    return json.map((p, i) => ({
+      id: p.id || ("f" + (i + 1)),
+      category: p.category || "Featured",
+      status: p.status || "Active",
+      title: p.title || "Untitled",
+      short: p.short || p.full || "",
+      full: p.full || p.short || "",
+      features: Array.isArray(p.features) ? p.features : [],
+      featuresTitle: p.featuresTitle || "Features",
+      tech: Array.isArray(p.tech) ? p.tech : [],
+      file: p.file || null,
+      liveUrl: p.liveUrl || null,
+      githubUrl: p.githubUrl || null,
+      extra: p.extra || null,
+      path: p.path || null
+    }));
+  }catch(e){ return []; }
+}
+
+function renderFeaturedCard(p){
+  return `
+    <article class="glass proj-card" tabindex="0" role="button"
+             data-featured="1" data-id="${esc(p.id)}" data-tilt>
+      <div class="proj-top">
+        <span class="proj-cat">${esc(p.category)}</span>
+        <span class="proj-status">${esc(p.status)}</span>
+      </div>
+      <h3>${esc(p.title)}</h3>
+      <p>${esc(p.short)}</p>
+      <div class="proj-tech">${p.tech.slice(0,4).map(t=>`<span class="tech-pill">${esc(t)}</span>`).join("")}</div>
+      <div class="proj-open">বিস্তারিত দেখুন ${extIcon}</div>
+    </article>`;
+}
+
+async function initProjects(){
+  const grid = document.getElementById("projGrid");
+  const emptyNote = document.getElementById("projEmpty");
+  const section = document.getElementById("projects");
+
+  featuredProjects = await loadFeatured();
+
+  rootItems = await listDirSafe(PROJECT_CONFIG.dir);
+
+  // root-level folder গুলোর count আগেই বের করি (parallel)
+  await Promise.all(
+    rootItems.filter(n => n.type === "folder").map(async f => {
+      const kids = await listDirSafe(f.path);
+      f.children = kids;
+      f.count = kids.length;
+    })
+  );
+
+  // খালি ফোল্ডার বাদ
+  rootItems = rootItems.filter(n => n.type !== "folder" || n.count === null || n.count > 0);
+
+  // featured যেগুলো path দিয়ে claimed, সেগুলো auto list থেকে বাদ
+  const claimed = new Set(featuredProjects.map(p => p.path).filter(Boolean));
+  if(claimed.size) rootItems = rootItems.filter(n => !claimed.has(n.path));
+
+  const total = featuredProjects.length + rootItems.length;
+  if(total === 0){
+    section.style.display = "none";
+    return;
+  }
+  section.style.display = "";
+  emptyNote.style.display = "none";
+
+  grid.innerHTML =
+    featuredProjects.map(renderFeaturedCard).join("") +
+    rootItems.map(renderNodeCard).join("");
+}
+
+/* ==================================================================
+   8) PROJECT (manifest) DETAILS OVERLAY
+================================================================== */
 function openDetails(id){
-  const p = allProjects.find(x=>x.id===id);
+  const p = featuredProjects.find(x => String(x.id) === String(id));
   if(!p) return;
-  const linksHtml = `
-    ${p.file?`<a href="${p.file}" target="_blank" rel="noopener" class="btn btn-primary">প্রজেক্ট দেখুন ${externalIcon()}</a>`:''}
-    ${p.liveUrl?`<a href="${p.liveUrl}" target="_blank" rel="noopener" class="btn btn-ghost">লাইভ প্রজেক্ট ${externalIcon()}</a>`:''}
-    ${p.githubUrl?`<a href="${p.githubUrl}" target="_blank" rel="noopener" class="btn btn-ghost">${githubIcon()} GitHub</a>`:''}
-    ${p.extra?`<a href="${p.extra.url}" target="_blank" rel="noopener" class="btn btn-ghost">${p.extra.label} ${externalIcon()}</a>`:''}
-  `;
-  document.getElementById('detailsContent').innerHTML = `
+  const links = [
+    p.file      ? `<a href="${esc(p.file)}" target="_blank" rel="noopener" class="btn btn-primary">প্রজেক্ট দেখুন ${extIcon}</a>` : "",
+    p.liveUrl   ? `<a href="${esc(p.liveUrl)}" target="_blank" rel="noopener" class="btn btn-ghost">লাইভ প্রজেক্ট ${extIcon}</a>` : "",
+    p.githubUrl ? `<a href="${esc(p.githubUrl)}" target="_blank" rel="noopener" class="btn btn-ghost">${githubIcon} GitHub</a>` : "",
+    p.extra     ? `<a href="${esc(p.extra.url)}" target="_blank" rel="noopener" class="btn btn-ghost">${esc(p.extra.label)} ${extIcon}</a>` : ""
+  ].filter(Boolean).join("");
+
+  document.getElementById("detailsContent").innerHTML = `
     <div class="glass d-head">
-      <span class="eyebrow proj-cat">${p.category}</span>
-      <h2>${p.title}</h2>
-      <p class="lead" style="margin-top:12px;">${p.full}</p>
-      <div class="d-links" style="margin-top:20px;">${linksHtml || '<span class="lead">এই প্রজেক্টের জন্য এই মুহূর্তে কোনো পাবলিক লিংক নেই।</span>'}</div>
+      <span class="eyebrow proj-cat">${esc(p.category)}</span>
+      <h2>${esc(p.title)}</h2>
+      <p class="lead" style="margin-top:12px;">${esc(p.full)}</p>
+      <div class="d-links" style="margin-top:20px;">
+        ${links || '<span class="lead">এই প্রজেক্টের জন্য এই মুহূর্তে কোনো পাবলিক লিংক নেই।</span>'}
+      </div>
     </div>
     <div class="d-body">
       <div class="glass d-block">
-        <h4>${p.featuresTitle || 'Features'}</h4>
-        <ul class="feat-list">${p.features.map(f=>`<li>${checkIcon()}<span>${f}</span></li>`).join('')}</ul>
+        <h4>${esc(p.featuresTitle)}</h4>
+        ${p.features.length
+          ? `<ul class="feat-list">${p.features.map(f=>`<li>${checkIcon}<span>${esc(f)}</span></li>`).join("")}</ul>`
+          : `<p style="font-size:13.5px;color:var(--ink-soft);">তথ্য যোগ করা হয়নি।</p>`}
       </div>
       <div class="glass d-block">
         <h4>Technology</h4>
-        <div class="proj-tech">${p.tech.map(t=>`<span class="tech-pill">${t}</span>`).join('')}</div>
+        <div class="proj-tech">${p.tech.map(t=>`<span class="tech-pill">${esc(t)}</span>`).join("") || '<span class="tech-pill">—</span>'}</div>
         <h4 style="margin-top:22px;">Status</h4>
-        <p style="font-size:14px;color:var(--ink-soft);">${p.status}</p>
+        <p style="font-size:14px;color:var(--ink-soft);">${esc(p.status)}</p>
       </div>
     </div>`;
-  document.getElementById('detailsView').classList.add('open');
-  document.getElementById('detailsView').scrollTop = 0;
-  document.body.style.overflow='hidden';
+
+  const dv = document.getElementById("detailsView");
+  dv.classList.add("open");
+  dv.scrollTop = 0;
+  document.body.style.overflow = "hidden";
 }
 
-// প্রজেক্ট গ্রিড রেন্ডার ও ইভেন্ট লিসেনার সেটআপ
-fetchProjects().then(projects => {
-  allProjects = projects;
-  renderProjects(projects);
-
-  document.getElementById('projGrid').addEventListener('click', e=>{
-    const card = e.target.closest('.proj-card');
-    if(card) openDetails(Number(card.dataset.id));
-  });
-  document.getElementById('projGrid').addEventListener('keydown', e=>{
-    if((e.key==='Enter'||e.key===' ') && e.target.closest('.proj-card')){
-      e.preventDefault(); openDetails(Number(e.target.closest('.proj-card').dataset.id));
-    }
-  });
-  document.getElementById('backBtn').addEventListener('click', ()=>{
-    document.getElementById('detailsView').classList.remove('open');
-    document.body.style.overflow='';
-  });
-
-  // টিল্ট ইফেক্ট নতুন কার্ডেও প্রয়োগ
-  if(!reduceMotion){
-    document.querySelectorAll('[data-tilt]').forEach(card=>{
-      card.addEventListener('mousemove', e=>{
-        const r = card.getBoundingClientRect();
-        const x = (e.clientX-r.left)/r.width-0.5, y=(e.clientY-r.top)/r.height-0.5;
-        card.style.transform = `rotateY(${x*8}deg) rotateX(${-y*8}deg) translateZ(4px)`;
-      });
-      card.addEventListener('mouseleave', ()=>{ card.style.transform='rotateY(0) rotateX(0) translateZ(0)'; });
-    });
+document.getElementById("backBtn").addEventListener("click", ()=>{
+  document.getElementById("detailsView").classList.remove("open");
+  if(!document.getElementById("browseView").classList.contains("open")){
+    document.body.style.overflow = "";
   }
 });
 
-/* ---------------- THEME + BACKGROUND ---------------- */
+/* ==================================================================
+   9) FOLDER BROWSER
+================================================================== */
+let browseStack = [];   // [{path, name, items}]
+
+function breadcrumbFor(index){
+  const bc = document.getElementById("breadcrumb");
+  const parts = [];
+  parts.push(`<button data-idx="-1">${esc(PROJECT_CONFIG.dir)}</button>`);
+  for(let i = 0; i <= index; i++){
+    const s = browseStack[i];
+    if(i === index){
+      parts.push(`<span class="sep">/</span><span class="current">${esc(prettyName(s.name))}</span>`);
+    } else {
+      parts.push(`<span class="sep">/</span><button data-idx="${i}">${esc(prettyName(s.name))}</button>`);
+    }
+  }
+  bc.innerHTML = parts.join("");
+}
+
+async function openFolder(node){
+  if(!node) return;
+  const bv = document.getElementById("browseView");
+  const grid = document.getElementById("browseGrid");
+  const loading = document.getElementById("browseLoading");
+  const empty = document.getElementById("browseEmpty");
+
+  // প্রথমে overlay খুলি যাতে width ঠিকভাবে measure করা যায়
+  bv.classList.add("open");
+  document.body.style.overflow = "hidden";
+
+  let items = node.children;
+  if(!items){
+    grid.innerHTML = "";
+    empty.style.display = "none";
+    loading.style.display = "flex";
+    items = await listDirSafe(node.path);
+    node.children = items;
+    node.count = items.length;
+    loading.style.display = "none";
+  }
+
+  browseStack.push({path: node.path, name: node.name, items});
+  renderBrowse();
+}
+
+function renderBrowse(){
+  const cur = browseStack[browseStack.length - 1];
+  const bv = document.getElementById("browseView");
+  if(!cur){
+    bv.classList.remove("open");
+    document.body.style.overflow = "";
+    return;
+  }
+  bv.classList.add("open");
+  document.body.style.overflow = "hidden";
+
+  document.getElementById("browseTitle").textContent = prettyName(cur.name);
+  document.getElementById("browseBackLabel").textContent =
+    browseStack.length > 1 ? prettyName(browseStack[browseStack.length - 2].name) : PROJECT_CONFIG.dir;
+
+  const folderCount = cur.items.filter(i => i.type === "folder").length;
+  const fileCount   = cur.items.filter(i => i.type === "file").length;
+  const metaParts = [];
+  if(folderCount) metaParts.push(folderCount + "টি ফোল্ডার");
+  if(fileCount)   metaParts.push(fileCount + "টি ফাইল");
+  document.getElementById("browseMeta").textContent = metaParts.join(" · ");
+
+  const grid = document.getElementById("browseGrid");
+  const empty = document.getElementById("browseEmpty");
+  const loading = document.getElementById("browseLoading");
+  loading.style.display = "none";
+
+  if(!cur.items.length){
+    grid.innerHTML = "";
+    empty.style.display = "";
+  } else {
+    empty.style.display = "none";
+    grid.innerHTML = cur.items.map(renderNodeCard).join("");
+  }
+
+  breadcrumbFor(browseStack.length - 1);
+  bv.scrollTop = 0;
+}
+
+document.getElementById("browseBack").addEventListener("click", ()=>{
+  browseStack.pop();
+  if(browseStack.length === 0){
+    document.getElementById("browseView").classList.remove("open");
+    document.body.style.overflow = "";
+  } else {
+    renderBrowse();
+  }
+});
+
+document.getElementById("breadcrumb").addEventListener("click", (e)=>{
+  const btn = e.target.closest("button[data-idx]");
+  if(!btn) return;
+  const idx = parseInt(btn.dataset.idx, 10);
+  if(idx < 0){
+    browseStack = [];
+    document.getElementById("browseView").classList.remove("open");
+    document.body.style.overflow = "";
+  } else {
+    browseStack = browseStack.slice(0, idx + 1);
+    renderBrowse();
+  }
+});
+
+/* ==================================================================
+   10) FILE OPENER
+================================================================== */
+function openFile(node){
+  const url = node.path;
+  if(node.kind === "pdf"){
+    openPdf(url, node.name);
+  } else if(node.kind === "archive"){
+    const a = document.createElement("a");
+    a.href = url; a.download = node.name; a.rel = "noopener";
+    document.body.appendChild(a); a.click(); a.remove();
+  } else {
+    window.open(url, "_blank", "noopener");
+  }
+}
+
+function handleNodePath(path){
+  const node = pathIndex.get(path);
+  if(!node) return;
+  if(node.type === "folder") openFolder(node);
+  else openFile(node);
+}
+
+/* গ্রিডে ক্লিক / কীবোর্ড */
+document.getElementById("projGrid").addEventListener("click", e=>{
+  const card = e.target.closest(".proj-card");
+  if(!card) return;
+  if(card.dataset.featured) openDetails(card.dataset.id);
+  else handleNodePath(card.dataset.path);
+});
+document.getElementById("projGrid").addEventListener("keydown", e=>{
+  if(e.key !== "Enter" && e.key !== " ") return;
+  const card = e.target.closest(".proj-card");
+  if(!card) return;
+  e.preventDefault();
+  if(card.dataset.featured) openDetails(card.dataset.id);
+  else handleNodePath(card.dataset.path);
+});
+document.getElementById("browseGrid").addEventListener("click", e=>{
+  const card = e.target.closest(".proj-card");
+  if(card) handleNodePath(card.dataset.path);
+});
+document.getElementById("browseGrid").addEventListener("keydown", e=>{
+  if(e.key !== "Enter" && e.key !== " ") return;
+  const card = e.target.closest(".proj-card");
+  if(!card) return;
+  e.preventDefault();
+  handleNodePath(card.dataset.path);
+});
+
+/* ==================================================================
+   11) PDF VIEWER (PDF.js)
+================================================================== */
+if(window.pdfjsLib){
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+}
+
+let pdfDoc = null;
+let pdfPages = [];       // [{el, num, baseW, canvas, rendered, rendering}]
+let pdfZoom = 1;
+let pdfFitWidth = 800;
+let pdfObserver = null;
+let pdfRenderToken = 0;
+
+function openPdf(url, title){
+  const view = document.getElementById("pdfView");
+  const stage = document.getElementById("pdfStage");
+  const pagesWrap = document.getElementById("pdfPages");
+  const loading = document.getElementById("pdfLoading");
+
+  document.getElementById("pdfTitle").textContent = title || "Document.pdf";
+  document.getElementById("pdfDownload").href = url;
+  document.getElementById("pdfDownload").setAttribute("download", title || "");
+  document.getElementById("pdfOpenTab").href = url;
+
+  pdfZoom = 1;
+  document.getElementById("pdfZoomLabel").textContent = "100%";
+  pdfPages = [];
+  pdfDoc = null;
+  pagesWrap.innerHTML = "";
+  loading.style.display = "flex";
+  loading.innerHTML = '<div class="ring"></div><span>PDF লোড হচ্ছে…</span>';
+
+  view.classList.add("open");
+  document.body.style.overflow = "hidden";
+
+  if(pdfObserver){ pdfObserver.disconnect(); pdfObserver = null; }
+  if(!window.pdfjsLib){
+    loading.innerHTML = '<span>PDF রেন্ডারার লোড হয়নি। <a href="'+esc(url)+'" target="_blank" rel="noopener">সরাসরি খুলুন</a></span>';
+    return;
+  }
+
+  const token = ++pdfRenderToken;
+
+  pdfjsLib.getDocument(url).promise.then(async doc => {
+    if(token !== pdfRenderToken) return;
+    pdfDoc = doc;
+
+    const availW = Math.max(280, stage.clientWidth - 32);
+    pdfFitWidth = availW;
+
+    // সব পেজের placeholder তৈরি করি
+    for(let i = 1; i <= doc.numPages; i++){
+      const el = document.createElement("div");
+      el.className = "pdf-page";
+      el.dataset.page = i;
+      el.style.width = availW + "px";
+      el.style.minHeight = Math.round(availW * 1.35) + "px";
+      pagesWrap.appendChild(el);
+      pdfPages.push({el, num: i, baseW: availW, canvas: null, rendered: false, rendering: false});
+    }
+
+    loading.style.display = "none";
+
+    // IntersectionObserver দিয়ে lazy render
+    pdfObserver = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if(en.isIntersecting){
+          const entry = pdfPages.find(p => p.el === en.target);
+          if(entry) renderPdfPage(entry);
+        }
+      });
+    }, {root: stage, rootMargin: "600px 0px"});
+
+    pdfPages.forEach(p => pdfObserver.observe(p.el));
+  }).catch(err => {
+    if(token !== pdfRenderToken) return;
+    console.warn("PDF load failed:", err);
+    loading.style.display = "flex";
+    loading.innerHTML =
+      '<span>PDF লোড করা যায়নি।<br><a href="'+esc(url)+'" target="_blank" rel="noopener">নতুন ট্যাবে খুলুন</a></span>';
+  });
+}
+
+async function renderPdfPage(entry){
+  if(entry.rendered || entry.rendering || !pdfDoc) return;
+  entry.rendering = true;
+  try{
+    const page = await pdfDoc.getPage(entry.num);
+    const vp1 = page.getViewport({scale: 1});
+    const fit = Math.min(pdfFitWidth / vp1.width, 1.6);
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const renderScale = fit * dpr * 1.25;
+    const vp = page.getViewport({scale: renderScale});
+
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.floor(vp.width);
+    canvas.height = Math.floor(vp.height);
+    canvas.style.width = Math.floor(vp1.width * fit * pdfZoom) + "px";
+    canvas.style.height = "auto";
+
+    entry.baseW = vp1.width * fit;
+    entry.el.style.width = Math.floor(entry.baseW * pdfZoom) + "px";
+    entry.el.style.minHeight = "0";
+    entry.el.style.height = "auto";
+    entry.el.innerHTML = "";
+    entry.el.appendChild(canvas);
+
+    await page.render({canvasContext: canvas.getContext("2d"), viewport: vp}).promise;
+    entry.canvas = canvas;
+    entry.rendered = true;
+  }catch(e){
+    console.warn("Page render failed", e);
+  }finally{
+    entry.rendering = false;
+  }
+}
+
+async function renderAllPdfPages(){
+  for(const p of pdfPages){
+    if(!p.rendered) await renderPdfPage(p);
+  }
+}
+
+function applyPdfZoom(){
+  pdfPages.forEach(p => {
+    if(!p.canvas) return;
+    p.canvas.style.width = Math.floor(p.baseW * pdfZoom) + "px";
+    p.canvas.style.height = "auto";
+    p.el.style.width = Math.floor(p.baseW * pdfZoom) + "px";
+  });
+  document.getElementById("pdfZoomLabel").textContent = Math.round(pdfZoom * 100) + "%";
+}
+
+function closePdf(){
+  document.getElementById("pdfView").classList.remove("open");
+  pdfRenderToken++;
+  if(pdfObserver){ pdfObserver.disconnect(); pdfObserver = null; }
+  pdfDoc = null;
+  if(!document.getElementById("browseView").classList.contains("open") &&
+     !document.getElementById("detailsView").classList.contains("open")){
+    document.body.style.overflow = "";
+  }
+}
+
+document.getElementById("pdfClose").addEventListener("click", closePdf);
+document.getElementById("pdfZoomIn").addEventListener("click", ()=>{
+  pdfZoom = Math.min(3, +(pdfZoom + 0.15).toFixed(2));
+  applyPdfZoom();
+});
+document.getElementById("pdfZoomOut").addEventListener("click", ()=>{
+  pdfZoom = Math.max(0.4, +(pdfZoom - 0.15).toFixed(2));
+  applyPdfZoom();
+});
+document.getElementById("pdfFit").addEventListener("click", ()=>{
+  const stage = document.getElementById("pdfStage");
+  pdfZoom = 1;
+  pdfFitWidth = Math.max(280, stage.clientWidth - 32);
+  pdfPages.forEach(p => {
+    p.rendered = false;
+    p.canvas = null;
+    p.el.innerHTML = "";
+    p.el.style.minHeight = Math.round(pdfFitWidth * 1.35) + "px";
+  });
+  pdfPages.forEach(p => renderPdfPage(p));
+});
+document.getElementById("pdfPrint").addEventListener("click", async ()=>{
+  const btn = document.getElementById("pdfPrint");
+  btn.disabled = true;
+  try{
+    await renderAllPdfPages();
+    document.body.classList.add("printing-pdf");
+    window.print();
+  }finally{
+    btn.disabled = false;
+  }
+});
+window.addEventListener("afterprint", ()=>{
+  document.body.classList.remove("printing-pdf");
+});
+
+/* রিসাইজে PDF ফিট */
+let pdfResizeTimer = null;
+window.addEventListener("resize", ()=>{
+  if(!document.getElementById("pdfView").classList.contains("open")) return;
+  clearTimeout(pdfResizeTimer);
+  pdfResizeTimer = setTimeout(()=>{
+    if(!pdfPages.length) return;
+    const stage = document.getElementById("pdfStage");
+    pdfFitWidth = Math.max(280, stage.clientWidth - 32);
+    pdfPages.forEach(p => {
+      const ratio = p.baseW ? (p.baseW) : pdfFitWidth;
+      p.baseW = ratio; // পুরোনো base ধরে রাখি, শুধু zoom apply
+    });
+    applyPdfZoom();
+  }, 200);
+});
+
+/* ==================================================================
+   12) GLOBAL ESC + KEYBOARD
+================================================================== */
+document.addEventListener("keydown", e=>{
+  if(e.key !== "Escape") return;
+  if(document.getElementById("pdfView").classList.contains("open")){ closePdf(); return; }
+  if(document.getElementById("browseView").classList.contains("open")){
+    browseStack.pop();
+    if(browseStack.length === 0){
+      document.getElementById("browseView").classList.remove("open");
+      document.body.style.overflow = "";
+    } else renderBrowse();
+    return;
+  }
+  if(document.getElementById("detailsView").classList.contains("open")){
+    document.getElementById("detailsView").classList.remove("open");
+    document.body.style.overflow = "";
+    return;
+  }
+  if(document.getElementById("mobileMenu").classList.contains("open")){
+    document.getElementById("mobileMenu").classList.remove("open");
+  }
+});
+
+/* ==================================================================
+   13) THEME + BACKGROUND
+================================================================== */
 function isMobile(){ return window.innerWidth < 768; }
 function applyBackground(){
-  const dark = document.documentElement.getAttribute('data-theme')==='dark';
-  const mobile = isMobile();
-  let path;
-  if(mobile) path = dark ? 'path/logod.m.png' : 'path/logol.m.png';
-  else path = dark ? 'path/logod.p.png' : 'path/logol.p.png';
-  document.documentElement.style.setProperty('--bg-shot', `url('${path}')`);
+  const dark = document.documentElement.getAttribute("data-theme") === "dark";
+  const m = isMobile();
+  const path = m
+    ? (dark ? "path/logod.m.png" : "path/logol.m.png")
+    : (dark ? "path/logod.p.png" : "path/logol.p.png");
+  document.documentElement.style.setProperty("--bg-shot", `url('${path}')`);
 }
 function setTheme(t){
-  document.documentElement.setAttribute('data-theme', t);
-  localStorage.setItem('theme', t);
-  document.getElementById('themeIcon').innerHTML = t==='dark'
+  document.documentElement.setAttribute("data-theme", t);
+  try{ localStorage.setItem("theme", t); }catch(e){}
+  document.getElementById("themeIcon").innerHTML = t === "dark"
     ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>'
     : '<circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>';
   applyBackground();
 }
-const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-setTheme(savedTheme);
-document.getElementById('themeBtn').addEventListener('click', ()=>{
-  setTheme(document.documentElement.getAttribute('data-theme')==='dark' ? 'light' : 'dark');
+(function initTheme(){
+  let saved = null;
+  try{ saved = localStorage.getItem("theme"); }catch(e){}
+  if(!saved){
+    saved = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  setTheme(saved);
+})();
+document.getElementById("themeBtn").addEventListener("click", ()=>{
+  setTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark");
 });
-window.addEventListener('resize', applyBackground);
+window.addEventListener("resize", applyBackground);
 
-/* ---------------- MOBILE MENU ---------------- */
-const mobileMenu = document.getElementById('mobileMenu');
-const menuBtn = document.getElementById('menuBtn');
-menuBtn.addEventListener('click', ()=> mobileMenu.classList.toggle('open'));
-mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=> mobileMenu.classList.remove('open')));
+/* ==================================================================
+   14) MOBILE MENU
+================================================================== */
+const mobileMenu = document.getElementById("mobileMenu");
+document.getElementById("menuBtn").addEventListener("click", ()=>{
+  mobileMenu.classList.toggle("open");
+  document.body.style.overflow = mobileMenu.classList.contains("open") ? "hidden" : "";
+});
+mobileMenu.querySelectorAll("a").forEach(a => a.addEventListener("click", ()=>{
+  mobileMenu.classList.remove("open");
+  document.body.style.overflow = "";
+}));
 
-/* ---------------- CUSTOM CURSOR ---------------- */
-const cursorDot = document.getElementById('cursorDot');
-if(window.matchMedia('(hover:hover)').matches){
-  window.addEventListener('mousemove', e=>{
-    cursorDot.style.left = e.clientX+'px'; cursorDot.style.top = e.clientY+'px';
+/* ==================================================================
+   15) CUSTOM CURSOR
+================================================================== */
+const cursorDot = document.getElementById("cursorDot");
+if(window.matchMedia("(hover:hover)").matches){
+  window.addEventListener("mousemove", e=>{
+    cursorDot.style.left = e.clientX + "px";
+    cursorDot.style.top = e.clientY + "px";
   });
-  document.querySelectorAll('a,button,.proj-card').forEach(el=>{
-    el.addEventListener('mouseenter', ()=>{cursorDot.style.width='22px';cursorDot.style.height='22px';cursorDot.style.background='var(--accent-2)';});
-    el.addEventListener('mouseleave', ()=>{cursorDot.style.width='10px';cursorDot.style.height='10px';cursorDot.style.background='var(--accent)';});
+  document.querySelectorAll("a,button,.proj-card").forEach(el=>{
+    el.addEventListener("mouseenter", ()=>{cursorDot.style.width="22px";cursorDot.style.height="22px";cursorDot.style.background="var(--accent-2)";});
+    el.addEventListener("mouseleave", ()=>{cursorDot.style.width="10px";cursorDot.style.height="10px";cursorDot.style.background="var(--accent)";});
   });
 }
 
-/* ---------------- TILT (হিরো কার্ড) ---------------- */
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* ==================================================================
+   16) TILT
+================================================================== */
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function bindTilt(scope){
+  if(reduceMotion) return;
+  scope.querySelectorAll("[data-tilt]").forEach(card=>{
+    if(card._tiltBound) return;
+    card._tiltBound = true;
+    card.addEventListener("mousemove", e=>{
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = `rotateY(${x*8}deg) rotateX(${-y*8}deg) translateZ(4px)`;
+    });
+    card.addEventListener("mouseleave", ()=>{
+      card.style.transform = "rotateY(0) rotateX(0) translateZ(0)";
+    });
+  });
+}
+
 if(!reduceMotion){
-  const tiltCard = document.getElementById('tiltCard');
-  window.addEventListener('mousemove', e=>{
-    const x = (e.clientX/window.innerWidth-0.5), y=(e.clientY/window.innerHeight-0.5);
+  const tiltCard = document.getElementById("tiltCard");
+  window.addEventListener("mousemove", e=>{
+    const x = (e.clientX / window.innerWidth - 0.5);
+    const y = (e.clientY / window.innerHeight - 0.5);
     tiltCard.style.transform = `rotateY(${x*10}deg) rotateX(${-y*10}deg)`;
   });
 }
 
-/* ---------------- IMAGE / BACKGROUND PROTECTION ---------------- */
-document.addEventListener('contextmenu', e=>{ if(e.target.tagName==='IMG' || e.target===document.body) e.preventDefault(); });
-document.addEventListener('dragstart', e=>{ if(e.target.tagName==='IMG') e.preventDefault(); });
-document.addEventListener('keydown', e=>{
+/* ==================================================================
+   17) IMAGE / BACKGROUND PROTECTION
+================================================================== */
+document.addEventListener("contextmenu", e=>{
+  if(e.target.tagName === "IMG" || e.target === document.body) e.preventDefault();
+});
+document.addEventListener("dragstart", e=>{
+  if(e.target.tagName === "IMG") e.preventDefault();
+});
+document.addEventListener("keydown", e=>{
   const k = e.key.toLowerCase();
-  if((e.ctrlKey||e.metaKey) && ['s','u','p'].includes(k)) e.preventDefault();
-  if(e.key==='F12') e.preventDefault();
-  if((e.ctrlKey||e.metaKey) && e.shiftKey && ['i','j','c'].includes(k)) e.preventDefault();
+  if((e.ctrlKey || e.metaKey) && ["s","u"].includes(k)) e.preventDefault();
+  if(e.key === "F12") e.preventDefault();
+  if((e.ctrlKey || e.metaKey) && e.shiftKey && ["i","j","c"].includes(k)) e.preventDefault();
 });
 
-/* ---------------- THREE.JS BACKGROUND ---------------- */
-(function(){
-  const canvas = document.getElementById('bg-canvas');
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(55, window.innerWidth/window.innerHeight, 0.1, 100);
-  camera.position.z = 14;
-  const renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true});
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-  renderer.setSize(window.innerWidth, window.innerHeight);
-
-  scene.add(new THREE.AmbientLight(0xffffff, 0.7));
-  const dl = new THREE.DirectionalLight(0x8fb4ff, 1.1);
-  dl.position.set(5,8,6); scene.add(dl);
-  const dl2 = new THREE.DirectionalLight(0x39d5e0, 0.5);
-  dl2.position.set(-6,-4,4); scene.add(dl2);
-
-  const mobile = isMobile();
-  const shapeCount = mobile ? 3 : 6;
-  const shapes = [];
-  const geoms = [
-    ()=> new THREE.IcosahedronGeometry(1.1, 0),
-    ()=> new THREE.TorusGeometry(0.9, 0.28, 12, 36),
-    ()=> new THREE.OctahedronGeometry(1.0, 0),
-    ()=> new THREE.SphereGeometry(0.8, 20, 20)
-  ];
-  for(let i=0;i<shapeCount;i++){
-    const geo = geoms[i % geoms.length]();
-    const mat = new THREE.MeshStandardMaterial({
-      color: i%2===0 ? 0x2f6fed : 0x12b7c4,
-      roughness:0.25, metalness:0.15, transparent:true, opacity:0.16, wireframe:(i%3===0)
-    });
-    const mesh = new THREE.Mesh(geo, mat);
-    mesh.position.set((Math.random()-0.5)*16,(Math.random()-0.5)*10,(Math.random()-0.5)*8-4);
-    mesh.userData.speed = 0.15+Math.random()*0.25;
-    mesh.userData.axis = new THREE.Vector3(Math.random(),Math.random(),Math.random()).normalize();
-    scene.add(mesh); shapes.push(mesh);
-  }
-
-  const particleCount = mobile ? 120 : 300;
-  const positions = new Float32Array(particleCount*3);
-  for(let i=0;i<particleCount;i++){
-    positions[i*3]=(Math.random()-0.5)*30;
-    positions[i*3+1]=(Math.random()-0.5)*20;
-    positions[i*3+2]=(Math.random()-0.5)*14;
-  }
-  const pGeo = new THREE.BufferGeometry();
-  pGeo.setAttribute('position', new THREE.BufferAttribute(positions,3));
-  const pMat = new THREE.PointsMaterial({color:0x8fb4ff, size:0.045, transparent:true, opacity:0.5});
-  const points = new THREE.Points(pGeo, pMat);
-  scene.add(points);
-
-  let mouseX=0, mouseY=0;
-  window.addEventListener('mousemove', e=>{
-    mouseX = (e.clientX/window.innerWidth-0.5);
-    mouseY = (e.clientY/window.innerHeight-0.5);
-  });
-
-  window.addEventListener('resize', ()=>{
-    camera.aspect = window.innerWidth/window.innerHeight;
-    camera.updateProjectionMatrix();
+/* ==================================================================
+   18) THREE.JS BACKGROUND
+================================================================== */
+(function threeBg(){
+  if(!window.THREE) return;
+  try{
+    const canvas = document.getElementById("bg-canvas");
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(55, window.innerWidth/window.innerHeight, 0.1, 100);
+    camera.position.z = 14;
+    const renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.setSize(window.innerWidth, window.innerHeight);
-  });
 
-  const clock = new THREE.Clock();
-  function animate(){
-    requestAnimationFrame(animate);
-    const t = clock.getElapsedTime();
-    shapes.forEach(m=>{
-      m.rotation.x += 0.002*m.userData.speed*60/60;
-      m.rotation.y += 0.003*m.userData.speed*60/60;
-      m.position.y += Math.sin(t*0.4*m.userData.speed+m.id)*0.0025;
-    });
-    points.rotation.y += 0.0006;
-    if(!reduceMotion){
-      camera.position.x += (mouseX*1.6 - camera.position.x)*0.02;
-      camera.position.y += (-mouseY*1.0 - camera.position.y)*0.02;
-      camera.lookAt(0,0,0);
+    scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+    const dl = new THREE.DirectionalLight(0x8fb4ff, 1.1);
+    dl.position.set(5,8,6); scene.add(dl);
+    const dl2 = new THREE.DirectionalLight(0x39d5e0, 0.5);
+    dl2.position.set(-6,-4,4); scene.add(dl2);
+
+    const mobile = isMobile();
+    const shapeCount = mobile ? 3 : 6;
+    const shapes = [];
+    const geoms = [
+      ()=> new THREE.IcosahedronGeometry(1.1, 0),
+      ()=> new THREE.TorusGeometry(0.9, 0.28, 12, 36),
+      ()=> new THREE.OctahedronGeometry(1.0, 0),
+      ()=> new THREE.SphereGeometry(0.8, 20, 20)
+    ];
+    for(let i=0;i<shapeCount;i++){
+      const geo = geoms[i % geoms.length]();
+      const mat = new THREE.MeshStandardMaterial({
+        color: i%2===0 ? 0x2f6fed : 0x12b7c4,
+        roughness:0.25, metalness:0.15, transparent:true, opacity:0.16, wireframe:(i%3===0)
+      });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.position.set((Math.random()-0.5)*16,(Math.random()-0.5)*10,(Math.random()-0.5)*8-4);
+      mesh.userData.speed = 0.15 + Math.random()*0.25;
+      scene.add(mesh); shapes.push(mesh);
     }
-    renderer.render(scene, camera);
+
+    const particleCount = mobile ? 120 : 300;
+    const positions = new Float32Array(particleCount*3);
+    for(let i=0;i<particleCount;i++){
+      positions[i*3]   = (Math.random()-0.5)*30;
+      positions[i*3+1] = (Math.random()-0.5)*20;
+      positions[i*3+2] = (Math.random()-0.5)*14;
+    }
+    const pGeo = new THREE.BufferGeometry();
+    pGeo.setAttribute("position", new THREE.BufferAttribute(positions,3));
+    const points = new THREE.Points(pGeo, new THREE.PointsMaterial({
+      color:0x8fb4ff, size:0.045, transparent:true, opacity:0.5
+    }));
+    scene.add(points);
+
+    let mouseX = 0, mouseY = 0;
+    window.addEventListener("mousemove", e=>{
+      mouseX = (e.clientX/window.innerWidth - 0.5);
+      mouseY = (e.clientY/window.innerHeight - 0.5);
+    });
+    window.addEventListener("resize", ()=>{
+      camera.aspect = window.innerWidth/window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    const clock = new THREE.Clock();
+    (function animate(){
+      requestAnimationFrame(animate);
+      const t = clock.getElapsedTime();
+      shapes.forEach(m=>{
+        m.rotation.x += 0.002 * m.userData.speed;
+        m.rotation.y += 0.003 * m.userData.speed;
+        m.position.y += Math.sin(t*0.4*m.userData.speed + m.id) * 0.0025;
+      });
+      points.rotation.y += 0.0006;
+      if(!reduceMotion){
+        camera.position.x += (mouseX*1.6 - camera.position.x)*0.02;
+        camera.position.y += (-mouseY*1.0 - camera.position.y)*0.02;
+        camera.lookAt(0,0,0);
+      }
+      renderer.render(scene, camera);
+    })();
+  }catch(e){
+    console.warn("Background disabled:", e);
   }
-  animate();
 })();
 
-/* ---------------- LOADER ---------------- */
-window.addEventListener('load', ()=>{
-  setTimeout(()=> document.getElementById('loader').classList.add('hide'), 350);
+/* ==================================================================
+   19) BOOTSTRAP
+================================================================== */
+initProjects().then(()=>{
+  bindTilt(document.getElementById("projGrid"));
+}).catch(err => {
+  console.warn("Project init failed:", err);
+  const section = document.getElementById("projects");
+  if(section) section.style.display = "none";
 });
+
+/* Loader সবসময় hide হবে — Three.js fail করলেও */
+function hideLoader(){
+  const l = document.getElementById("loader");
+  if(l) l.classList.add("hide");
+}
+window.addEventListener("load", ()=> setTimeout(hideLoader, 350));
+setTimeout(hideLoader, 3500); // safety net
 </script>
 </body>
 </html>
