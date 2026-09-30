@@ -4,10 +4,43 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Abdullah Fahim — Software · Electrical · Electronics</title>
-<meta name="description" content="Abdullah Fahim — student technologist working across software, web applications, electrical systems and electronics.">
+
+<!-- ============ SEO PRIMARY META ============ -->
+<meta name="description" content="Abdullah Fahim — Student technologist working across software development, web applications, Python, Flask, electrical systems and electronics. Portfolio with live projects.">
+<meta name="keywords" content="Abdullah Fahim, software developer, web developer, portfolio, electrical, electronics, Python, Flask, GitHub projects, Bangladesh developer">
+<meta name="author" content="Abdullah Fahim">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#2F6FED">
+<link rel="canonical" href="https://fahim618900-wq.github.io/fahitrex/">
+
+<!-- ============ OPEN GRAPH (সোশ্যাল শেয়ার) ============ -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Abdullah Fahim — Software · Electrical · Electronics">
+<meta property="og:description" content="Student technologist working across software, web applications, electrical systems and electronics.">
+<meta property="og:url" content="https://fahim618900-wq.github.io/fahitrex/">
+<meta property="og:image" content="https://fahim618900-wq.github.io/fahitrex/preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="Abdullah Fahim">
+<meta property="og:locale" content="bn_BD">
+
+<!-- ============ TWITTER CARD ============ -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Abdullah Fahim — Software · Electrical · Electronics">
+<meta name="twitter:description" content="Student technologist working across software, web applications, electrical systems and electronics.">
+<meta name="twitter:image" content="https://fahim618900-wq.github.io/fahitrex/preview.png">
+
+<!-- ============ GOOGLE SEARCH CONSOLE (এখানে নিজের কোড বসাবেন) ============ -->
+<!-- <meta name="google-site-verification" content="এখানে Google Search Console থেকে পাওয়া কোড বসাবেন"> -->
+
+<!-- ============ FAVICON ============ -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232F6FED'/%3E%3Ctext x='50' y='68' font-family='Space Grotesk,sans-serif' font-size='54' font-weight='700' fill='white' text-anchor='middle'%3EAF%3C/text%3E%3C/svg%3E">
+
+<!-- ============ FONTS ============ -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
 :root{
   --bg:#EEF1F6; --bg-2:#E4E9F2;
@@ -430,7 +463,7 @@ footer{padding:30px 0;border-top:1px solid var(--border);text-align:center;font-
 
 <nav>
   <div class="nav-inner glass">
-    <a href="#/" class="brand">Abdullah<span>Fahim</span></a>
+    <a href="#/" class="brand" aria-label="Abdullah Fahim Home">Abdullah<span>Fahim</span></a>
     <ul class="nav-links">
       <li><a href="#/" data-route="home">Home</a></li>
       <li><a href="#/about" data-route="about">About</a></li>
@@ -473,7 +506,7 @@ footer{padding:30px 0;border-top:1px solid var(--border);text-align:center;font-
         </div>
         <div class="hero-card glass" id="tiltCard">
           <div class="avatar-frame">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Ab_Fahim.jpg" alt="Abdullah Fahim" width="256" height="256">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Ab_Fahim.jpg" alt="Abdullah Fahim — Software and Electronics Portfolio" width="256" height="256">
           </div>
           <h3>Abdullah Fahim</h3>
           <p class="role">Student · Software, Electrical &amp; Electronics Enthusiast</p>
@@ -648,7 +681,17 @@ footer{padding:30px 0;border-top:1px solid var(--border);text-align:center;font-
   <div class="mv-stage" id="mvStage"></div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<!-- ============ THREE.JS (শুধু হোম পেজে লোড হবে) ============ -->
+<script>
+(function(){
+  var h = location.hash.replace(/^#\/?/, "").split("/")[0] || "home";
+  var needBg = (h === "home" || h === "about");
+  if(needBg){
+    document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>');
+  }
+})();
+</script>
+
 <script>
 /* ==================================================================
    1) STATIC DATA
@@ -767,7 +810,6 @@ const FILE_TYPES = {
   pdf:{label:"PDF", kind:"pdf"},
   html:{label:"HTML", kind:"html"}, htm:{label:"HTML", kind:"html"},
   md:{label:"Markdown", kind:"doc"}, txt:{label:"Text", kind:"doc"},
-  /* ---- Office documents (Google Docs Viewer) ---- */
   doc:{label:"Word", kind:"office"},
   docx:{label:"Word", kind:"office"},
   xls:{label:"Excel", kind:"office"},
@@ -778,7 +820,6 @@ const FILE_TYPES = {
   odt:{label:"OpenDocument", kind:"office"},
   ods:{label:"OpenDocument", kind:"office"},
   odp:{label:"OpenDocument", kind:"office"},
-  /* ---- Code / text ---- */
   json:{label:"JSON", kind:"code"}, js:{label:"JavaScript", kind:"code"},
   mjs:{label:"JavaScript", kind:"code"}, ts:{label:"TypeScript", kind:"code"},
   tsx:{label:"TypeScript", kind:"code"}, jsx:{label:"JSX", kind:"code"},
@@ -793,7 +834,6 @@ const FILE_TYPES = {
   ini:{label:"INI", kind:"code"}, conf:{label:"Config", kind:"code"},
   csv:{label:"CSV", kind:"code"}, log:{label:"Log", kind:"code"},
   sql:{label:"SQL", kind:"code"},
-  /* ---- Media ---- */
   png:{label:"Image", kind:"image"}, jpg:{label:"Image", kind:"image"},
   jpeg:{label:"Image", kind:"image"}, gif:{label:"Image", kind:"image"},
   webp:{label:"Image", kind:"image"}, svg:{label:"Image", kind:"image"},
@@ -967,7 +1007,7 @@ function canPreviewInPage(node){
   if(ext === "html" || ext === "htm") return true;
   if(node.kind === "audio") return true;
   if(node.kind === "video") return true;
-  if(node.kind === "office") return true;   /* ← Office ফাইল এখন ইন-পেজ */
+  if(node.kind === "office") return true;
   if(TEXT_EXTS.has(ext)) return true;
   return false;
 }
@@ -1032,6 +1072,20 @@ const PAGE_TITLES = {
   contact: "Contact — Abdullah Fahim"
 };
 
+const PAGE_DESCS = {
+  home: "Abdullah Fahim — Student technologist working across software, web applications, electrical systems and electronics.",
+  about: "About Abdullah Fahim's portfolio website — features and purpose.",
+  services: "Software development, web applications, electrical and electronics services.",
+  projects: "Live portfolio of Abdullah Fahim — software, web, electrical and electronics projects.",
+  browse: "Browse project folder contents.",
+  contact: "Contact Abdullah Fahim — email, phone, WhatsApp, GitHub and social links."
+};
+
+function updateMetaDesc(pageName){
+  const el = document.querySelector('meta[name="description"]');
+  if(el && PAGE_DESCS[pageName]) el.setAttribute("content", PAGE_DESCS[pageName]);
+}
+
 async function handleRoute(){
   const route = parseRoute();
 
@@ -1056,6 +1110,7 @@ async function handleRoute(){
 
   updateNavActive(route.page);
   document.title = PAGE_TITLES[route.page] || PAGE_TITLES.home;
+  updateMetaDesc(route.page);
 
   document.getElementById("detailsView").classList.remove("open");
   document.body.style.overflow = "";
@@ -1625,7 +1680,7 @@ function mvOpenVideo(node){
   mvStage.appendChild(video);
 }
 
-/* ---------- Office (docx / xlsx / pptx via Google Docs Viewer) ---------- */
+/* ---------- Office ---------- */
 function mvOpenOffice(node){
   const url = node.path;
   const absUrl = new URL(url, location.href).href;
@@ -1634,7 +1689,7 @@ function mvOpenOffice(node){
               + "&embedded=true";
 
   mvSetActions(
-    `<button class="mv-btn" id="mvOfficeNewTab" title="নতুন ট্যাবে Google Viewer-এ খুলুন">
+    `<button class="mv-btn" id="mvOfficeNewTab" title="নতুন ট্যাবে">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
     </button>
     <button class="mv-btn" id="mvOfficeReload" title="রিফ্রেশ">
@@ -1924,5 +1979,36 @@ handleRoute();
 setTimeout(hideLoader, 2500);
 window.addEventListener("load", ()=> setTimeout(hideLoader, 350));
 </script>
+
+<!-- ============ STRUCTURED DATA (JSON-LD) ============ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Abdullah Fahim",
+  "url": "https://fahim618900-wq.github.io/fahitrex/",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/f/ff/Ab_Fahim.jpg",
+  "jobTitle": "Student Technologist",
+  "description": "Student technologist working across software development, web applications, electrical systems and electronics.",
+  "knowsAbout": [
+    "Software Development",
+    "Web Development",
+    "Python",
+    "Flask",
+    "JavaScript",
+    "Electrical Engineering",
+    "Electronics",
+    "Hardware Software Integration"
+  ],
+  "sameAs": [
+    "https://github.com/fahim618900-wq",
+    "https://youtube.com/@abdfahim61",
+    "https://www.facebook.com/share/1GkLfkduqx/",
+    "https://www.instagram.com/afmrha",
+    "https://en.wikipedia.org/wiki/User:Ab_Fahim"
+  ]
+}
+</script>
+
 </body>
 </html>
