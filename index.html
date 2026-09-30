@@ -410,8 +410,26 @@ nav{
 
 footer{padding:30px 0;border-top:1px solid var(--border);text-align:center;font-size:12.5px;color:var(--ink-soft);position:relative;z-index:2;}
 
-.cursor-dot{position:fixed;width:10px;height:10px;border-radius:50%;background:var(--accent);pointer-events:none;z-index:500;transform:translate(-50%,-50%);transition:width .15s,height .15s,background .15s;}
-@media(max-width:900px), (hover:none){.cursor-dot{display:none;}}
+/* ============ CUSTOM CURSOR (ডিফল্ট কার্সর লুকানো) ============ */
+.cursor-dot{
+  position:fixed;width:10px;height:10px;border-radius:50%;
+  background:var(--accent);pointer-events:none;z-index:500;
+  transform:translate(-50%,-50%);
+  transition:width .15s,height .15s,background .15s;
+}
+
+/* ডেস্কটপ / মাউস-ওয়ালা ডিভাইসে ডিফল্ট কার্সর লুকাও */
+@media (hover: hover) and (pointer: fine){
+  html, body, a, button, input, textarea, select,
+  .proj-card, [role="button"], [role="link"]{
+    cursor: none;
+  }
+}
+
+/* মোবাইল / টাচ ডিভাইসে ডট দেখাবেই না */
+@media(max-width:900px), (hover:none), (pointer:coarse){
+  .cursor-dot{display:none;}
+}
 
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto;}
