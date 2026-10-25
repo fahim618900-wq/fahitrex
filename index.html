@@ -229,7 +229,7 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;paddin
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition:none!important;}.tr{stroke-dashoffset:0;}}
 </style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Person","name":"Abdullah Fahim","url":"https://fahim618900-wq.github.io/fahitrex/","image":"https://upload.wikimedia.org/wikipedia/commons/f/ff/Ab_Fahim.jpg","jobTitle":"Student Technologist","description":"Student technologist working across software development, web applications, electrical systems and electronics.","knowsAbout":["Software Development","Web Development","Python","Flask","JavaScript","Electrical Engineering","Electronics"],"sameAs":["https://github.com/fahim618900-wq","https://youtube.com/@abdfahim61","https://www.facebook.com/share/1GkLfkduqx/","https://www.instagram.com/afmrha","https://en.wikipedia.org/wiki/User:Ab_Fahim"]}
+{"@context":"https://schema.org","@type":"Person","name":"Abdullah Fahim","url":"https://fahim618900-wq.github.io/fahitrex/","image":"https://upload.wikimedia.org/wikipedia/commons/f/ff/Ab_Fahim.jpg","jobTitle":"Student Technologist","description":"Student technologist working across software development, web applications, Python, Flask, electrical systems and electronics.","knowsAbout":["Software Development","Web Development","Python","Flask","JavaScript","Electrical Engineering","Electronics"],"sameAs":["https://github.com/fahim618900-wq","https://youtube.com/@abdfahim61","https://www.facebook.com/share/1GkLfkduqx/","https://www.instagram.com/afmrha","https://en.wikipedia.org/wiki/User:Ab_Fahim"]}
 </script>
 </head>
 <body>
@@ -354,7 +354,7 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;paddin
   <section class="view" id="v-projects" aria-label="Projects">
     <div class="vh">
       <svg class="i" aria-hidden="true"><use href="#ic-folder"/></svg><h1 id="ptitle">প্রজেক্ট</h1>
-      <button class="back" type="button" data-go="home" aria-label="হোমে ফিরে যান"><svg class="i" aria-hidden="true"><use href="#ic-back"/></svg></button>
+      <button class="back" id="pback" type="button" aria-label="পেছনে যান"><svg class="i" aria-hidden="true"><use href="#ic-back"/></svg></button>
     </div>
     <div class="grid" id="pgrid"></div>
     <p class="note" id="pnote" role="status"></p>
@@ -420,6 +420,7 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;paddin
   function navigate(v){
     if(views.indexOf(v) < 0) v = 'home';
     if(v === 'home'){
+      path = ['project']; // হোমে গেলে প্রজেক্ট পাথ রিসেট
       if(history.state && history.state.view !== 'home'){
         history.back();
         return;
@@ -438,6 +439,17 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;paddin
       ev.preventDefault();
       navigate(btn.getAttribute('data-go'));
     });
+  });
+
+  /* প্রজেক্ট পেজের ব্যাক বাটন হ্যান্ডলার */
+  document.getElementById('pback').addEventListener('click', function(ev){
+    ev.preventDefault();
+    if(path.length > 1){
+      path.pop();
+      showProjects();
+    } else {
+      navigate('home');
+    }
   });
 
   /* ব্রাউজার / মোবাইল ব্যাক */
